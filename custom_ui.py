@@ -116,7 +116,7 @@ class CommandLink(tk.Frame):
 
 class Toolbutton(tk.Button):
     def __init__(self, master, text: str = "", command: callable = None, *args, **kwargs):
-        super().__init__(master, text = text, command = command, padx = 8, pady = 2, background = bg, foreground = accent_link,
+        super().__init__(master, text = text, command = command, padx = 4, pady = 2, background = bg, foreground = accent_link,
                          border = 0, relief = "solid", activebackground = bg_press, activeforeground = accent_link, *args, 
                          **kwargs)
         

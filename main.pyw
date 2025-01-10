@@ -80,7 +80,7 @@ def draw_ui():
     window.update()
 
 def modify_volume_info(volume: str, label: str):
-    if util.is_drive_accessible(volume):
+    if util.is_volume_accessible(volume):
         try:
             autorun_file = open(f"{volume}autorun.inf", "w")
             autorun_file.write(f"[autorun]\nlabel={label}")
