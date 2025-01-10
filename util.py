@@ -6,7 +6,8 @@ from PIL import Image
 
 internal = ""
 
-user_preferences = f"C:\\Users\\{getpass.getuser()}\\AppData\\Roaming\\Volume Labeler"
+user_preferences = f"C:\\Users\\{getpass.getuser()}\\AppData\\Local\\Volume Labeler"
+roaming = f"C:\\Users\\{getpass.getuser()}\\AppData\\Roaming\\Volume Labeler"
 
 if not os.path.exists(user_preferences): os.mkdir(user_preferences)
 if not os.path.exists(user_preferences + "\\language"): open(user_preferences + "\\language", "w").write("default")
@@ -17,7 +18,9 @@ language = open(user_preferences + "\\language", "r").read()
 
 strings.load_language(language)
 
-def pick_icon() -> str:
+from typing import Tuple
+
+def pick_icon() -> Tuple[str, int]:
     icon_file_buffer = ctypes.create_unicode_buffer(260)
     icon_index = ctypes.c_int(0)
 
