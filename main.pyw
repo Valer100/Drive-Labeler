@@ -46,12 +46,12 @@ def draw_ui():
     drive_section = ttk.Frame(window)
     drive_section.pack(fill = "x", anchor = "w", pady = (16, 8))
 
-    ttk.Label(drive_section, text = "Volume").pack(side = "left")
+    ttk.Label(drive_section, text = strings.lang.volume).pack(side = "left")
 
     drive = custom_ui.OptionMenu(drive_section, selected_drive, *drives)
     drive.pack(side = "right")
 
-    ttk.Label(window, text = "Label").pack(pady = 10, anchor = "w")
+    ttk.Label(window, text = strings.lang.label).pack(pady = 10, anchor = "w")
 
     label_frame = tk.Frame(window, highlightbackground = custom_ui.entry_bd, highlightcolor = custom_ui.entry_focus,
                           highlightthickness = 1)
@@ -64,9 +64,9 @@ def draw_ui():
                     selectforeground = "#FFFFFF")
     label.pack()
 
-    ttk.Checkbutton(window, text = "Icon", variable = change_icon).pack(pady = (16, 0), anchor = "w")
+    ttk.Checkbutton(window, text = strings.lang.icon, variable = change_icon).pack(pady = (16, 0), anchor = "w")
 
-    custom_ui.Button(window, text = "Execute", command = lambda: modify_drive_info(selected_drive.get(), label.get())).pack(pady = (16, 0), fill = "x")
+    custom_ui.Button(window, text = strings.lang.execute, command = lambda: modify_drive_info(selected_drive.get(), label.get())).pack(pady = (16, 0), fill = "x")
 
     ttk.Label(window, text = strings.lang.settings, font = ("Segoe UI Semibold", 14)).pack(anchor = "w", pady = (16, 4))
     custom_ui.Toolbutton(window, text = strings.lang.change_language, command = change_app_language).pack(anchor = "w")
@@ -82,11 +82,11 @@ def modify_drive_info(drive: str, label: str):
             autorun_file.write(f"[autorun]\nlabel={label}")
             autorun_file.close()
 
-            messagebox.showinfo("Done", "The drive's label was changed. If the drive is removable, unplug it and plug it again in your computer for the changes to take effect. If it isn't, the changes will take effect the next time you log in.")
+            messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
         except PermissionError:
-            messagebox.showerror("Permission denied", "The selected drive is read-only.")
+            messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
     else:
-        messagebox.showerror("Drive not accessible", "The selected drive is not accessible. Make sure it is connected and try again.")
+        messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
 
 draw_ui()
 custom_ui.sync_colors_with_system(window)
