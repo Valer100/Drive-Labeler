@@ -49,5 +49,5 @@ def extract_icon(path: str, index: int = 0):
 
 def modify_drive_info(drive: str, label: str):
     autorun_file = open(f"{drive}autorun.inf", "w")
-    autorun_file.write(f"[autorun]\nlabel: {label}")
+    autorun_file.write(f"[autorun]\nlabel={label}")
     autorun_file.close()
