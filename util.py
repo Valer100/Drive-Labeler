@@ -47,10 +47,10 @@ def extract_icon(path: str, index: int = 0):
     win32gui.DestroyIcon(small[0])
     return icon
 
-def is_drive_accessible(drive: str):
-    drives = subprocess.getoutput("fsutil fsinfo drives").split(" ")
-    drives.pop(0)
-    drives.pop()
+def is_volume_accessible(volume: str):
+    volumes = subprocess.getoutput("fsutil fsinfo drives").split(" ")
+    volumes.pop(0)
+    volumes.pop()
 
-    if drive in drives: return True
+    if volume in volumes: return True
     else: return False

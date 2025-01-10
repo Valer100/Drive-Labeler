@@ -7,11 +7,11 @@ window.resizable(False, False)
 # window.iconbitmap(util.internal + "icon.ico")
 window.configure(padx = 14, pady = 8)
 
-drives = subprocess.getoutput("fsutil fsinfo drives").split(" ")
-drives.pop(0)
-drives.pop()
+volumes = subprocess.getoutput("fsutil fsinfo drives").split(" ")
+volumes.pop(0)
+volumes.pop()
 
-selected_drive = tk.StringVar(value = drives[0])
+selected_volume = tk.StringVar(value = volumes[0])
 change_icon = tk.BooleanVar(value = False)
 
 def destroy_everything(widget):
@@ -43,13 +43,13 @@ def draw_ui():
 
     ttk.Label(window, text = "Volume Labeler", font = ("Segoe UI Semibold", 17)).pack(anchor = "w")
 
-    drive_section = ttk.Frame(window)
-    drive_section.pack(fill = "x", anchor = "w", pady = (16, 8))
+    volume_section = ttk.Frame(window)
+    volume_section.pack(fill = "x", anchor = "w", pady = (16, 8))
 
-    ttk.Label(drive_section, text = "Drive").pack(side = "left")
+    ttk.Label(volume_section, text = "Drive").pack(side = "left")
 
-    drive = custom_ui.OptionMenu(drive_section, selected_drive, *drives)
-    drive.pack(side = "right")
+    volume = custom_ui.OptionMenu(volume_section, selected_volume, *volumes)
+    volume.pack(side = "right")
 
     ttk.Label(window, text = strings.lang.label).pack(pady = 10, anchor = "w")
 
@@ -66,7 +66,7 @@ def draw_ui():
 
     ttk.Checkbutton(window, text = strings.lang.icon, variable = change_icon).pack(pady = (16, 0), anchor = "w")
 
-    custom_ui.Button(window, text = strings.lang.execute, command = lambda: modify_drive_info(selected_drive.get(), label.get())).pack(pady = (16, 0), fill = "x")
+    custom_ui.Button(window, text = strings.lang.execute, command = lambda: modify_volume_info(selected_volume.get(), label.get())).pack(pady = (16, 0), fill = "x")
 
     ttk.Label(window, text = strings.lang.settings, font = ("Segoe UI Semibold", 14)).pack(anchor = "w", pady = (16, 4))
     custom_ui.Toolbutton(window, text = strings.lang.change_language, command = change_app_language).pack(anchor = "w")
@@ -75,10 +75,10 @@ def draw_ui():
 
     window.update()
 
-def modify_drive_info(drive: str, label: str):
-    if util.is_drive_accessible(drive):
+def modify_volume_info(volume: str, label: str):
+    if util.is_drive_accessible(volume):
         try:
-            autorun_file = open(f"{drive}autorun.inf", "w")
+            autorun_file = open(f"{volume}autorun.inf", "w")
             autorun_file.write(f"[autorun]\nlabel={label}")
             autorun_file.close()
 
