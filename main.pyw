@@ -46,7 +46,7 @@ def draw_ui():
     drive_section = ttk.Frame(window)
     drive_section.pack(fill = "x", anchor = "w", pady = (16, 8))
 
-    ttk.Label(drive_section, text = strings.lang.volume).pack(side = "left")
+    ttk.Label(drive_section, text = "Drive").pack(side = "left")
 
     drive = custom_ui.OptionMenu(drive_section, selected_drive, *drives)
     drive.pack(side = "right")
