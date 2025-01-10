@@ -41,12 +41,12 @@ def draw_ui():
     destroy_everything(window)
     strings.load_language(open(util.user_preferences + "\\language", "r").read())
 
-    ttk.Label(window, text = "Drive Labeler", font = ("Segoe UI Semibold", 17)).pack(anchor = "w")
+    ttk.Label(window, text = "Volume Labeler", font = ("Segoe UI Semibold", 17)).pack(anchor = "w")
 
     drive_section = ttk.Frame(window)
     drive_section.pack(fill = "x", anchor = "w", pady = (16, 8))
 
-    ttk.Label(drive_section, text = "Drive").pack(side = "left")
+    ttk.Label(drive_section, text = "Volume").pack(side = "left")
 
     drive = custom_ui.OptionMenu(drive_section, selected_drive, *drives)
     drive.pack(side = "right")
