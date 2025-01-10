@@ -163,6 +163,8 @@ class OptionMenu(tk.OptionMenu):
                        activeforeground = fg, highlightbackground = button_bd, highlightcolor = button_bd, 
                        image = self.arrow, compound = "right", indicatoron = False, border = 0, relief = "solid", 
                        highlightthickness = 1)
+        
+        self["menu"].configure(activebackground = winaccent.accent_normal)
 
     def update_colors(self):
         if light_theme: self.arrow = tk.PhotoImage(file = "icons/dropdown_light.png")
@@ -171,6 +173,8 @@ class OptionMenu(tk.OptionMenu):
         self.configure(bbackground = button_bg, foreground = fg, activebackground = button_hover, 
                        activeforeground = fg, highlightbackground = button_bd, highlightcolor = button_bd, 
                        image = self.arrow)
+
+        self["menu"].configure(activebackground = winaccent.accent_normal)
 
 ttk.Button = Button
 
