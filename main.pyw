@@ -12,7 +12,7 @@ volumes.pop(0)
 volumes.pop()
 
 selected_volume = tk.StringVar(value = volumes[0])
-change_icon = tk.BooleanVar(value = False)
+icon = tk.StringVar(value = "default")
 
 def destroy_everything(widget):
     for child in widget.winfo_children():
@@ -64,7 +64,11 @@ def draw_ui():
                     selectforeground = "#FFFFFF")
     label.pack()
 
-    ttk.Checkbutton(window, text = strings.lang.icon, variable = change_icon).pack(pady = (16, 0), anchor = "w")
+    ttk.Label(window, text = strings.lang.icon).pack(pady = (16, 8), anchor = "w")
+
+    ttk.Radiobutton(window, text = "Default icon", variable = icon, value = "default").pack(anchor = "w")
+    ttk.Radiobutton(window, text = "Choose icon", variable = icon, value = "icon").pack(anchor = "w")
+    ttk.Radiobutton(window, text = "Create icon from image", variable = icon, value = "image").pack(anchor = "w")
 
     custom_ui.Button(window, text = strings.lang.execute, command = lambda: modify_volume_info(selected_volume.get(), label.get())).pack(pady = (16, 0), fill = "x")
 
