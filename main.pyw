@@ -1,4 +1,4 @@
-import tkinter as tk, util, open_source_licenses, change_language, change_theme, strings, custom_ui, subprocess, os
+import tkinter as tk, util, open_source_licenses, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image
 
@@ -72,13 +72,13 @@ def draw_ui():
 
     ttk.Label(window, text = strings.lang.icon).pack(pady = (16, 8), anchor = "w")
 
-    default_icon = ttk.Radiobutton(window, text = "Default icon", variable = icon, value = "default", command = choose_icon_)
+    default_icon = ttk.Radiobutton(window, text = strings.lang.default_icon, variable = icon, value = "default", command = choose_icon_)
     default_icon.pack(anchor = "w")
 
-    choose_icon = ttk.Radiobutton(window, text = "Choose icon", variable = icon, value = "icon", command = choose_icon_, compound = "left")
+    choose_icon = ttk.Radiobutton(window, text = strings.lang.choose_icon, variable = icon, value = "icon", command = choose_icon_, compound = "left")
     choose_icon.pack(anchor = "w")
     
-    icon_from_image = ttk.Radiobutton(window, text = "Create icon from image", variable = icon, value = "image", command = choose_icon_, compound = "left")
+    icon_from_image = ttk.Radiobutton(window, text = strings.lang.create_icon_from_image, variable = icon, value = "image", command = choose_icon_, compound = "left")
     icon_from_image.pack(anchor = "w")
 
     custom_ui.Button(window, text = strings.lang.execute, command = lambda: modify_volume_info(selected_volume.get(), label.get())).pack(pady = (16, 0), fill = "x")
@@ -95,8 +95,8 @@ def choose_icon_():
 
     match icon.get():
         case "default":
-            choose_icon.configure(text = "Choose icon", image = "", width = 0)
-            icon_from_image.configure(text = "Create icon from image", image = "", width = 0)
+            choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
+            icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
         case "icon":
             try:
                 icon_path, icon_index = util.pick_icon()
@@ -105,42 +105,73 @@ def choose_icon_():
                 img.save(util.roaming + "\preview.png")
                 img.close()
 
+                shutil.copyfile(icon_path, util.roaming + "\\" + "icon." + os.path.basename(icon_path).split(".")[-1])
+
                 preview = tk.PhotoImage(file = util.roaming + "\preview.png")
                 choose_icon.configure(image = preview, text = f"{os.path.basename(icon_path)}, {icon_index}", width = 30)
                 
-                icon_from_image.configure(text = "Create icon from image", image = "", width = 0)
+                icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
+
+                icon_path = util.roaming + "\\" + "icon." + os.path.basename(icon_path).split(".")[-1]
             except:
                 icon.set(icon_old)
         case "image":
-            image = filedialog.askopenfile(title = "Choose image", filetypes = [("Images", (".png", ".jpg", ".jpeg", ".bmp", ".gif"))])
+            image = filedialog.askopenfile(title = strings.lang.choose_image, filetypes = [(strings.lang.images, (".png", ".jpg", ".jpeg", ".bmp", ".gif"))])
 
             if not image is None:
                 icon_path = image.name
 
                 img = Image.open(icon_path)
-                img = img.resize((32, int(img.height * 32 / img.width)), Image.Resampling.LANCZOS)
-                img.save(util.roaming + "\preview.png")
+                img.save(util.roaming + "\icon.ico", "ICO", [(16, 16), (32, 32), (48, 48), (64, 64), (128, 128)])
+
+                preview_img = img.resize((32, int(img.height * 32 / img.width)), Image.Resampling.LANCZOS)
+                preview_img.save(util.roaming + "\preview.png")
+                preview_img.close()
+
                 img.close()
 
                 preview = tk.PhotoImage(file = util.roaming + "\preview.png")
                 icon_from_image.configure(image = preview, text = os.path.basename(icon_path), width = 30)
                 
-                choose_icon.configure(text = "Choose icon", image = "", width = 0)
+                choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
+
+                icon_path = util.roaming + "\\" + "icon.ico"
+                icon_index = 0
             else:
                 icon.set(icon_old)
         
     icon_old = icon.get()
 
 def modify_volume_info(volume: str, label: str):
+    global icon_path
+
     if util.is_volume_accessible(volume):
+        if not icon.get() == "default" and not os.path.exists(icon_path):
+            messagebox.showerror(strings.lang.error, strings.lang.missing_icon_file)
+            return
         try:
+            autorun = f"[autorun]\nlabel={label}"
+
+            if not icon.get() == "default":
+                id = random.randint(1000000, 9999999)
+
+                if os.path.exists(f"{volume}\\vl_icon"):
+                    subprocess.call(f"del /f /s /q \"{volume}\\vl_icon\"")
+                
+                os.mkdir(f"{volume}\\vl_icon")
+                shutil.copyfile(icon_path, f"{volume}\\vl_icon\\{os.path.basename(icon_path).replace('icon', f'icon{id}')}")
+                
+                autorun += f"\nicon=vl_icon\\{os.path.basename(icon_path).replace('icon', f'icon{id}')},{icon_index}"
+
             autorun_file = open(f"{volume}autorun.inf", "w")
-            autorun_file.write(f"[autorun]\nlabel={label}")
+            autorun_file.write(autorun)
             autorun_file.close()
 
             messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
         except PermissionError:
             messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
+        except Exception as e:
+            messagebox.showerror(strings.lang.error, strings.lang.failure_message + "".join(traceback.format_tb(e.__traceback__)))
     else:
         messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
 
