@@ -2,7 +2,7 @@ import tkinter as tk, util, open_source_licenses, change_language, change_theme,
 from tkinter import ttk, filedialog, messagebox
 
 window = custom_ui.App()
-window.title("Drive Labeler")
+window.title("Volume Labeler")
 window.resizable(False, False)
 # window.iconbitmap(util.internal + "icon.ico")
 window.configure(padx = 14, pady = 8)
@@ -77,11 +77,14 @@ def draw_ui():
 
 def modify_drive_info(drive: str, label: str):
     if util.is_drive_accessible(drive):
-        autorun_file = open(f"{drive}autorun.inf", "w")
-        autorun_file.write(f"[autorun]\nlabel={label}")
-        autorun_file.close()
+        try:
+            autorun_file = open(f"{drive}autorun.inf", "w")
+            autorun_file.write(f"[autorun]\nlabel={label}")
+            autorun_file.close()
 
-        messagebox.showinfo("Done", "The drive's label was changed. If the drive is removable, unplug it and plug it again in your computer for the changes to take effect. If it isn't, the changes will take effect the next time you log in.")
+            messagebox.showinfo("Done", "The drive's label was changed. If the drive is removable, unplug it and plug it again in your computer for the changes to take effect. If it isn't, the changes will take effect the next time you log in.")
+        except PermissionError:
+            messagebox.showerror("Permission denied", "The selected drive is read-only.")
     else:
         messagebox.showerror("Drive not accessible", "The selected drive is not accessible. Make sure it is connected and try again.")
 
