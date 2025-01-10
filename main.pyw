@@ -1,5 +1,5 @@
 import tkinter as tk, util, open_source_licenses, change_language, change_theme, strings, custom_ui, subprocess
-from tkinter import ttk, filedialog
+from tkinter import ttk, filedialog, messagebox
 
 window = custom_ui.App()
 window.title("Drive Labeler")
@@ -66,7 +66,7 @@ def draw_ui():
 
     ttk.Checkbutton(window, text = "Icon", variable = change_icon).pack(pady = (16, 0), anchor = "w")
 
-    custom_ui.Button(window, text = "Execute", command = lambda: util.modify_drive_info(selected_drive.get(), label.get())).pack(pady = (16, 0), fill = "x")
+    custom_ui.Button(window, text = "Execute", command = lambda: modify_drive_info(selected_drive.get(), label.get())).pack(pady = (16, 0), fill = "x")
 
     ttk.Label(window, text = strings.lang.settings, font = ("Segoe UI Semibold", 14)).pack(anchor = "w", pady = (16, 4))
     custom_ui.Toolbutton(window, text = strings.lang.change_language, command = change_app_language).pack(anchor = "w")
@@ -74,6 +74,16 @@ def draw_ui():
     custom_ui.Toolbutton(window, text = strings.lang.see_open_source_licenses, command = open_source_licenses.show).pack(anchor = "w")
 
     window.update()
+
+def modify_drive_info(drive: str, label: str):
+    if util.is_drive_accessible(drive):
+        autorun_file = open(f"{drive}autorun.inf", "w")
+        autorun_file.write(f"[autorun]\nlabel={label}")
+        autorun_file.close()
+
+        messagebox.showinfo("Done", "The drive's label was changed. If the drive is removable, unplug it and plug it again in your computer for the changes to take effect. If it isn't, the changes will take effect the next time you log in.")
+    else:
+        messagebox.showerror("Drive not accessible", "The selected drive is not accessible. Make sure it is connected and try again.")
 
 draw_ui()
 custom_ui.sync_colors_with_system(window)

@@ -1,4 +1,4 @@
-import win32ui, win32gui, ctypes, os, getpass, strings
+import win32ui, win32gui, ctypes, os, getpass, strings, subprocess
 from PIL import Image
 
 # if os.path.exists("icon.ico"): internal = ""
@@ -47,7 +47,10 @@ def extract_icon(path: str, index: int = 0):
     win32gui.DestroyIcon(small[0])
     return icon
 
-def modify_drive_info(drive: str, label: str):
-    autorun_file = open(f"{drive}autorun.inf", "w")
-    autorun_file.write(f"[autorun]\nlabel={label}")
-    autorun_file.close()
+def is_drive_accessible(drive: str):
+    drives = subprocess.getoutput("fsutil fsinfo drives").split(" ")
+    drives.pop(0)
+    drives.pop()
+
+    if drive in drives: return True
+    else: return False
