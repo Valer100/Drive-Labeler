@@ -131,7 +131,7 @@ def choose_icon_():
                 icon_path = image.name
 
                 img = Image.open(icon_path)
-                img.save(util.roaming + "\icon.ico", "ICO", [(16, 16), (32, 32), (48, 48), (64, 64), (128, 128)])
+                img.save(fp = util.roaming + "\icon.ico", format = "ICO", sizes = [(16, 16), (32, 32), (48, 48), (64, 64), (128, 128)])
 
                 preview_img = img.resize((32, int(img.height * 32 / img.width)), Image.Resampling.LANCZOS)
                 preview_img.save(util.roaming + "\preview.png")
@@ -162,7 +162,7 @@ def modify_volume_info(volume: str, label: str):
                 id = random.randint(1000000, 9999999)
 
                 if os.path.exists(f"{volume}\\vl_icon"):
-                    subprocess.call(f"del /f /s /q \"{volume}\\vl_icon\"", shell = True)
+                    subprocess.call(f"rmdir /s /q \"{volume}\\vl_icon\"", shell = True)
                 
                 os.mkdir(f"{volume}\\vl_icon")
                 shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}\\vl_icon\\icon{id}.ico")
