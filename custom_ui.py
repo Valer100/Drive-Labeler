@@ -170,7 +170,7 @@ class OptionMenu(tk.OptionMenu):
         if light_theme: self.arrow = tk.PhotoImage(file = "icons/dropdown_light.png")
         else: self.arrow = tk.PhotoImage(file = "icons/dropdown_dark.png")
 
-        self.configure(bbackground = button_bg, foreground = fg, activebackground = button_hover, 
+        self.configure(background = button_bg, foreground = fg, activebackground = button_hover, 
                        activeforeground = fg, highlightbackground = button_bd, highlightcolor = button_bd, 
                        image = self.arrow)
 
