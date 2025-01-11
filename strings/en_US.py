@@ -14,7 +14,7 @@ choose_icon = "Choose icon"
 create_icon_from_image = "Create icon from image"
 choose_image = "Choose an image"
 images = "Images"
-execute = "Execute"
+apply_changes = "Apply changes"
 
 # Messages
 done = "Done"

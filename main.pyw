@@ -82,7 +82,7 @@ def draw_ui():
     icon_from_image = ttk.Radiobutton(window, text = strings.lang.create_icon_from_image, variable = icon, value = "image", command = choose_icon_, compound = "left")
     icon_from_image.pack(anchor = "w")
 
-    custom_ui.Button(window, text = strings.lang.execute, command = lambda: modify_volume_info(selected_volume.get(), label.get())).pack(pady = (16, 0), fill = "x")
+    custom_ui.Button(window, text = strings.lang.apply_changes, command = lambda: modify_volume_info(selected_volume.get(), label.get()), default = "active").pack(pady = (16, 0), fill = "x")
 
     ttk.Label(window, text = strings.lang.settings, font = ("Segoe UI Semibold", 14)).pack(anchor = "w", pady = (16, 4))
     custom_ui.Toolbutton(window, text = strings.lang.change_language, command = change_app_language).pack(anchor = "w")

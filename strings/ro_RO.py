@@ -14,7 +14,7 @@ choose_icon = "Alege pictograma"
 create_icon_from_image = "Creează pictogramă din imagine"
 choose_image = "Alege o imagine"
 image = "Imagini"
-execute = "Execută"
+apply_changes = "Aplică modificările"
 
 # Messages
 done = "Gata"
