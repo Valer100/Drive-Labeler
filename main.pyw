@@ -9,15 +9,27 @@ window.resizable(False, False)
 window.iconbitmap(default = util.internal + "icon.ico")
 window.configure(padx = 14, pady = 8)
 
-volumes = subprocess.getoutput("fsutil fsinfo drives").split(" ")
-volumes.pop(0)
-volumes.pop()
-
 icon_old = "default"
 icon_path = ""
 icon_index = 0
-selected_volume = tk.StringVar(value = volumes[0])
+volumes = [""]
+selected_volume = tk.StringVar(value = "")
 icon = tk.StringVar(value = "default")
+
+def refresh_volumes():
+    global volumes
+
+    volumes = subprocess.getoutput("fsutil fsinfo drives").split(" ")
+    volumes.pop(0)
+    volumes.pop()
+
+    selected_volume.set(volumes[0])
+
+    menu = volume["menu"]
+    menu.delete(0, "end")
+
+    for string in volumes:
+        menu.add_command(label = string, command = lambda value = string: selected_volume.set(value))
 
 def destroy_everything(widget):
     for child in widget.winfo_children():
@@ -43,7 +55,7 @@ def change_app_theme():
         draw_ui()
 
 def draw_ui():
-    global choose_icon, icon_from_image
+    global choose_icon, icon_from_image, refresh, volume
 
     destroy_everything(window)
     strings.load_language(open(util.user_preferences + "\\language", "r").read())
@@ -55,6 +67,11 @@ def draw_ui():
 
     ttk.Label(volume_section, text = strings.lang.volume).pack(side = "left")
 
+    if custom_ui.light_theme: refresh = tk.PhotoImage(file = f"{util.internal}icons\\refresh_light.png")
+    else: refresh = tk.PhotoImage(file = f"{util.internal}icons\\refresh_dark.png")
+
+    custom_ui.Button(volume_section, width = -1, command = refresh_volumes, image = refresh).pack(side = "right", padx = (8, 0))
+    
     volume = custom_ui.OptionMenu(volume_section, selected_volume, *volumes)
     volume.pack(side = "right")
 
@@ -216,5 +233,6 @@ def remove_personalizations(volume: str):
 
 
 draw_ui()
+refresh_volumes()
 custom_ui.sync_colors_with_system(window)
 window.mainloop()

@@ -156,19 +156,19 @@ class OptionMenu(tk.OptionMenu):
     def __init__(self, master, variable, value, *values):
         super().__init__(master, variable, value, *values)
 
-        if light_theme: self.arrow = tk.PhotoImage(file = "icons/dropdown_light.png")
-        else: self.arrow = tk.PhotoImage(file = "icons/dropdown_dark.png")
+        if light_theme: self.arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_light.png")
+        else: self.arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_dark.png")
 
         self.configure(background = button_bg, foreground = fg, activebackground = button_hover, 
                        activeforeground = fg, highlightbackground = button_bd, highlightcolor = button_bd, 
                        image = self.arrow, compound = "right", indicatoron = False, border = 0, relief = "solid", 
-                       highlightthickness = 1)
+                       highlightthickness = 1, pady = 4, padx = 7)
         
         self["menu"].configure(activebackground = winaccent.accent_normal)
 
     def update_colors(self):
-        if light_theme: self.arrow = tk.PhotoImage(file = "icons/dropdown_light.png")
-        else: self.arrow = tk.PhotoImage(file = "icons/dropdown_dark.png")
+        if light_theme: self.arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_light.png")
+        else: self.arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_dark.png")
 
         self.configure(background = button_bg, foreground = fg, activebackground = button_hover, 
                        activeforeground = fg, highlightbackground = button_bd, highlightcolor = button_bd, 
