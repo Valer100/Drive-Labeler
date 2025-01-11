@@ -1,9 +1,7 @@
 import icoextract, ctypes, os, getpass, strings, subprocess
 
-# if os.path.exists("icon.ico"): internal = ""
-# else: internal = "_internal\\"
-
-internal = ""
+if os.path.exists("icon.ico"): internal = ""
+else: internal = "_internal\\"
 
 user_preferences = f"C:\\Users\\{getpass.getuser()}\\AppData\\Local\\Volume Labeler"
 roaming = f"C:\\Users\\{getpass.getuser()}\\AppData\\Roaming\\Volume Labeler"

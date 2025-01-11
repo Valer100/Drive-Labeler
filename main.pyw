@@ -6,7 +6,7 @@ from icoextract import IconExtractor
 window = custom_ui.App()
 window.title("Volume Labeler")
 window.resizable(False, False)
-# window.iconbitmap(util.internal + "icon.ico")
+window.iconbitmap(default = util.internal + "icon.ico")
 window.configure(padx = 14, pady = 8)
 
 volumes = subprocess.getoutput("fsutil fsinfo drives").split(" ")

@@ -8,7 +8,6 @@ def show():
     window = custom_ui.Toplevel()
     window.title(strings.lang.open_source_licenses)
     window.resizable(False, False)
-    # window.iconbitmap(util.internal + "icon.ico")
     window.configure(padx = 16, pady = 0)
 
     ttk.Label(window, text = strings.lang.open_source_licenses, font = ("Segoe UI Semibold", 17)).pack(anchor = "w", pady = (8, 16))
