@@ -1,5 +1,4 @@
-import win32ui, win32gui, ctypes, os, getpass, strings, subprocess
-from PIL import Image
+import icoextract, ctypes, os, getpass, strings, subprocess
 
 # if os.path.exists("icon.ico"): internal = ""
 # else: internal = "_internal\\"
@@ -31,24 +30,15 @@ def pick_icon() -> Tuple[str, int]:
     if result: return (icon_file_buffer.value, icon_index.value)
 
 def extract_icon(path: str, index: int = 0):
-    # Modified from https://gist.github.com/chyyran/7314682
-
-    large, small = win32gui.ExtractIconEx(path, index)
-    hdc = win32ui.CreateDCFromHandle(win32gui.GetDC(0))
-
-    icon_bmp = win32ui.CreateBitmap()
-    icon_bmp.CreateCompatibleBitmap(hdc, 32, 32)
-
-    hdc = hdc.CreateCompatibleDC()
-    hdc.SelectObject(icon_bmp)
-    hdc.DrawIcon((0,0), large[0])
-
-    icon_info = icon_bmp.GetInfo()
-    icon_buffer = icon_bmp.GetBitmapBits(True)
-    icon = Image.frombuffer('RGBA', (icon_info['bmWidth'], icon_info['bmHeight']), icon_buffer, 'raw', 'BGRA', 0, 1)
-
-    win32gui.DestroyIcon(small[0])
-    return icon
+    try: 
+        extractor = icoextract.IconExtractor(path)
+    except:
+        if path.endswith(".ico"): 
+            return path
+        else: 
+            extractor = icoextract.IconExtractor(path.replace("System32", "SystemResources") + ".mun")
+    
+    return extractor.get_icon(index)
 
 def is_volume_accessible(volume: str):
     volumes = subprocess.getoutput("fsutil fsinfo drives").split(" ")

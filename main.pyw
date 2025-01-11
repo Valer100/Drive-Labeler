@@ -102,7 +102,8 @@ def choose_icon_():
             try:
                 icon_path, icon_index = util.pick_icon()
 
-                img = util.extract_icon(icon_path, icon_index)
+                img = Image.open(util.extract_icon(icon_path, icon_index))
+                img = img.resize((32, 32), Image.Resampling.LANCZOS)
                 img.save(util.roaming + "\preview.png")
                 img.close()
 
