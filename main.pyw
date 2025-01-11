@@ -83,6 +83,7 @@ def draw_ui():
     icon_from_image.pack(anchor = "w")
 
     custom_ui.Button(window, text = strings.lang.apply_changes, command = lambda: modify_volume_info(selected_volume.get(), label.get()), default = "active").pack(pady = (16, 0), fill = "x")
+    custom_ui.Button(window, text = strings.lang.remove_customizations, command = lambda: remove_personalizations(selected_volume.get())).pack(pady = (8, 0), fill = "x")
 
     ttk.Label(window, text = strings.lang.settings, font = ("Segoe UI Semibold", 14)).pack(anchor = "w", pady = (16, 4))
     custom_ui.Toolbutton(window, text = strings.lang.change_language, command = change_app_language).pack(anchor = "w")
@@ -90,6 +91,7 @@ def draw_ui():
     custom_ui.Toolbutton(window, text = strings.lang.see_open_source_licenses, command = open_source_licenses.show).pack(anchor = "w")
 
     window.update()
+
 
 def choose_icon_():
     global icon_path, icon_index, preview, icon_old
@@ -148,6 +150,7 @@ def choose_icon_():
         
     icon_old = icon.get()
 
+
 def modify_volume_info(volume: str, label: str):
     global icon_path
 
@@ -180,6 +183,31 @@ def modify_volume_info(volume: str, label: str):
             messagebox.showerror(strings.lang.error, strings.lang.failure_message + "".join(traceback.format_tb(e.__traceback__)))
     else:
         messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
+
+
+def remove_personalizations(volume: str):
+    confirmed = messagebox.askyesno(strings.lang.remove_customizations, strings.lang.remove_customizations_message)
+
+    if confirmed:
+        if util.is_volume_accessible(volume):
+            if not icon.get() == "default" and not os.path.exists(icon_path):
+                messagebox.showerror(strings.lang.error, strings.lang.missing_icon_file)
+                return
+            try:
+                if os.path.exists(f"{volume}\\autorun.inf"):
+                    os.remove(f"{volume}\\autorun.inf")
+
+                if os.path.exists(f"{volume}\\vl_icon"):
+                    subprocess.call(f"rmdir /s /q \"{volume}\\vl_icon\"", shell = True)
+
+                messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
+            except PermissionError:
+                    messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
+            except Exception as e:
+                messagebox.showerror(strings.lang.error, strings.lang.failure_message + "".join(traceback.format_tb(e.__traceback__)))
+        else:
+            messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
+
 
 draw_ui()
 custom_ui.sync_colors_with_system(window)

@@ -15,6 +15,8 @@ create_icon_from_image = "Creează pictogramă din imagine"
 choose_image = "Alege o imagine"
 image = "Imagini"
 apply_changes = "Aplică modificările"
+remove_customizations = "Elimină personalizările"
+remove_customizations_message = "Ești sigur(ă)? Toate personalizările făcute volumului tău prin fișierul \"autorun.inf\" vor fi eliminate."
 
 # Messages
 done = "Gata"
