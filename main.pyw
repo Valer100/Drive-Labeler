@@ -1,4 +1,4 @@
-import tkinter as tk, util, open_source_licenses, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback
+import tkinter as tk, util, open_source_licenses, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, ctypes
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image
 from icoextract import IconExtractor
@@ -170,11 +170,17 @@ def modify_volume_info(volume: str, label: str):
                 os.mkdir(f"{volume}\\vl_icon")
                 shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}\\vl_icon\\icon{id}.ico")
 
+                # Hide `vl_icon` folder to prevent accidental deletion
+                ctypes.windll.kernel32.SetFileAttributesW(f"{volume}\\vl_icon", 0x02)
+
                 autorun += f"\nicon=vl_icon\\icon{id}.ico,0"
 
             autorun_file = open(f"{volume}autorun.inf", "w")
             autorun_file.write(autorun)
             autorun_file.close()
+
+            # Hide `autorun.inf` file to prevent accidental deletion
+            ctypes.windll.kernel32.SetFileAttributesW(f"{volume}\\autorun.inf", 0x02)
 
             messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
         except PermissionError:
