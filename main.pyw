@@ -1,6 +1,7 @@
 import tkinter as tk, util, open_source_licenses, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image
+from icoextract import IconExtractor
 
 window = custom_ui.App()
 window.title("Volume Labeler")
@@ -105,15 +106,22 @@ def choose_icon_():
                 img.save(util.roaming + "\preview.png")
                 img.close()
 
-                shutil.copyfile(icon_path, util.roaming + "\\" + "icon." + os.path.basename(icon_path).split(".")[-1])
+                if not icon_path.endswith(".ico"):
+                    try:
+                        extractor = IconExtractor(icon_path)
+                        extractor.export_icon(util.roaming + "\\icon.ico", icon_index)
+                    except:
+                        extractor = IconExtractor(icon_path.replace("System32", "SystemResources") + ".mun")
+                        extractor.export_icon(util.roaming + "\\icon.ico", icon_index)
+                else:
+                    shutil.copyfile(icon_path, util.roaming + "\\icon.ico")
 
                 preview = tk.PhotoImage(file = util.roaming + "\preview.png")
                 choose_icon.configure(image = preview, text = f"{os.path.basename(icon_path)}, {icon_index}", width = 30)
                 
                 icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
-
-                icon_path = util.roaming + "\\" + "icon." + os.path.basename(icon_path).split(".")[-1]
-            except:
+            except Exception as e:
+                print(e)
                 icon.set(icon_old)
         case "image":
             image = filedialog.askopenfile(title = strings.lang.choose_image, filetypes = [(strings.lang.images, (".png", ".jpg", ".jpeg", ".bmp", ".gif"))])
@@ -134,9 +142,6 @@ def choose_icon_():
                 icon_from_image.configure(image = preview, text = os.path.basename(icon_path), width = 30)
                 
                 choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
-
-                icon_path = util.roaming + "\\" + "icon.ico"
-                icon_index = 0
             else:
                 icon.set(icon_old)
         
@@ -156,12 +161,12 @@ def modify_volume_info(volume: str, label: str):
                 id = random.randint(1000000, 9999999)
 
                 if os.path.exists(f"{volume}\\vl_icon"):
-                    subprocess.call(f"del /f /s /q \"{volume}\\vl_icon\"")
+                    subprocess.call(f"del /f /s /q \"{volume}\\vl_icon\"", shell = True)
                 
                 os.mkdir(f"{volume}\\vl_icon")
-                shutil.copyfile(icon_path, f"{volume}\\vl_icon\\{os.path.basename(icon_path).replace('icon', f'icon{id}')}")
-                
-                autorun += f"\nicon=vl_icon\\{os.path.basename(icon_path).replace('icon', f'icon{id}')},{icon_index}"
+                shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}\\vl_icon\\icon{id}.ico")
+
+                autorun += f"\nicon=vl_icon\\icon{id}.ico,0"
 
             autorun_file = open(f"{volume}autorun.inf", "w")
             autorun_file.write(autorun)
