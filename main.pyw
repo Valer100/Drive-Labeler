@@ -91,7 +91,9 @@ def change_app_language():
     change_language.show()
     window.wait_window(change_language.window)
 
-    if old_language != util.language: draw_ui()
+    if old_language != util.language: 
+        draw_ui()
+        refresh_volumes()
 
 
 def change_app_theme():
@@ -104,6 +106,7 @@ def change_app_theme():
         custom_ui.update_colors()
         window.set_theme()
         draw_ui()
+        refresh_volumes()
 
 
 def draw_ui():
