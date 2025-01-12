@@ -228,7 +228,7 @@ def modify_volume_info(volume: str, label: str):
     global icon_path
 
     if util.is_volume_accessible(volume):
-        if not icon.get() == "default" and not os.path.exists(icon_path):
+        if not icon.get() == "default" and not os.path.exists(util.roaming + "\\icon.ico"):
             messagebox.showerror(strings.lang.error, strings.lang.missing_icon_file)
             return
         try:
@@ -269,9 +269,6 @@ def remove_personalizations(volume: str):
 
     if confirmed:
         if util.is_volume_accessible(volume):
-            if not icon.get() == "default" and not os.path.exists(icon_path):
-                messagebox.showerror(strings.lang.error, strings.lang.missing_icon_file)
-                return
             try:
                 if os.path.exists(f"{volume}\\autorun.inf"):
                     os.remove(f"{volume}\\autorun.inf")
@@ -279,6 +276,7 @@ def remove_personalizations(volume: str):
                 if os.path.exists(f"{volume}\\vl_icon"):
                     subprocess.call(f"rmdir /s /q \"{volume}\\vl_icon\"", shell = True)
 
+                update_volume_info(volume)
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
                 messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
