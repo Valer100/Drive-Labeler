@@ -18,6 +18,9 @@ apply_changes = "Apply changes"
 remove_customizations = "Remove customizations"
 remove_customizations_message = "Are you sure? Every single customization made to your volume through the \"autorun.inf\" file will be removed."
 local_disk = "Local Disk"
+additional_options = "Additional options"
+hide_autorun = "Hide autorun.inf file"
+hide_vl_icon = "Hide vl_icon folder"
 
 # Messages
 done = "Done"

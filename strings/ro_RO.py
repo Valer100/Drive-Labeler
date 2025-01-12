@@ -18,6 +18,9 @@ apply_changes = "Aplică modificările"
 remove_customizations = "Elimină personalizările"
 remove_customizations_message = "Ești sigur(ă)? Toate personalizările făcute volumului tău prin fișierul \"autorun.inf\" vor fi eliminate."
 local_disk = "Disc local"
+additional_options = "Opțiuni adiționale"
+hide_autorun = "Ascunde fișierul autorun.inf"
+hide_vl_icon = "Ascunde folderul vl_icon"
 
 # Messages
 done = "Gata"
