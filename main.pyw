@@ -242,6 +242,7 @@ def modify_volume_info(volume: str, label: str):
             messagebox.showerror(strings.lang.error, strings.lang.missing_icon_file)
             return
         
+
         if not icon.get() == "default":
             id = random.randint(1000000, 9999999)
 
@@ -254,7 +255,8 @@ def modify_volume_info(volume: str, label: str):
             if hide_vl_icon.get():
                 subprocess.call(f"attrib +H \"{volume}\\vl_icon\"", shell = True)
 
-        if os.path.exists(f"{volume}autorun.inf"):
+
+        def modify_existing_autorun_file():
             autorun_file = open(f"{selected_volume.get()}autorun.inf")
             autorun = autorun_file.read()
             autorun_file.close()
@@ -307,7 +309,9 @@ def modify_volume_info(volume: str, label: str):
                 messagebox.showerror(strings.lang.error, strings.lang.unicode_not_supported)
             except:
                 messagebox.showerror(strings.lang.error, strings.lang.failure_message + traceback.format_exc())
-        else:
+        
+
+        def create_new_autorun_file():
             try:
                 autorun = f"[autorun]\nlabel={label}"
                 if not icon.get() == "default": autorun += f"\nicon=vl_icon\\icon{id}.ico,0"
@@ -327,6 +331,19 @@ def modify_volume_info(volume: str, label: str):
                 messagebox.showerror(strings.lang.error, strings.lang.unicode_not_supported)
             except:
                 messagebox.showerror(strings.lang.error, strings.lang.failure_message + traceback.format_exc())
+
+
+        if os.path.exists(f"{volume}autorun.inf"):
+            autorun_file = open(f"{volume}autorun.inf")
+            autorun = autorun_file.read()
+            autorun_file.close()
+
+            if re.search(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", autorun):
+                modify_existing_autorun_file()
+            else:
+                create_new_autorun_file()
+        else:
+            create_new_autorun_file()
     else:
         messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
 
