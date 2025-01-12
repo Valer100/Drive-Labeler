@@ -13,6 +13,8 @@ icon_old = "default"
 volumes = [""]
 autorun = ""
 selected_volume = tk.StringVar(value = "")
+hide_autorun = tk.BooleanVar(value = True)
+hide_vl_icon = tk.BooleanVar(value = True)
 icon = tk.StringVar(value = "default")
 
 def refresh_volumes():
@@ -156,6 +158,11 @@ def draw_ui():
     icon_from_image = ttk.Radiobutton(window, text = strings.lang.create_icon_from_image, variable = icon, value = "image", command = choose_icon_, compound = "left")
     icon_from_image.pack(anchor = "w")
 
+    ttk.Label(window, text = strings.lang.additional_options).pack(pady = (16, 8), anchor = "w")
+    
+    ttk.Checkbutton(window, text = strings.lang.hide_autorun, variable = hide_autorun).pack(anchor = "w")
+    ttk.Checkbutton(window, text = strings.lang.hide_vl_icon, variable = hide_vl_icon).pack(anchor = "w")
+
     custom_ui.Button(window, text = strings.lang.apply_changes, command = lambda: modify_volume_info(selected_volume.get(), label.get()), default = "active").pack(pady = (16, 0), fill = "x")
     custom_ui.Button(window, text = strings.lang.remove_customizations, command = lambda: remove_personalizations(selected_volume.get())).pack(pady = (8, 0), fill = "x")
 
@@ -244,8 +251,8 @@ def modify_volume_info(volume: str, label: str):
             os.mkdir(f"{volume}\\vl_icon")
             shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}\\vl_icon\\icon{id}.ico")
 
-            # Hide `vl_icon` folder to prevent accidental deletion
-            os.system(f"attrib +H \"{volume}\\vl_icon\"")
+            if hide_vl_icon.get():
+                os.system(f"attrib +H \"{volume}\\vl_icon\"")
 
         if os.path.exists(f"{volume}autorun.inf"):
             autorun_file = open(f"{selected_volume.get()}autorun.inf")
@@ -290,8 +297,8 @@ def modify_volume_info(volume: str, label: str):
                 autorun_file.write(autorun_new)
                 autorun_file.close()
             
-                # Hide `autorun.inf` file to prevent accidental deletion
-                os.system(f"attrib +H \"{volume}\\autorun.inf\"")
+                if hide_autorun.get():
+                    os.system(f"attrib +H \"{volume}\\autorun.inf\"")
 
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
@@ -308,8 +315,8 @@ def modify_volume_info(volume: str, label: str):
                 autorun_file.write(autorun)
                 autorun_file.close()
 
-                # Hide `autorun.inf` file to prevent accidental deletion
-                os.system(f"attrib +H \"{volume}\\autorun.inf\"")
+                if hide_autorun.get():
+                    os.system(f"attrib +H \"{volume}\\autorun.inf\"")
 
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
