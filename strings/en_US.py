@@ -32,6 +32,7 @@ volume_not_accessible_message = "The selected volume is not accessible."
 error = "Error"
 failure_message = "Failed to change the volume's information.\n\n"
 missing_icon_file = "The copied icon file is missing."
+unicode_not_supported = "Unicode characters are not supported. Make sure the label doesn't contain Unicode characters and try again."
 
 # Other
 open_source_licenses = "Open source licenses"

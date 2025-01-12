@@ -303,7 +303,9 @@ def modify_volume_info(volume: str, label: str):
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
                 messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
-            except Exception as e:
+            except UnicodeEncodeError:
+                messagebox.showerror(strings.lang.error, strings.lang.unicode_not_supported)
+            except:
                 messagebox.showerror(strings.lang.error, strings.lang.failure_message + traceback.format_exc())
         else:
             try:
@@ -321,7 +323,9 @@ def modify_volume_info(volume: str, label: str):
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
                 messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
-            except Exception as e:
+            except UnicodeEncodeError:
+                messagebox.showerror(strings.lang.error, strings.lang.unicode_not_supported)
+            except:
                 messagebox.showerror(strings.lang.error, strings.lang.failure_message + traceback.format_exc())
     else:
         messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)

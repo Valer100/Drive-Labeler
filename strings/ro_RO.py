@@ -21,6 +21,7 @@ local_disk = "Disc local"
 additional_options = "Opțiuni adiționale"
 hide_autorun = "Ascunde fișierul autorun.inf"
 hide_vl_icon = "Ascunde folderul vl_icon"
+unicode_not_supported = "Caracterele Unicode nu sunt suportate. Asigură-te că eticheta nu conține caractere Unicode și încearcă din nou."
 
 # Messages
 done = "Gata"
