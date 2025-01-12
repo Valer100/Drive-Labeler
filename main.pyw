@@ -304,7 +304,7 @@ def modify_volume_info(volume: str, label: str):
             except PermissionError:
                 messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
             except Exception as e:
-                messagebox.showerror(strings.lang.error, strings.lang.failure_message + "".join(traceback.format_tb(e.__traceback__)))
+                messagebox.showerror(strings.lang.error, strings.lang.failure_message + traceback.format_exc())
         else:
             try:
                 autorun = f"[autorun]\nlabel={label}"
@@ -322,7 +322,7 @@ def modify_volume_info(volume: str, label: str):
             except PermissionError:
                 messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
             except Exception as e:
-                messagebox.showerror(strings.lang.error, strings.lang.failure_message + "".join(traceback.format_tb(e.__traceback__)))
+                messagebox.showerror(strings.lang.error, strings.lang.failure_message + traceback.format_exc())
     else:
         messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
 
