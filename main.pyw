@@ -252,7 +252,7 @@ def modify_volume_info(volume: str, label: str):
             shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}\\vl_icon\\icon{id}.ico")
 
             if hide_vl_icon.get():
-                os.system(f"attrib +H \"{volume}\\vl_icon\"")
+                subprocess.call(f"attrib +H \"{volume}\\vl_icon\"", shell = True)
 
         if os.path.exists(f"{volume}autorun.inf"):
             autorun_file = open(f"{selected_volume.get()}autorun.inf")
@@ -291,14 +291,14 @@ def modify_volume_info(volume: str, label: str):
             autorun_new = autorun_new.strip()
 
             try:
-                os.system(f"attrib -H \"{volume}\\autorun.inf\"")
+                subprocess.call(f"attrib -H \"{volume}\\autorun.inf\"", shell = True)
 
                 autorun_file = open(f"{selected_volume.get()}autorun.inf", "w")
                 autorun_file.write(autorun_new)
                 autorun_file.close()
             
                 if hide_autorun.get():
-                    os.system(f"attrib +H \"{volume}\\autorun.inf\"")
+                    subprocess.call(f"attrib +H \"{volume}\\autorun.inf\"", shell = True)
 
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
@@ -310,13 +310,13 @@ def modify_volume_info(volume: str, label: str):
                 autorun = f"[autorun]\nlabel={label}"
                 if not icon.get() == "default": autorun += f"\nicon=vl_icon\\icon{id}.ico,0"
 
-                os.system(f"attrib -H \"{volume}\\autorun.inf\"")
+                subprocess.call(f"attrib -H \"{volume}\\autorun.inf\"", shell = True)
                 autorun_file = open(f"{volume}autorun.inf", "w")
                 autorun_file.write(autorun)
                 autorun_file.close()
 
                 if hide_autorun.get():
-                    os.system(f"attrib +H \"{volume}\\autorun.inf\"")
+                    subprocess.call(f"attrib +H \"{volume}\\autorun.inf\"", shell = True)
 
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
