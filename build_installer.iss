@@ -10,7 +10,7 @@
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={51F6F747-0927-4042-A056-F7D5BBA6E81A}
+AppId={{51F6F747-0927-4042-A056-F7D5BBA6E81A}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 ;AppVerName={#MyAppName} {#MyAppVersion}
@@ -28,7 +28,7 @@ DisableWelcomePage=no
 LicenseFile=LICENSE
 PrivilegesRequired=lowest
 OutputDir=build
-OutputBaseFilename=fnf_on_taskbar_installer_x64
+OutputBaseFilename=volume_labeler_installer_x64
 SetupIconFile=assets/installer/icon.ico
 Compression=lzma
 SolidCompression=yes
@@ -48,8 +48,8 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "build\fnf_on_taskbar\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "build\fnf_on_taskbar\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "build\volume_labeler\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "build\volume_labeler\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
