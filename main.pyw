@@ -253,17 +253,19 @@ def modify_volume_info(volume: str, label: str):
             autorun_new = ""
             autorun_lines = autorun.split("\n")
 
+            icon_changed = False
+            label_changed = False
+
             for line in autorun_lines:
                 entry_and_param = line.split("=", 1)
 
                 if len(entry_and_param) == 2:
                     entry = entry_and_param[0].strip().lower()
-                    icon_changed = False
-                    label_changed = False
 
                     if entry == "icon": 
-                        autorun_new += f"\nicon=vl_icon\icon{id}.ico"
-                        icon_changed = True
+                        if not icon.get() == "default":
+                            autorun_new += f"\nicon=vl_icon\icon{id}.ico"
+                            icon_changed = True
                     elif entry == "label": 
                         autorun_new += f"\nlabel={label}"
                         label_changed = True
@@ -271,19 +273,21 @@ def modify_volume_info(volume: str, label: str):
                 else:
                     autorun_new += "\n" + line
 
-            if not icon_changed: 
+            if not icon_changed and not icon.get() == "default": 
                 autorun_new = re.sub(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nicon=vl_icon\icon{id}.ico", autorun_new, flags = re.MULTILINE)
             
             if not label_changed: 
                 autorun_new = re.sub(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nlabel={label}", autorun_new, flags = re.MULTILINE)
             
             try:
+                os.system(f"attrib -H \"{volume}\\autorun.inf\"")
+
                 autorun_file = open(f"{selected_volume.get()}autorun.inf", "w")
                 autorun_file.write(autorun_new)
                 autorun_file.close()
             
                 # Hide `autorun.inf` file to prevent accidental deletion
-                ctypes.windll.kernel32.SetFileAttributesW(f"{volume}\\autorun.inf", 0x02)
+                os.system(f"attrib +H \"{volume}\\autorun.inf\"")
 
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
@@ -295,12 +299,13 @@ def modify_volume_info(volume: str, label: str):
                 autorun = f"[autorun]\nlabel={label}"
                 if not icon.get() == "default": autorun += f"\nicon=vl_icon\\icon{id}.ico,0"
 
+                os.system(f"attrib -H \"{volume}\\autorun.inf\"")
                 autorun_file = open(f"{volume}autorun.inf", "w")
                 autorun_file.write(autorun)
                 autorun_file.close()
 
                 # Hide `autorun.inf` file to prevent accidental deletion
-                ctypes.windll.kernel32.SetFileAttributesW(f"{volume}\\autorun.inf", 0x02)
+                os.system(f"attrib +H \"{volume}\\autorun.inf\"")
 
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
