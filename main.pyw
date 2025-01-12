@@ -1,4 +1,4 @@
-import tkinter as tk, util, open_source_licenses, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, ctypes
+import tkinter as tk, util, open_source_licenses, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, ctypes, re
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image
 from icoextract import IconExtractor
@@ -228,41 +228,85 @@ def choose_icon_():
 
 
 def modify_volume_info(volume: str, label: str):
-    global icon_path
-
     if util.is_volume_accessible(volume):
         if not icon.get() == "default" and not os.path.exists(util.roaming + "\\icon.ico"):
             messagebox.showerror(strings.lang.error, strings.lang.missing_icon_file)
             return
-        try:
-            autorun = f"[autorun]\nlabel={label}"
+        
+        if not icon.get() == "default":
+            id = random.randint(1000000, 9999999)
 
-            if not icon.get() == "default":
-                id = random.randint(1000000, 9999999)
+            if os.path.exists(f"{volume}\\vl_icon"):
+                subprocess.call(f"rmdir /s /q \"{volume}\\vl_icon\"", shell = True)
 
-                if os.path.exists(f"{volume}\\vl_icon"):
-                    subprocess.call(f"rmdir /s /q \"{volume}\\vl_icon\"", shell = True)
-                
-                os.mkdir(f"{volume}\\vl_icon")
-                shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}\\vl_icon\\icon{id}.ico")
+            os.mkdir(f"{volume}\\vl_icon")
+            shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}\\vl_icon\\icon{id}.ico")
 
-                # Hide `vl_icon` folder to prevent accidental deletion
-                ctypes.windll.kernel32.SetFileAttributesW(f"{volume}\\vl_icon", 0x02)
+            # Hide `vl_icon` folder to prevent accidental deletion
+            ctypes.windll.kernel32.SetFileAttributesW(f"{volume}\\vl_icon", 0x02)
 
-                autorun += f"\nicon=vl_icon\\icon{id}.ico,0"
-
-            autorun_file = open(f"{volume}autorun.inf", "w")
-            autorun_file.write(autorun)
+        if os.path.exists(f"{volume}autorun.inf"):
+            autorun_file = open(f"{selected_volume.get()}autorun.inf")
+            autorun = autorun_file.read()
             autorun_file.close()
 
-            # Hide `autorun.inf` file to prevent accidental deletion
-            ctypes.windll.kernel32.SetFileAttributesW(f"{volume}\\autorun.inf", 0x02)
+            autorun_new = ""
+            autorun_lines = autorun.split("\n")
 
-            messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
-        except PermissionError:
-            messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
-        except Exception as e:
-            messagebox.showerror(strings.lang.error, strings.lang.failure_message + "".join(traceback.format_tb(e.__traceback__)))
+            for line in autorun_lines:
+                entry_and_param = line.split("=", 1)
+
+                if len(entry_and_param) == 2:
+                    entry = entry_and_param[0].strip().lower()
+                    icon_changed = False
+                    label_changed = False
+
+                    if entry == "icon": 
+                        autorun_new += f"\nicon=vl_icon\icon{id}.ico"
+                        icon_changed = True
+                    elif entry == "label": 
+                        autorun_new += f"\nlabel={label}"
+                        label_changed = True
+                    else: autorun_new += "\n" + line
+                else:
+                    autorun_new += "\n" + line
+
+            if not icon_changed: 
+                autorun_new = re.sub(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nicon=vl_icon\icon{id}.ico", autorun_new, flags = re.MULTILINE)
+            
+            if not label_changed: 
+                autorun_new = re.sub(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nlabel={label}", autorun_new, flags = re.MULTILINE)
+            
+            try:
+                autorun_file = open(f"{selected_volume.get()}autorun.inf", "w")
+                autorun_file.write(autorun_new)
+                autorun_file.close()
+            
+                # Hide `autorun.inf` file to prevent accidental deletion
+                ctypes.windll.kernel32.SetFileAttributesW(f"{volume}\\autorun.inf", 0x02)
+
+                messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
+            except PermissionError:
+                messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
+            except Exception as e:
+                messagebox.showerror(strings.lang.error, strings.lang.failure_message + "".join(traceback.format_tb(e.__traceback__)))
+        else:
+            try:
+                autorun = f"[autorun]\nlabel={label}"
+                if not icon.get() == "default": autorun += f"\nicon=vl_icon\\icon{id}.ico,0"
+
+                autorun_file = open(f"{volume}autorun.inf", "w")
+                autorun_file.write(autorun)
+                autorun_file.close()
+
+                # Hide `autorun.inf` file to prevent accidental deletion
+                ctypes.windll.kernel32.SetFileAttributesW(f"{volume}\\autorun.inf", 0x02)
+
+                messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
+            except PermissionError:
+                messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
+            except Exception as e:
+                messagebox.showerror(strings.lang.error, strings.lang.failure_message + "".join(traceback.format_tb(e.__traceback__)))
     else:
         messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
 
