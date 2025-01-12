@@ -21,7 +21,7 @@ local_disk = "Local Disk"
 
 # Messages
 done = "Done"
-operation_complete = "The volume's information were changed. If the volume is on a removable drive, unplug the drive and plug it back into your computer for the changes to take effect. If it isn't, the changes will take effect the next time you log in."
+operation_complete = "The volume's information were changed.\n\nIf the volume is on a removable drive, unplug the drive and plug it back into your computer for the changes to take effect. If it isn't, the changes will take effect the next time you log in."
 permission_denied = "Permission denied"
 read_only_volume_message = "The selected volume is read-only"
 volume_not_accessible = "Volume not accessible"
