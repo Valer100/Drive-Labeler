@@ -45,7 +45,7 @@ def update_volume_info(volume):
         choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
         icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
 
-        volume_label = subprocess.getoutput(f"for /f \"tokens=5*\" %A in ('vol {volume[0:2]}') do @if \"%B\"==\"\" (timeout /t 0 > nul) else echo %B")
+        volume_label = subprocess.getoutput(f"for /f \"tokens=5*\" %A in ('vol {volume[0:2]}') do @if \"%B\"==\"\" (timeout /t 0 > nul) else echo %B").replace("ERROR: Input redirection is not supported, exiting the process immediately.", "")
 
         label.delete(0, "end")
         label.insert(0, strings.lang.local_disk if volume == "C:\\" and volume_label == "no label." else strings.lang.volume if volume_label == "no label." else volume_label)
