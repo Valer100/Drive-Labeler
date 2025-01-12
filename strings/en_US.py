@@ -17,6 +17,7 @@ images = "Images"
 apply_changes = "Apply changes"
 remove_customizations = "Remove customizations"
 remove_customizations_message = "Are you sure? Every single customization made to your volume through the \"autorun.inf\" file will be removed."
+local_disk = "Local Disk"
 
 # Messages
 done = "Done"

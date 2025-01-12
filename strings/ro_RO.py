@@ -17,6 +17,7 @@ image = "Imagini"
 apply_changes = "Aplică modificările"
 remove_customizations = "Elimină personalizările"
 remove_customizations_message = "Ești sigur(ă)? Toate personalizările făcute volumului tău prin fișierul \"autorun.inf\" vor fi eliminate."
+local_disk = "Disc local"
 
 # Messages
 done = "Gata"
