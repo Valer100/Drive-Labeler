@@ -66,10 +66,8 @@ def update_volume_info(volume):
                         path_and_index = param.rsplit(",", 1)
                         icon_path = path_and_index[0]
 
-                        if len(path_and_index) == 2:
-                            icon_index = int(path_and_index[1].strip())
-                        else:
-                            icon_index = 0
+                        if len(path_and_index) == 2: icon_index = int(path_and_index[1].strip())
+                        else: icon_index = 0
 
                         if not icon_path.lower().startswith(volume.lower()):
                             icon_path = volume + icon_path
@@ -268,7 +266,7 @@ def modify_volume_info(volume: str, label: str):
 
                     if entry == "icon": 
                         if not icon.get() == "default":
-                            autorun_new += f"\nicon=vl_icon\icon{id}.ico"
+                            autorun_new += f"\nicon=vl_icon\icon{id}.ico,0"
                             icon_changed = True
                     elif entry == "label": 
                         autorun_new += f"\nlabel={label}"
@@ -283,7 +281,7 @@ def modify_volume_info(volume: str, label: str):
             if not label_changed: 
                 autorun_new = re.sub(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nlabel={label}", autorun_new, flags = re.MULTILINE)
             
-            autorun_new.replace("\n", "", 1)
+            autorun_new = autorun_new.strip()
 
             try:
                 os.system(f"attrib -H \"{volume}\\autorun.inf\"")
