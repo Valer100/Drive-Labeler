@@ -16,11 +16,16 @@
 
 A simple tool for changing the label and the icon of a volume in Windows. It makes these changes by creating an `autorun.inf` file (or edits the existing one) on the volume you want to change its label and icon. 
 
-When selecting a volume, it checks if `autorun.inf` is present on it and then retrieves its actual label and icon for not typing the same label if you want to only change the volume's icon or selecting the same icon if you only want to change the volume's label.
+## ✨ Features
+- When selecting a volume, it checks if `autorun.inf` is present on it. It then retrieves its actual label and icon, so you don't have to type the same label if you only want to change the volume's icon or select the same icon if you only want to change the volume's label.
 
-It also has options to hide the `autorun.inf` file and the `vl_icon` folder (the icon is stored in that folder).
+- Multiple icon options: default icon, custom icon (`.ico` or from an `.exe`, `.dll` or `.icl` file) or icon from image (converts the selected image to an `.ico` file).
 
-If you want to get rid of all customizations (including the ones not made by Volume Labeler), you can use the "Remove customizations" option.
+- Option to hide the `autorun.inf` file and the `vl_icon` folder (the icon is stored in that folder).
+
+- Option to get rid of all customizations (including the ones not made by Volume Labeler).
+
+- Light and dark themes and localization support.
 
 ## 📷 Screenshots
 
@@ -48,10 +53,11 @@ Before building the installer, you must install Inno Setup Compiler on your comp
 Also, you must build the app first before building the installer. After building the app, make sure a `build` folder appears. If it doesn't and appears a `dist` folder intstead, rename that folder to `build`. After that, right-click `build_installer.iss` and choose `Compile`. After the installer was built, you can find it in the same `build` folder.
 
 ## 💿 Download
-Click [here](https://github.com/Valer100/Volume-Labeler/releases/latest) to download the latest version. You can download either the portable or the installer version.
+Comming soon.
+<!-- Click [here](https://github.com/Valer100/Volume-Labeler/releases/latest) to download the latest version. You can download either the portable or the installer version.
 
 > [!WARNING]
-> At the moment, the binaries from Releases tab were built only for 64 bit Windows. They will not work on 32 bit Windows.
+> At the moment, the binaries from Releases tab were built only for 64 bit Windows. They will not work on 32 bit Windows. -->
 
 ## 📜 License
 [MIT](https://github.com/Valer100/Volume-Labeler/blob/main/LICENSE)
