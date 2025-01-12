@@ -63,7 +63,6 @@ def update_volume_info(volume):
                     param = entry_and_param[1].strip()
 
                     if entry == "icon":
-                        print(param)
                         path_and_index = param.rsplit(",", 1)
                         icon_path = path_and_index[0]
 
