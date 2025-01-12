@@ -10,9 +10,8 @@ window.iconbitmap(default = util.internal + "icon.ico")
 window.configure(padx = 14, pady = 8)
 
 icon_old = "default"
-icon_path = ""
-icon_index = 0
 volumes = [""]
+autorun = ""
 selected_volume = tk.StringVar(value = "")
 icon = tk.StringVar(value = "default")
 
@@ -29,11 +28,62 @@ def refresh_volumes():
     menu.delete(0, "end")
 
     for string in volumes:
-        menu.add_command(label = string, command = lambda value = string: selected_volume.set(value))
+        menu.add_command(label = string, command = lambda value = string: update_volume_info(value))
+
+    update_volume_info(volumes[0])
+
+
+def update_volume_info(volume):
+    global icon, autorun
+
+    if util.is_volume_accessible(volume):
+        selected_volume.set(volume)
+
+        icon.set("default")
+        choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
+        icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
+
+        volume_label = subprocess.getoutput(f"for /f \"tokens=5*\" %A in ('vol {volume[0:2]}') do @if \"%B\"==\"\" (timeout /t 0 > nul) else echo %B")
+
+        label.delete(0, "end")
+        label.insert(0, strings.lang.local_disk if volume == "C:\\" and volume_label == "no label." else strings.lang.volume if volume_label == "no label." else volume_label)
+
+        if os.path.exists(f"{selected_volume.get()}autorun.inf"):
+            autorun_file = open(f"{selected_volume.get()}autorun.inf")
+            autorun = autorun_file.read()
+            autorun_file.close()
+
+            autorun_lines = autorun.split("\n")
+
+            for line in autorun_lines:
+                entry_and_param = line.split("=", 1)
+
+                if len(entry_and_param) == 2:
+                    entry = entry_and_param[0].strip().lower()
+                    param = entry_and_param[1].strip()
+
+                    if entry == "icon":
+                        path_and_index = param.rsplit(",", 1)
+                        icon_path = path_and_index[0]
+                        icon_index = int(path_and_index[1])
+
+                        if not icon_path.lower().startswith(volume.lower()):
+                            icon_path = volume + icon_path
+
+                        if os.path.exists(icon_path): 
+                            icon.set("icon")
+                            process_icon(icon_path, icon_index)
+                    elif entry == "label":
+                        label.delete(0, "end")
+                        label.insert(0, param)
+    else:
+        messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
+
 
 def destroy_everything(widget):
     for child in widget.winfo_children():
         child.destroy()
+
 
 def change_app_language():
     old_language = util.language
@@ -42,6 +92,7 @@ def change_app_language():
     window.wait_window(change_language.window)
 
     if old_language != util.language: draw_ui()
+
 
 def change_app_theme():
     old_theme = util.theme
@@ -54,8 +105,9 @@ def change_app_theme():
         window.set_theme()
         draw_ui()
 
+
 def draw_ui():
-    global choose_icon, icon_from_image, refresh, volume
+    global choose_icon, icon_from_image, refresh, volume, label
 
     destroy_everything(window)
     strings.load_language(open(util.user_preferences + "\\language", "r").read())
@@ -110,8 +162,31 @@ def draw_ui():
     window.update()
 
 
+def process_icon(path, index):
+    global icon_from_image, choose_icon, preview
+
+    img = Image.open(util.extract_icon(path, index))
+    img = img.resize((32, 32), Image.Resampling.LANCZOS)
+    img.save(util.roaming + "\preview.png")
+    img.close()
+
+    if not path.endswith(".ico"):
+        try:
+            extractor = IconExtractor(path)
+            extractor.export_icon(util.roaming + "\\icon.ico", index)
+        except:
+            extractor = IconExtractor(path.replace("System32", "SystemResources") + ".mun")
+            extractor.export_icon(util.roaming + "\\icon.ico", index)
+    else:
+        shutil.copyfile(path, util.roaming + "\\icon.ico")
+
+    preview = tk.PhotoImage(file = util.roaming + "\preview.png")
+    choose_icon.configure(image = preview, text = f"{os.path.basename(path)}, {index}", width = 30)
+    icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
+
+
 def choose_icon_():
-    global icon_path, icon_index, preview, icon_old
+    global preview, icon_old
 
     match icon.get():
         case "default":
@@ -120,26 +195,7 @@ def choose_icon_():
         case "icon":
             try:
                 icon_path, icon_index = util.pick_icon()
-
-                img = Image.open(util.extract_icon(icon_path, icon_index))
-                img = img.resize((32, 32), Image.Resampling.LANCZOS)
-                img.save(util.roaming + "\preview.png")
-                img.close()
-
-                if not icon_path.endswith(".ico"):
-                    try:
-                        extractor = IconExtractor(icon_path)
-                        extractor.export_icon(util.roaming + "\\icon.ico", icon_index)
-                    except:
-                        extractor = IconExtractor(icon_path.replace("System32", "SystemResources") + ".mun")
-                        extractor.export_icon(util.roaming + "\\icon.ico", icon_index)
-                else:
-                    shutil.copyfile(icon_path, util.roaming + "\\icon.ico")
-
-                preview = tk.PhotoImage(file = util.roaming + "\preview.png")
-                choose_icon.configure(image = preview, text = f"{os.path.basename(icon_path)}, {icon_index}", width = 30)
-                
-                icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
+                process_icon(icon_path, icon_index)                
             except Exception as e:
                 print(e)
                 icon.set(icon_old)
@@ -225,7 +281,7 @@ def remove_personalizations(volume: str):
 
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
-                    messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
+                messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
             except Exception as e:
                 messagebox.showerror(strings.lang.error, strings.lang.failure_message + "".join(traceback.format_tb(e.__traceback__)))
         else:
