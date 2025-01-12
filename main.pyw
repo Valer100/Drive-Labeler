@@ -1,4 +1,4 @@
-import tkinter as tk, util, open_source_licenses, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, ctypes, re
+import tkinter as tk, util, open_source_licenses, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, re
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image
 from icoextract import IconExtractor
@@ -243,7 +243,7 @@ def modify_volume_info(volume: str, label: str):
             shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}\\vl_icon\\icon{id}.ico")
 
             # Hide `vl_icon` folder to prevent accidental deletion
-            ctypes.windll.kernel32.SetFileAttributesW(f"{volume}\\vl_icon", 0x02)
+            os.system(f"attrib +H \"{volume}\\vl_icon\"")
 
         if os.path.exists(f"{volume}autorun.inf"):
             autorun_file = open(f"{selected_volume.get()}autorun.inf")
