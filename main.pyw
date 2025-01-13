@@ -117,7 +117,9 @@ def change_app_theme():
 
 
 def draw_ui():
-    global choose_icon, icon_from_image, refresh, volume, label, arrow
+    global choose_icon, icon_from_image, refresh, volume, label, arrow, show_additional_options
+
+    show_additional_options = False
 
     destroy_everything(window)
     strings.load_language(open(util.user_preferences + "\\language", "r").read())
