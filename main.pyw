@@ -167,9 +167,9 @@ def draw_ui():
     custom_ui.Button(window, text = strings.lang.remove_customizations, command = lambda: remove_personalizations(selected_volume.get())).pack(pady = (8, 0), fill = "x")
 
     ttk.Label(window, text = strings.lang.settings, font = ("Segoe UI Semibold", 14)).pack(anchor = "w", pady = (16, 4))
-    custom_ui.Toolbutton(window, text = strings.lang.change_language, command = change_app_language).pack(anchor = "w")
-    custom_ui.Toolbutton(window, text = strings.lang.change_theme, command = change_app_theme).pack(anchor = "w")
-    custom_ui.Toolbutton(window, text = strings.lang.see_open_source_licenses, command = open_source_licenses.show).pack(anchor = "w")
+    custom_ui.Toolbutton(window, text = strings.lang.change_language, link = True, command = change_app_language).pack(anchor = "w")
+    custom_ui.Toolbutton(window, text = strings.lang.change_theme, link = True, command = change_app_theme).pack(anchor = "w")
+    custom_ui.Toolbutton(window, text = strings.lang.see_open_source_licenses, link = True, command = open_source_licenses.show).pack(anchor = "w")
 
     window.update()
 
