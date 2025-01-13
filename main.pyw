@@ -412,7 +412,7 @@ def modify_volume_info(volume: str, label: str):
 
 
 def remove_personalizations(volume: str):
-    confirmed = messagebox.askyesno(strings.lang.remove_customizations, strings.lang.remove_customizations_message)
+    confirmed = messagebox.askyesno(strings.lang.remove_customizations, strings.lang.remove_customizations_message, icon = "warning")
 
     if confirmed:
         if util.is_volume_accessible(volume):
@@ -420,10 +420,10 @@ def remove_personalizations(volume: str):
                 if os.path.exists(f"{volume}autorun.inf") and backup_existing_autorun.get():
                     if not os.path.exists(f"{volume}autorun_backups"):
                         os.mkdir(f"{volume}autorun_backups")
-    
+
                     subprocess.call(f"attrib -H \"{volume}autorun.inf\"", shell = True)
                     shutil.copyfile(f"{volume}autorun.inf", f"{volume}autorun_backups\\autorun_{str(datetime.now()).replace('-', '_').replace(':', '_')}.inf")
-    
+
                     readme_file = open(f"{volume}autorun_backups\\{strings.lang.readme}.txt", "w", encoding = "utf-8")
                     readme_file.write(strings.lang.autorun_backup)
                     readme_file.close()
