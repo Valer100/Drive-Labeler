@@ -21,6 +21,7 @@ local_disk = "Local Disk"
 additional_options = "Additional options"
 hide_autorun = "Hide autorun.inf file"
 hide_vl_icon = "Hide vl_icon folder"
+backup_existing_autorun = "Backup autorun.inf file (if it already exists)"
 
 # Messages
 done = "Done"

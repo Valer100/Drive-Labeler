@@ -2,6 +2,7 @@ import tkinter as tk, util, open_source_licenses, change_language, change_theme,
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image
 from icoextract import IconExtractor
+from datetime import datetime
 
 window = custom_ui.App()
 window.title("Volume Labeler")
@@ -16,6 +17,7 @@ autorun = ""
 selected_volume = tk.StringVar(value = "")
 hide_autorun = tk.BooleanVar(value = True)
 hide_vl_icon = tk.BooleanVar(value = True)
+backup_existing_autorun = tk.BooleanVar(value = True)
 icon = tk.StringVar(value = "default")
 
 def refresh_volumes():
@@ -139,14 +141,14 @@ def draw_ui():
 
     label_frame = tk.Frame(window, highlightbackground = custom_ui.entry_bd, highlightcolor = custom_ui.entry_focus,
                           highlightthickness = 1)
-    label_frame.pack(anchor = "w")
+    label_frame.pack(anchor = "w", fill = "x")
 
     label = tk.Entry(label_frame, width = 40, background = custom_ui.entry_bg, 
                     foreground = custom_ui.fg, border = 0, highlightthickness = 2, 
                     highlightcolor = custom_ui.entry_bg, highlightbackground = custom_ui.entry_bg, 
                     insertbackground = custom_ui.fg, insertwidth = 1, selectbackground = custom_ui.entry_select,
                     selectforeground = "#FFFFFF")
-    label.pack()
+    label.pack(fill = "x")
 
     ttk.Label(window, text = strings.lang.icon).pack(pady = (16, 8), anchor = "w")
 
@@ -191,6 +193,7 @@ def draw_ui():
 
     ttk.Checkbutton(additional_options_frame, text = strings.lang.hide_autorun, variable = hide_autorun)
     ttk.Checkbutton(additional_options_frame, text = strings.lang.hide_vl_icon, variable = hide_vl_icon)
+    ttk.Checkbutton(additional_options_frame, text = strings.lang.backup_existing_autorun, variable = backup_existing_autorun)
 
     custom_ui.Button(window, text = strings.lang.apply_changes, command = lambda: modify_volume_info(selected_volume.get(), label.get()), default = "active").pack(pady = (16, 0), fill = "x")
     custom_ui.Button(window, text = strings.lang.remove_customizations, command = lambda: remove_personalizations(selected_volume.get())).pack(pady = (8, 0), fill = "x")
@@ -284,17 +287,27 @@ def modify_volume_info(volume: str, label: str):
             return
         
 
-        if not icon.get() == "default":
-            id = random.randint(1000000, 9999999)
+        try:
+            if not icon.get() == "default":
+                id = random.randint(1000000, 9999999)
 
-            if os.path.exists(f"{volume}\\vl_icon"):
-                subprocess.call(f"rmdir /s /q \"{volume}\\vl_icon\"", shell = True)
+                if os.path.exists(f"{volume}\\vl_icon"):
+                    subprocess.call(f"rmdir /s /q \"{volume}\\vl_icon\"", shell = True)
 
-            os.mkdir(f"{volume}\\vl_icon")
-            shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}\\vl_icon\\icon{id}.ico")
+                os.mkdir(f"{volume}\\vl_icon")
+                shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}\\vl_icon\\icon{id}.ico")
 
-            if hide_vl_icon.get():
-                subprocess.call(f"attrib +H \"{volume}\\vl_icon\"", shell = True)
+                if hide_vl_icon.get():
+                    subprocess.call(f"attrib +H \"{volume}\\vl_icon\"", shell = True)
+
+            if os.path.exists(f"{volume}\\autorun.inf"):
+                if not os.path.exists(f"{volume}\\autorun_backups"):
+                    os.mkdir(f"{volume}\\autorun_backups")
+
+            subprocess.call(f"attrib -H \"{volume}\\autorun.inf\"", shell = True)
+            shutil.copyfile(f"{volume}\\autorun.inf", f"{volume}\\autorun_backups\\autorun_{datetime.now()}.inf")
+        except PermissionError:
+            messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
 
 
         def modify_existing_autorun_file():

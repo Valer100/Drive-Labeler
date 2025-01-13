@@ -21,7 +21,7 @@ local_disk = "Disc local"
 additional_options = "Opțiuni adiționale"
 hide_autorun = "Ascunde fișierul autorun.inf"
 hide_vl_icon = "Ascunde folderul vl_icon"
-unicode_not_supported = "Caracterele Unicode nu sunt suportate. Asigură-te că eticheta nu conține caractere Unicode și încearcă din nou."
+backup_existing_autorun = "Fă backup fișierului autorun.inf (dacă există deja)"
 
 # Messages
 done = "Gata"
@@ -33,6 +33,7 @@ volume_not_accessible_message = "Volumul selectat este inaccesibil."
 error = "Eroare"
 failure_message = "Nu s-au putut modifica informațiile volumului.\n\n"
 missing_icon_file = "Fișierul pictogramei copiate lipsește."
+unicode_not_supported = "Caracterele Unicode nu sunt suportate. Asigură-te că eticheta nu conține caractere Unicode și încearcă din nou."
 
 # Other
 open_source_licenses = "Licențe open source"
