@@ -3,3 +3,4 @@ pywinstyles
 winaccent
 hPyT
 icoextract
+tkinter-toolkit
