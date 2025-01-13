@@ -115,16 +115,18 @@ class CommandLink(tk.Frame):
         self.text["foreground"] = accent_link
 
 class Toolbutton(tk.Button):
-    def __init__(self, master, text: str = "", command: callable = None, *args, **kwargs):
-        super().__init__(master, text = text, command = command, padx = 4, pady = 2, background = bg, foreground = accent_link,
-                         border = 0, relief = "solid", activebackground = bg_press, activeforeground = accent_link, *args, 
-                         **kwargs)
-        
+    def __init__(self, master, text: str = "", command: callable = None, link: bool = False, *args, **kwargs):
+        super().__init__(master, text = text, command = command, padx = 4, pady = 2, background = bg, 
+                         foreground = accent_link if link else fg, border = 0, relief = "solid", 
+                         activebackground = bg_press, activeforeground = accent if link else fg, *args, **kwargs)
+
+        self.link = link
+
         self.bind("<Enter>", lambda event: self.configure(background = bg_hover))
         self.bind("<Leave>", lambda event: self.configure(background = bg))
 
     def update_colors(self):
-        self.configure(background = bg, foreground = accent_link, activebackground = bg_press, activeforeground = accent_link)
+        self.configure(background = bg, foreground = accent_link if self.link else fg, activebackground = bg_press, activeforeground = accent if self.link else fg)
 
 class Button(tk.Button):
     def __init__(self, master, text: str = "", command: callable = None, *args, **kwargs):
