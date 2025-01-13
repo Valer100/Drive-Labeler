@@ -196,17 +196,18 @@ def draw_ui():
     custom_ui.Button(window, text = strings.lang.remove_customizations, command = lambda: remove_personalizations(selected_volume.get())).pack(pady = (8, 0), fill = "x")
 
     # ttk.Label(window, text = strings.lang.settings, font = ("Segoe UI Semibold", 14)).pack(anchor = "w", pady = (16, 4))
-    settings = ttk.Frame(window)
-    settings.pack(anchor = "w", pady = (20, 0))
+    settings = ttk.Frame(window, height = 23)
+    settings.pack(anchor = "w", pady = (20, 2), fill = "x")
+    settings.pack_propagate(False)
     
-    language = custom_ui.Toolbutton(settings, text = "\uE774", link = True, icononly = True, command = change_app_language, font = 30)
-    language.pack(anchor = "w", side = "left")
+    language = custom_ui.Toolbutton(settings, text = "\uE774", link = True, icononly = True, anchor = "n", command = change_app_language, font = 30)
+    language.pack(anchor = "nw", side = "left")
 
-    theme = custom_ui.Toolbutton(settings, text = "\uE771", link = True, icononly = True, command = change_app_theme, font = 30)
-    theme.pack(anchor = "w", side = "left", padx = (4, 0))
+    theme = custom_ui.Toolbutton(settings, text = "\uE771", link = True, icononly = True, anchor = "n", command = change_app_theme, font = 30)
+    theme.pack(anchor = "nw", side = "left", padx = (4, 0))
     
-    os_licenses = custom_ui.Toolbutton(settings, text = "\uE8A5", link = True, icononly = True, command = open_source_licenses.show, font = 30)
-    os_licenses.pack(anchor = "w", side = "left", padx = (4, 0))
+    os_licenses = custom_ui.Toolbutton(settings, text = "\uE8A5", link = True, icononly = True, anchor = "n", command = open_source_licenses.show, font = 30)
+    os_licenses.pack(anchor = "nw", side = "left", padx = (4, 0))
     
     tktooltip.ToolTip(language, strings.lang.change_language, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
     tktooltip.ToolTip(theme, strings.lang.change_theme, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
