@@ -1,4 +1,4 @@
-import tkinter as tk, util, open_source_licenses, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, re
+import tkinter as tk, util, open_source_licenses, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, re, tktooltip
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image
 from icoextract import IconExtractor
@@ -9,6 +9,7 @@ window.resizable(False, False)
 window.iconbitmap(default = util.internal + "icon.ico")
 window.configure(padx = 14, pady = 8)
 
+show_additional_options = False
 icon_old = "default"
 volumes = [""]
 autorun = ""
@@ -114,7 +115,7 @@ def change_app_theme():
 
 
 def draw_ui():
-    global choose_icon, icon_from_image, refresh, volume, label
+    global choose_icon, icon_from_image, refresh, volume, label, arrow
 
     destroy_everything(window)
     strings.load_language(open(util.user_preferences + "\\language", "r").read())
@@ -158,18 +159,58 @@ def draw_ui():
     icon_from_image = ttk.Radiobutton(window, text = strings.lang.create_icon_from_image, variable = icon, value = "image", command = choose_icon_, compound = "left")
     icon_from_image.pack(anchor = "w")
 
-    ttk.Label(window, text = strings.lang.additional_options).pack(pady = (16, 8), anchor = "w")
+    if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_light.png")
+    else: arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_dark.png")
+
+    additional_options = custom_ui.Toolbutton(window, text = " " + strings.lang.additional_options, command = lambda: show_hide_additional_options(), anchor = "w", compound = "left", image = arrow)
+    additional_options.pack(pady = (14, 0), anchor = "w")
+    additional_options.configure(padx = 0)
+
+    additional_options_frame = ttk.Frame(window)
+    additional_options_frame.pack(anchor = "w")
     
-    ttk.Checkbutton(window, text = strings.lang.hide_autorun, variable = hide_autorun).pack(anchor = "w")
-    ttk.Checkbutton(window, text = strings.lang.hide_vl_icon, variable = hide_vl_icon).pack(anchor = "w")
+    def show_hide_additional_options():
+        global show_additional_options, arrow
+        show_additional_options = not show_additional_options
+
+        for widget in additional_options_frame.winfo_children():
+            if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown{'_up' if show_additional_options else ''}_light.png")
+            else: arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown{'_up' if show_additional_options else ''}_dark.png")
+            
+            additional_options.configure(image = arrow)
+
+            if show_additional_options: 
+                if widget["text"] == strings.lang.hide_autorun:
+                    widget.pack(pady = (6, 0), anchor = "w")
+                else:
+                    widget.pack(anchor = "w")
+            else: widget.forget()
+
+        if show_additional_options: additional_options_frame.configure(height = -1)
+        else: additional_options_frame.configure(height = 1)
+
+    ttk.Checkbutton(additional_options_frame, text = strings.lang.hide_autorun, variable = hide_autorun)
+    ttk.Checkbutton(additional_options_frame, text = strings.lang.hide_vl_icon, variable = hide_vl_icon)
 
     custom_ui.Button(window, text = strings.lang.apply_changes, command = lambda: modify_volume_info(selected_volume.get(), label.get()), default = "active").pack(pady = (16, 0), fill = "x")
     custom_ui.Button(window, text = strings.lang.remove_customizations, command = lambda: remove_personalizations(selected_volume.get())).pack(pady = (8, 0), fill = "x")
 
-    ttk.Label(window, text = strings.lang.settings, font = ("Segoe UI Semibold", 14)).pack(anchor = "w", pady = (16, 4))
-    custom_ui.Toolbutton(window, text = strings.lang.change_language, link = True, command = change_app_language).pack(anchor = "w")
-    custom_ui.Toolbutton(window, text = strings.lang.change_theme, link = True, command = change_app_theme).pack(anchor = "w")
-    custom_ui.Toolbutton(window, text = strings.lang.see_open_source_licenses, link = True, command = open_source_licenses.show).pack(anchor = "w")
+    # ttk.Label(window, text = strings.lang.settings, font = ("Segoe UI Semibold", 14)).pack(anchor = "w", pady = (16, 4))
+    settings = ttk.Frame(window)
+    settings.pack(anchor = "w", pady = (20, 0))
+    
+    language = custom_ui.Toolbutton(settings, text = "\uE774", link = True, icononly = True, command = change_app_language, font = 30)
+    language.pack(anchor = "w", side = "left")
+
+    theme = custom_ui.Toolbutton(settings, text = "\uE771", link = True, icononly = True, command = change_app_theme, font = 30)
+    theme.pack(anchor = "w", side = "left", padx = (4, 0))
+    
+    os_licenses = custom_ui.Toolbutton(settings, text = "\uE8A5", link = True, icononly = True, command = open_source_licenses.show, font = 30)
+    os_licenses.pack(anchor = "w", side = "left", padx = (4, 0))
+    
+    tktooltip.ToolTip(language, strings.lang.change_language, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
+    tktooltip.ToolTip(theme, strings.lang.change_theme, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
+    tktooltip.ToolTip(os_licenses, strings.lang.see_open_source_licenses, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
 
     window.update()
 
