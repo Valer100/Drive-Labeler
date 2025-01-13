@@ -195,7 +195,6 @@ def draw_ui():
     custom_ui.Button(window, text = strings.lang.apply_changes, command = lambda: modify_volume_info(selected_volume.get(), label.get()), default = "active").pack(pady = (16, 0), fill = "x")
     custom_ui.Button(window, text = strings.lang.remove_customizations, command = lambda: remove_personalizations(selected_volume.get())).pack(pady = (8, 0), fill = "x")
 
-    # ttk.Label(window, text = strings.lang.settings, font = ("Segoe UI Semibold", 14)).pack(anchor = "w", pady = (16, 4))
     settings = ttk.Frame(window, height = 23)
     settings.pack(anchor = "w", pady = (20, 2), fill = "x")
     settings.pack_propagate(False)
