@@ -24,8 +24,8 @@ def update_colors():
         accent_link = winaccent.accent_dark_2
     else:
         bg = "#202020"
-        bg_hover = "#292929"
-        bg_press = "#333333"
+        bg_hover = "#333333"
+        bg_press = "#292929"
         fg = "#ffffff"
         entry_focus = "#ffffff"
         entry_bd = "#6e6e6e"
