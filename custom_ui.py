@@ -120,8 +120,6 @@ class Toolbutton(tk.Button):
                          foreground = accent_link if link else fg, border = 0, relief = "solid", 
                          activebackground = bg_press, activeforeground = accent if link else fg, *args, **kwargs)
 
-        if icononly: pass
-
         self.link = link
 
         self.bind("<Enter>", lambda event: self.configure(background = bg_hover))
