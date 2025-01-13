@@ -15,9 +15,9 @@ icon_old = "default"
 volumes = [""]
 autorun = ""
 selected_volume = tk.StringVar(value = "")
-hide_autorun = tk.BooleanVar(value = True)
-hide_vl_icon = tk.BooleanVar(value = True)
-backup_existing_autorun = tk.BooleanVar(value = True)
+hide_autorun = tk.BooleanVar(value = int(util.additional_prefs[0]))
+hide_vl_icon = tk.BooleanVar(value = int(util.additional_prefs[1]))
+backup_existing_autorun = tk.BooleanVar(value = int(util.additional_prefs[2]))
 icon = tk.StringVar(value = "default")
 
 def refresh_volumes():
@@ -191,9 +191,11 @@ def draw_ui():
         if show_additional_options: additional_options_frame.configure(height = -1)
         else: additional_options_frame.configure(height = 1)
 
-    ttk.Checkbutton(additional_options_frame, text = strings.lang.hide_autorun, variable = hide_autorun)
-    ttk.Checkbutton(additional_options_frame, text = strings.lang.hide_vl_icon, variable = hide_vl_icon)
-    ttk.Checkbutton(additional_options_frame, text = strings.lang.backup_existing_autorun, variable = backup_existing_autorun)
+    def save_additional_preferences(): open(util.user_preferences + "\\additional_prefs", "w").write(f"{int(hide_autorun.get())}{int(hide_vl_icon.get())}{int(backup_existing_autorun.get())}")
+
+    ttk.Checkbutton(additional_options_frame, text = strings.lang.hide_autorun, command = save_additional_preferences, variable = hide_autorun)
+    ttk.Checkbutton(additional_options_frame, text = strings.lang.hide_vl_icon, command = save_additional_preferences, variable = hide_vl_icon)
+    ttk.Checkbutton(additional_options_frame, text = strings.lang.backup_existing_autorun, command = save_additional_preferences, variable = backup_existing_autorun)
 
     custom_ui.Button(window, text = strings.lang.apply_changes, command = lambda: modify_volume_info(selected_volume.get(), label.get()), default = "active").pack(pady = (16, 0), fill = "x")
     custom_ui.Button(window, text = strings.lang.remove_customizations, command = lambda: remove_personalizations(selected_volume.get())).pack(pady = (8, 0), fill = "x")
