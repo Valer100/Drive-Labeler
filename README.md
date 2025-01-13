@@ -23,6 +23,8 @@ A simple tool for changing the label and the icon of a volume in Windows. It mak
 
 - Option to hide the `autorun.inf` file and the `vl_icon` folder (the icon is stored in that folder).
 
+- Option to backup the `autorun.inf` file for easily restoring it later if something wents wrong or you want to revert your changes to a previous point.
+
 - Option to get rid of all customizations (including the ones not made by Volume Labeler).
 
 - Light and dark themes and localization support.
