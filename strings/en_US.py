@@ -35,6 +35,17 @@ failure_message = "Failed to change the volume's information.\n\n"
 missing_icon_file = "The copied icon file is missing."
 unicode_not_supported = "Unicode characters are not supported. Make sure the label doesn't contain Unicode characters and try again."
 
+# Files
+readme = "READ ME!"
+autorun_backup = """This folder includes backups of the `autorun.inf` file before Volume Labeler
+made changes to it. If something went wrong or you want to restore the values before 
+the modification, you can do that by deleting the `autorun.inf` file in the root of this
+volume (you may need to enable the "Show hidden files" option to see it). After that, 
+go back in this folder, copy one of the `autorun_{date and time}.inf` files in the root
+of this volume and then rename it to autorun.inf."""
+icon_folder = """This folder contains the icon that's displayed to your volume.
+Do not delete this folder or the icon file inside it."""
+
 # Other
 open_source_licenses = "Open source licenses"
 change_language = "Change language"

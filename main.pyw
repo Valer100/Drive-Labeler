@@ -291,21 +291,29 @@ def modify_volume_info(volume: str, label: str):
             if not icon.get() == "default":
                 id = random.randint(1000000, 9999999)
 
-                if os.path.exists(f"{volume}\\vl_icon"):
-                    subprocess.call(f"rmdir /s /q \"{volume}\\vl_icon\"", shell = True)
+                if os.path.exists(f"{volume}vl_icon"):
+                    subprocess.call(f"rmdir /s /q \"{volume}vl_icon\"", shell = True)
 
-                os.mkdir(f"{volume}\\vl_icon")
-                shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}\\vl_icon\\icon{id}.ico")
+                os.mkdir(f"{volume}vl_icon")
+                shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}vl_icon\\icon{id}.ico")
+
+                readme_file = open(f"{volume}vl_icon\\{strings.lang.readme}.txt", "w", encoding = "utf-8")
+                readme_file.write(strings.lang.icon_folder)
+                readme_file.close()
 
                 if hide_vl_icon.get():
-                    subprocess.call(f"attrib +H \"{volume}\\vl_icon\"", shell = True)
+                    subprocess.call(f"attrib +H \"{volume}vl_icon\"", shell = True)
 
-            if os.path.exists(f"{volume}\\autorun.inf"):
-                if not os.path.exists(f"{volume}\\autorun_backups"):
-                    os.mkdir(f"{volume}\\autorun_backups")
+            if os.path.exists(f"{volume}autorun.inf"):
+                if not os.path.exists(f"{volume}autorun_backups"):
+                    os.mkdir(f"{volume}autorun_backups")
 
-            subprocess.call(f"attrib -H \"{volume}\\autorun.inf\"", shell = True)
-            shutil.copyfile(f"{volume}\\autorun.inf", f"{volume}\\autorun_backups\\autorun_{datetime.now()}.inf")
+                subprocess.call(f"attrib -H \"{volume}autorun.inf\"", shell = True)
+                shutil.copyfile(f"{volume}autorun.inf", f"{volume}autorun_backups\\autorun_{str(datetime.now()).replace('-', '_').replace(':', '_')}.inf")
+
+                readme_file = open(f"{volume}autorun_backups\\{strings.lang.readme}.txt", "w", encoding = "utf-8")
+                readme_file.write(strings.lang.autorun_backup)
+                readme_file.close()
         except PermissionError:
             messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
 
@@ -347,14 +355,14 @@ def modify_volume_info(volume: str, label: str):
             autorun_new = autorun_new.strip()
 
             try:
-                subprocess.call(f"attrib -H \"{volume}\\autorun.inf\"", shell = True)
+                subprocess.call(f"attrib -H \"{volume}autorun.inf\"", shell = True)
 
                 autorun_file = open(f"{selected_volume.get()}autorun.inf", "w")
                 autorun_file.write(autorun_new)
                 autorun_file.close()
             
                 if hide_autorun.get():
-                    subprocess.call(f"attrib +H \"{volume}\\autorun.inf\"", shell = True)
+                    subprocess.call(f"attrib +H \"{volume}autorun.inf\"", shell = True)
 
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
@@ -370,13 +378,14 @@ def modify_volume_info(volume: str, label: str):
                 autorun = f"[autorun]\nlabel={label}"
                 if not icon.get() == "default": autorun += f"\nicon=vl_icon\\icon{id}.ico,0"
 
-                subprocess.call(f"attrib -H \"{volume}\\autorun.inf\"", shell = True)
+                subprocess.call(f"attrib -H \"{volume}autorun.inf\"", shell = True)
+
                 autorun_file = open(f"{volume}autorun.inf", "w")
                 autorun_file.write(autorun)
                 autorun_file.close()
 
                 if hide_autorun.get():
-                    subprocess.call(f"attrib +H \"{volume}\\autorun.inf\"", shell = True)
+                    subprocess.call(f"attrib +H \"{volume}autorun.inf\"", shell = True)
 
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
@@ -408,11 +417,11 @@ def remove_personalizations(volume: str):
     if confirmed:
         if util.is_volume_accessible(volume):
             try:
-                if os.path.exists(f"{volume}\\autorun.inf"):
-                    os.remove(f"{volume}\\autorun.inf")
+                if os.path.exists(f"{volume}autorun.inf"):
+                    os.remove(f"{volume}autorun.inf")
 
-                if os.path.exists(f"{volume}\\vl_icon"):
-                    subprocess.call(f"rmdir /s /q \"{volume}\\vl_icon\"", shell = True)
+                if os.path.exists(f"{volume}vl_icon"):
+                    subprocess.call(f"rmdir /s /q \"{volume}vl_icon\"", shell = True)
 
                 update_volume_info(volume)
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)

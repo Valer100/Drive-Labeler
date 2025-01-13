@@ -35,6 +35,18 @@ failure_message = "Nu s-au putut modifica informațiile volumului.\n\n"
 missing_icon_file = "Fișierul pictogramei copiate lipsește."
 unicode_not_supported = "Caracterele Unicode nu sunt suportate. Asigură-te că eticheta nu conține caractere Unicode și încearcă din nou."
 
+# Files
+readme = "CITEȘTE-MĂ!"
+autorun_backup = """Acest folder include copii de rezervă ale fișierului `autorun.inf` 
+înainte ca Volume Labeler să facă modificări acestuia. Dacă ceva nu a mers cum trebuie
+sau vrei să restaurezi valorile dinainte de modificare, poți face asta ștergând fișierul 
+`autorun.inf` din rădăcina volumului (s-ar putea să fie nevoie să activezi opțiunea
+"Arată fișierele ascunse" ca să-l vezi). După aceea, revino în acest folder, copiază unul
+dintre fișierele `autorun_{data și ora}.inf` în rădăcina acestui volum și apoi redenumește-l
+în autorun.inf."""
+icon_folder = """Acest folder conține pictograma care este afișată la acest volum.
+Nu șterge acest folder sau fișierul pictogramei din el."""
+
 # Other
 open_source_licenses = "Licențe open source"
 change_language = "Schimbă limba"
