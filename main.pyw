@@ -308,7 +308,7 @@ def modify_volume_info(volume: str, label: str):
                 os.mkdir(f"{volume}vl_icon")
                 shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}vl_icon\\icon{id}.ico")
 
-                readme_file = open(f"{volume}vl_icon\\{strings.lang.readme}.txt", "w", encoding = "utf-8")
+                readme_file = open(f"{volume}vl_icon\\! {strings.lang.readme}.txt", "w", encoding = "utf-8")
                 readme_file.write(strings.lang.icon_folder)
                 readme_file.close()
 
@@ -435,7 +435,7 @@ def remove_personalizations(volume: str):
                     subprocess.call(f"attrib -H \"{volume}autorun.inf\"", shell = True)
                     shutil.copyfile(f"{volume}autorun.inf", f"{volume}autorun_backups\\autorun_{str(datetime.now()).replace('-', '_').replace(':', '_')}.inf")
 
-                    readme_file = open(f"{volume}autorun_backups\\{strings.lang.readme}.txt", "w", encoding = "utf-8")
+                    readme_file = open(f"{volume}autorun_backups\\! {strings.lang.readme}.txt", "w", encoding = "utf-8")
                     readme_file.write(strings.lang.autorun_backup)
                     readme_file.close()
 
