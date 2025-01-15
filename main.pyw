@@ -1,6 +1,6 @@
 import tkinter as tk, util, about, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, re, tktooltip
 from tkinter import ttk, filedialog, messagebox
-from PIL import Image
+from PIL import Image, IcoImagePlugin
 from icoextract import IconExtractor
 from datetime import datetime
 
@@ -225,11 +225,6 @@ def draw_ui():
 def process_icon(path, index):
     global icon_from_image, choose_icon, preview
 
-    img = Image.open(util.extract_icon(path, index))
-    img = img.resize((32, 32), Image.Resampling.LANCZOS)
-    img.save(util.roaming + "\preview.png")
-    img.close()
-
     if not path.endswith(".ico"):
         try:
             extractor = IconExtractor(path)
@@ -239,6 +234,24 @@ def process_icon(path, index):
             extractor.export_icon(util.roaming + "\\icon.ico", index)
     else:
         shutil.copyfile(path, util.roaming + "\\icon.ico")
+
+    # img = util.get_closest_resolution_icon(util.extract_icon(path, index), (32, 32))
+    # img = img.resize((32, 32), Image.Resampling.LANCZOS)
+    # img.save(util.roaming + "\preview.png")
+    # img.close()
+
+    img = IcoImagePlugin.IcoImageFile(util.roaming + "\\icon.ico")
+
+    closest_size = min(
+        img.info["sizes"],
+        key = lambda size: (size[0] - 32) ** 2 + (size[1] - 32) ** 2
+    )
+
+    img.size = closest_size
+    img.load()
+    img = img.resize((32, 32), Image.Resampling.LANCZOS)
+    img.save(util.roaming + "\preview.png")
+    img.close()
 
     preview = tk.PhotoImage(file = util.roaming + "\preview.png")
     choose_icon.configure(image = preview, text = f"{os.path.basename(path)}, {index}", width = 30)
@@ -256,8 +269,8 @@ def choose_icon_():
             try:
                 icon_path, icon_index = util.pick_icon()
                 process_icon(icon_path, icon_index)                
-            except Exception as e:
-                print(e)
+            except:
+                messagebox.showerror(strings.lang.error, strings.lang.failure_message + traceback.format_exc())
                 icon.set(icon_old)
         case "image":
             image = filedialog.askopenfile(title = strings.lang.choose_image, filetypes = [(strings.lang.images, (".png", ".jpg", ".jpeg", ".bmp", ".gif"))])
@@ -442,8 +455,8 @@ def remove_personalizations(volume: str):
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
                 messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
-            except Exception as e:
-                messagebox.showerror(strings.lang.error, strings.lang.failure_message + "".join(traceback.format_tb(e.__traceback__)))
+            except:
+                messagebox.showerror(strings.lang.error, strings.lang.failure_message + traceback.format_exc())
         else:
             messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
 
