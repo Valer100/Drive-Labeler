@@ -29,17 +29,6 @@ def pick_icon() -> Tuple[str, int]:
     result = ctypes.windll.shell32.PickIconDlg(None, icon_file_buffer, ctypes.sizeof(icon_file_buffer), ctypes.byref(icon_index))
     if result: return (icon_file_buffer.value, icon_index.value)
 
-def extract_icon(path: str, index: int = 0):
-    try: 
-        extractor = icoextract.IconExtractor(path)
-    except:
-        if path.endswith(".ico"): 
-            return path
-        else: 
-            extractor = icoextract.IconExtractor(path.replace("System32", "SystemResources") + ".mun")
-    
-    return extractor.get_icon(index)
-
 def is_volume_accessible(volume: str):
     volumes = subprocess.getoutput("fsutil fsinfo drives").split(" ")
     volumes.pop(0)
