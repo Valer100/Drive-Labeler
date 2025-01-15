@@ -235,11 +235,6 @@ def process_icon(path, index):
     else:
         shutil.copyfile(path, util.roaming + "\\icon.ico")
 
-    # img = util.get_closest_resolution_icon(util.extract_icon(path, index), (32, 32))
-    # img = img.resize((32, 32), Image.Resampling.LANCZOS)
-    # img.save(util.roaming + "\preview.png")
-    # img.close()
-
     img = IcoImagePlugin.IcoImageFile(util.roaming + "\\icon.ico")
 
     closest_size = min(
