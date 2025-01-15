@@ -1,4 +1,4 @@
-import tkinter as tk, util, open_source_licenses, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, re, tktooltip
+import tkinter as tk, util, about, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, re, tktooltip
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image
 from icoextract import IconExtractor
@@ -206,18 +206,18 @@ def draw_ui():
     settings.pack(anchor = "w", pady = (20, 2), fill = "x")
     settings.pack_propagate(False)
     
-    language = custom_ui.Toolbutton(settings, text = "\uE774", link = True, icononly = True, anchor = "n", command = change_app_language, font = 30)
+    language = custom_ui.Toolbutton(settings, text = "\ue774", link = True, icononly = True, anchor = "n", command = change_app_language, font = 30)
     language.pack(anchor = "nw", side = "left")
 
-    theme = custom_ui.Toolbutton(settings, text = "\uE771", link = True, icononly = True, anchor = "n", command = change_app_theme, font = 30)
+    theme = custom_ui.Toolbutton(settings, text = "\ue771", link = True, icononly = True, anchor = "n", command = change_app_theme, font = 30)
     theme.pack(anchor = "nw", side = "left", padx = (4, 0))
     
-    os_licenses = custom_ui.Toolbutton(settings, text = "\uE8A5", link = True, icononly = True, anchor = "n", command = open_source_licenses.show, font = 30)
-    os_licenses.pack(anchor = "nw", side = "left", padx = (4, 0))
+    about_app = custom_ui.Toolbutton(settings, text = "\ue946", link = True, icononly = True, anchor = "n", command = about.show, font = 30)
+    about_app.pack(anchor = "nw", side = "left", padx = (4, 0))
     
     tktooltip.ToolTip(language, strings.lang.change_language, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
     tktooltip.ToolTip(theme, strings.lang.change_theme, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
-    tktooltip.ToolTip(os_licenses, strings.lang.see_open_source_licenses, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
+    tktooltip.ToolTip(about_app, strings.lang.about_this_app, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
 
     window.update()
 
