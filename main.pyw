@@ -1,8 +1,13 @@
-import tkinter as tk, util, about, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, re, tktooltip
+import tkinter as tk, util, about, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, re, tktooltip, argparse
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image, IcoImagePlugin
 from icoextract import IconExtractor
 from datetime import datetime
+
+parser = argparse.ArgumentParser()
+parser.add_argument("--volume", default = None, help = "The letter of the volume you want to customize", required = False)
+
+arguments = parser.parse_args()
 
 window = custom_ui.App()
 window.title("Volume Labeler")
@@ -14,6 +19,7 @@ show_additional_options = False
 icon_old = "default"
 volumes = [""]
 autorun = ""
+app_started = False
 selected_volume = tk.StringVar(value = "")
 hide_autorun = tk.BooleanVar(value = int(util.additional_prefs[0]))
 hide_vl_icon = tk.BooleanVar(value = int(util.additional_prefs[1]))
@@ -21,7 +27,7 @@ backup_existing_autorun = tk.BooleanVar(value = int(util.additional_prefs[2]))
 icon = tk.StringVar(value = "default")
 
 def refresh_volumes():
-    global volumes
+    global volumes, app_started
 
     volumes = subprocess.getoutput("fsutil fsinfo drives").split(" ")
     volumes.pop(0)
@@ -35,7 +41,16 @@ def refresh_volumes():
     for string in volumes:
         menu.add_command(label = string, command = lambda value = string: update_volume_info(value))
 
-    update_volume_info(volumes[0])
+    if not app_started and arguments.volume != None:
+        if util.is_volume_accessible(arguments.volume.upper()):
+            update_volume_info(arguments.volume.upper())
+        else:
+            update_volume_info(volumes[0])
+            messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
+    else:
+        update_volume_info(volumes[0])
+
+    app_started = True
 
 
 def update_volume_info(volume):
