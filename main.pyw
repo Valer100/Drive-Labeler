@@ -232,9 +232,13 @@ def draw_ui():
     context_menu_integration.pack(anchor = "nw", side = "left", padx = (4, 0))
 
     try:
-        entry = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler")
-        winreg.CloseKey(entry)
-        
+        entry = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler", 0, winreg.KEY_ALL_ACCESS)
+
+        if not winreg.QueryValueEx(entry, "")[0] == strings.lang.customize_with_volume_labeler:
+            winreg.SetValueEx(entry, "", 0, winreg.REG_SZ, strings.lang.customize_with_volume_labeler)
+            
+        entry.Close()
+
         context_menu_integration.configure(default = "active")
         context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
     except:
@@ -257,23 +261,22 @@ def add_remove_context_menu_entry():
 
     try:
         entry = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler")
-        winreg.CloseKey(entry)
+        entry.Close()
         app_in_context_menu = True
     except:
         app_in_context_menu = False
 
-    print(app_in_context_menu)
     app_in_context_menu = not app_in_context_menu
 
     if app_in_context_menu:
         entry = winreg.CreateKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler")
         winreg.SetValueEx(entry, "", 0, winreg.REG_SZ, strings.lang.customize_with_volume_labeler)
         winreg.SetValueEx(entry, "Icon", 0, winreg.REG_SZ, __file__)
-        winreg.CloseKey(entry)
+        entry.Close()
 
         entry_command = winreg.CreateKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler\\command")
         winreg.SetValueEx(entry_command, "", 0, winreg.REG_SZ, f"\"{__file__}\" --volume %1")
-        winreg.CloseKey(entry_command)
+        entry.Close()
 
         context_menu_integration.configure(default = "active")
         tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
