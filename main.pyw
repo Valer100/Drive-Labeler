@@ -1,4 +1,4 @@
-import tkinter as tk, util, about, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, re, tktooltip, argparse
+import tkinter as tk, util, about, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, re, tktooltip, argparse, winreg
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image, IcoImagePlugin
 from icoextract import IconExtractor
@@ -25,6 +25,7 @@ hide_autorun = tk.BooleanVar(value = int(util.additional_prefs[0]))
 hide_vl_icon = tk.BooleanVar(value = int(util.additional_prefs[1]))
 backup_existing_autorun = tk.BooleanVar(value = int(util.additional_prefs[2]))
 icon = tk.StringVar(value = "default")
+
 
 def refresh_volumes():
     global volumes, app_started
@@ -132,7 +133,7 @@ def change_app_theme():
 
 
 def draw_ui():
-    global choose_icon, icon_from_image, refresh, volume, label, arrow, show_additional_options
+    global choose_icon, icon_from_image, refresh, volume, label, arrow, show_additional_options, context_menu_integration, context_menu_integration_tooltip
 
     show_additional_options = False
 
@@ -226,7 +227,21 @@ def draw_ui():
 
     theme = custom_ui.Toolbutton(settings, text = "\ue771", link = True, icononly = True, anchor = "n", command = change_app_theme, font = ("Segoe UI", 12))
     theme.pack(anchor = "nw", side = "left", padx = (4, 0))
-    
+
+    context_menu_integration = custom_ui.Toolbutton(settings, text = "\ue71d", link = True, icononly = True, anchor = "n", command = add_remove_context_menu_entry, font = ("Segoe UI", 12))
+    context_menu_integration.pack(anchor = "nw", side = "left", padx = (4, 0))
+
+    try:
+        entry = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler")
+        winreg.CloseKey(entry)
+        
+        context_menu_integration.configure(default = "active")
+        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
+    except Exception as e:
+        print(e)
+        context_menu_integration.configure(default = "normal")
+        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
+
     about_app = custom_ui.Toolbutton(settings, text = "\ue946", link = True, icononly = True, anchor = "n", command = about.show, font = ("Segoe UI", 13))
     about_app.pack(anchor = "nw", side = "left", padx = (4, 0))
     
@@ -235,6 +250,43 @@ def draw_ui():
     tktooltip.ToolTip(about_app, strings.lang.about_this_app, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
 
     window.update()
+
+
+def add_remove_context_menu_entry():
+    global app_in_context_menu, context_menu_integration, context_menu_integration_tooltip
+    context_menu_integration_tooltip.destroy()
+
+    try:
+        entry = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler")
+        winreg.CloseKey(entry)
+        app_in_context_menu = True
+    except:
+        app_in_context_menu = False
+
+    print(app_in_context_menu)
+    app_in_context_menu = not app_in_context_menu
+
+    if app_in_context_menu:
+        entry = winreg.CreateKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler")
+        winreg.SetValueEx(entry, "", 0, winreg.REG_SZ, strings.lang.customize_with_volume_labeler)
+        winreg.SetValueEx(entry, "Icon", 0, winreg.REG_SZ, __file__)
+        winreg.CloseKey(entry)
+
+        entry_command = winreg.CreateKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler\\command")
+        winreg.SetValueEx(entry_command, "", 0, winreg.REG_SZ, f"\"{__file__}\" --volume %1")
+        winreg.CloseKey(entry_command)
+
+        context_menu_integration.configure(default = "active")
+        tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
+        
+        messagebox.showinfo(strings.lang.context_menu_integration, strings.lang.context_menu_entry_added)
+    else:
+        subprocess.call("reg delete \"HKEY_CURRENT_USER\Software\Classes\Drive\shell\Volume Labeler\" /f", shell = True)
+
+        context_menu_integration.configure(default = "normal")
+        tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = True, delay = 1, bg = "#ffffff" if custom_ui.light_theme else "#151515", fg = custom_ui.fg, parent_kwargs = {"bg": custom_ui.fg, "padx": 1, "pady": 1})
+        
+        messagebox.showinfo(strings.lang.context_menu_integration, strings.lang.context_menu_entry_removed)
 
 
 def process_icon(path, index):
