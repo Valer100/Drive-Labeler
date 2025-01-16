@@ -34,5 +34,4 @@ def is_volume_accessible(volume: str):
     volumes.pop(0)
     volumes.pop()
 
-    if volume in volumes: return True
-    else: return False
+    return volume in volumes
