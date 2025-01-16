@@ -21,6 +21,8 @@ additional_options = "Additional options"
 hide_autorun = "Hide autorun.inf file"
 hide_vl_icon = "Hide vl_icon folder"
 backup_existing_autorun = "Backup autorun.inf file (if it already exists)"
+context_menu_integration_disabled = "Context menu integration: Disabled"
+context_menu_integration_enabled = "Context menu integration: Enabled"
 
 # Messages
 done = "Done"
@@ -33,6 +35,9 @@ error = "Error"
 failure_message = "Failed to change the volume's information.\n\n"
 missing_icon_file = "The copied icon file is missing."
 unicode_not_supported = "Unicode characters are not supported. Make sure the label doesn't contain Unicode characters and try again."
+context_menu_integration = "Context menu integration"
+context_menu_entry_added = "The context menu entry was successfully added."
+context_menu_entry_removed = "The context menu entry was successfully removed."
 
 # Files
 readme = "READ ME!"
@@ -57,3 +62,4 @@ cancel = "Cancel"
 about_this_app = "About this app"
 about_title = "About Volume Labeler"
 version = "Version %v"
+customize_with_volume_labeler = "Customize with Volume Labeler"

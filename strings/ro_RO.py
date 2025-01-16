@@ -21,6 +21,8 @@ additional_options = "Opțiuni adiționale"
 hide_autorun = "Ascunde fișierul autorun.inf"
 hide_vl_icon = "Ascunde folderul vl_icon"
 backup_existing_autorun = "Fă backup fișierului autorun.inf (dacă există deja)"
+context_menu_integration_disabled = "Integrare în meniul contextual: Dezactivată"
+context_menu_integration_enabled = "Integrare în meniul contextual: Activată"
 
 # Messages
 done = "Gata"
@@ -33,6 +35,9 @@ error = "Eroare"
 failure_message = "Nu s-au putut modifica informațiile volumului.\n\n"
 missing_icon_file = "Fișierul pictogramei copiate lipsește."
 unicode_not_supported = "Caracterele Unicode nu sunt suportate. Asigură-te că eticheta nu conține caractere Unicode și încearcă din nou."
+context_menu_integration = "Integrare cu meniul contextual"
+context_menu_entry_added = "Intrarea în meniul contextual a fost adăugată cu succes."
+context_menu_entry_removed = "Intrarea în meniul contextual a fost eliminată cu succes."
 
 # Files
 readme = "CITEȘTE-MĂ!"
@@ -58,3 +63,4 @@ cancel = "Anulare"
 about_this_app = "Despre această aplicație"
 about_title = "Despre Volume Labeler"
 version = "Versiunea %v"
+customize_with_volume_labeler = "Personalizează cu Volume Labeler"
