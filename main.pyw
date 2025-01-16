@@ -1,4 +1,4 @@
-import tkinter as tk, util, about, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, re, tktooltip, argparse, winreg
+import tkinter as tk, util, about, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, re, tktooltip, argparse, winreg, sys
 from tkinter import ttk, filedialog, messagebox
 from PIL import Image, IcoImagePlugin
 from icoextract import IconExtractor
@@ -271,11 +271,11 @@ def add_remove_context_menu_entry():
     if app_in_context_menu:
         entry = winreg.CreateKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler")
         winreg.SetValueEx(entry, "", 0, winreg.REG_SZ, strings.lang.customize_with_volume_labeler)
-        winreg.SetValueEx(entry, "Icon", 0, winreg.REG_SZ, __file__)
+        winreg.SetValueEx(entry, "Icon", 0, winreg.REG_SZ, sys.executable)
         entry.Close()
 
         entry_command = winreg.CreateKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler\\command")
-        winreg.SetValueEx(entry_command, "", 0, winreg.REG_SZ, f"\"{__file__}\" --volume %1")
+        winreg.SetValueEx(entry_command, "", 0, winreg.REG_SZ, f"\"{sys.executable}\" --volume %1")
         entry.Close()
 
         context_menu_integration.configure(default = "active")
