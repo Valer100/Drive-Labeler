@@ -1,4 +1,4 @@
-import icoextract, ctypes, os, getpass, strings, subprocess
+import ctypes, os, getpass, strings, subprocess
 
 if os.path.exists("icon.ico"): internal = ""
 else: internal = "_internal\\"
@@ -35,3 +35,10 @@ def is_volume_accessible(volume: str):
     volumes.pop()
 
     return volume in volumes
+
+def get_volume_label(volume: str):
+    volume = volume.replace("\\", "").upper()
+    label = subprocess.getoutput("vol " + volume.replace("\\", "")).split("\n")[0].strip().replace(f"Volume in drive {volume.replace(':', '')} is ", "", 1)
+
+    if label == f"Volume in drive {volume.replace(':', '')} has no label.": return ""
+    else: return label
