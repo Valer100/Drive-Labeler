@@ -26,7 +26,7 @@ DefaultGroupName={#MyAppName}
 DisableProgramGroupPage=yes
 DisableWelcomePage=no
 LicenseFile=LICENSE
-; PrivilegesRequired=lowest
+PrivilegesRequired=lowest
 OutputDir=build
 OutputBaseFilename=volume_labeler_installer_x64
 SetupIconFile=assets/installer/icon.ico
@@ -58,9 +58,9 @@ Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Registry]
-Root: HKCR; Subkey: "Drive\shell\Volume Labeler"; ValueType: string; ValueName: ""; ValueData: "Customize with Volume Labeler"; Flags: uninsdeletekey; Tasks: contextmenuintegration
-Root: HKCR; Subkey: "Drive\shell\Volume Labeler"; ValueType: string; ValueName: "Icon"; ValueData: "{app}\volume_labeler.exe,0"; Flags: uninsdeletekey; Tasks: contextmenuintegration
-Root: HKCR; Subkey: "Drive\shell\Volume Labeler\command"; ValueType: string; ValueName: ""; ValueData: """{app}\volume_labeler.exe"" --volume %1"; Flags: uninsdeletekey; Tasks: contextmenuintegration
+Root: HKCU; Subkey: "Software\Classes\Drive\shell\Volume Labeler"; ValueType: string; ValueName: ""; ValueData: "Customize with Volume Labeler"; Flags: uninsdeletekey; Tasks: contextmenuintegration
+Root: HKCU; Subkey: "Software\Classes\Drive\shell\Volume Labeler"; ValueType: string; ValueName: "Icon"; ValueData: "{app}\volume_labeler.exe,0"; Flags: uninsdeletekey; Tasks: contextmenuintegration
+Root: HKCU; Subkey: "Software\Classes\Drive\shell\Volume Labeler\command"; ValueType: string; ValueName: ""; ValueData: """{app}\volume_labeler.exe"" --volume %1"; Flags: uninsdeletekey; Tasks: contextmenuintegration
 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
