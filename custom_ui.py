@@ -118,7 +118,8 @@ class Toolbutton(tk.Button):
     def __init__(self, master, text: str = "", command: callable = None, link: bool = False, icononly: bool = False, *args, **kwargs):
         super().__init__(master, text = text, command = command, padx = 2 if icononly else 4, pady = 2, background = bg, 
                          foreground = accent_link if link else fg, border = 0, relief = "solid", 
-                         activebackground = bg_press, activeforeground = accent if link else fg, *args, **kwargs)
+                         activebackground = bg_press, activeforeground = accent if link else fg,
+                         cursor = "hand2" if link and not icononly else "", *args, **kwargs)
 
         self.link = link
 
