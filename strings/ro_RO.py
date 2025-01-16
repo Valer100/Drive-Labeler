@@ -35,7 +35,7 @@ error = "Eroare"
 failure_message = "Nu s-au putut modifica informațiile volumului.\n\n"
 missing_icon_file = "Fișierul pictogramei copiate lipsește."
 unicode_not_supported = "Caracterele Unicode nu sunt suportate. Asigură-te că eticheta nu conține caractere Unicode și încearcă din nou."
-context_menu_integration = "Integrare cu meniul contextual"
+context_menu_integration = "Integrare în meniul contextual"
 context_menu_entry_added = "Intrarea în meniul contextual a fost adăugată cu succes."
 context_menu_entry_removed = "Intrarea în meniul contextual a fost eliminată cu succes."
 
