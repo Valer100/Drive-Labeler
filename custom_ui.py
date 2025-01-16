@@ -4,7 +4,7 @@ from tkinter import ttk
 entry_select = winaccent.accent_normal
 
 def update_colors():
-    global light_theme, bg, bg_hover, bg_press, fg, entry_focus, entry_bd, entry_bg, button_bg, button_hover, button_press, button_bd, button_bd_active, accent, accent_link
+    global light_theme, bg, bg_hover, bg_press, fg, entry_focus, entry_bd, entry_bg, button_bg, button_hover, button_press, button_bd, button_bd_active, tooltip_bg, tooltip_bd, tooltip_fg, accent, accent_link
     light_theme = winaccent.apps_use_light_theme if util.theme == "default" else True if util.theme == "light" else False
 
     if light_theme:
@@ -20,6 +20,9 @@ def update_colors():
         button_press = "#dbdbdb"
         button_bd = "#d0d0d0"
         button_bd_active = winaccent.accent_dark
+        tooltip_bg = "#ffffff"
+        tooltip_bd = "#8f8f8f"
+        tooltip_fg = "#505050"
         accent = winaccent.accent_dark
         accent_link = winaccent.accent_dark_2
     else:
@@ -35,6 +38,9 @@ def update_colors():
         button_press = "#676767"
         button_bd = "#9b9b9b"
         button_bd_active = "#ffffff"
+        tooltip_bg = "#2b2b2b"
+        tooltip_bd = "#747474"
+        tooltip_fg = "#ffffff"
         accent = winaccent.accent_light
         accent_link = winaccent.accent_light_3
 
