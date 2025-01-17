@@ -26,7 +26,7 @@ context_menu_integration_enabled = "Integrare în meniul contextual: Activată"
 
 # Messages
 done = "Gata"
-operation_complete = "Informațiile volumului au fost modificate.\n\nDacă volumul se află pe o unitate amovibilă, deconectează unitatea și conecteaz-o înapoi la calculator pentru ca modificările să aibă efect. Dacă nu, modificările vor avea efect când te vei conecta data viitoare."
+operation_complete = "Informațiile volumului au fost modificate.\n\nDacă volumul se află pe o unitate amovibilă, deconectează unitatea și conecteaz-o înapoi la calculator pentru ca modificările să aibă efect. Dacă nu, modificările vor avea efect la următoarea pornire a calculatorului."
 permission_denied = "Permisiune refuzată"
 read_only_volume_message = "Volumul selectat poate fi doar citit."
 volume_not_accessible = "Volum inaccesibil"
