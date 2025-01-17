@@ -12,7 +12,6 @@ arguments = parser.parse_args()
 window = custom_ui.App()
 window.title("Volume Labeler")
 window.resizable(False, False)
-window.iconbitmap(bitmap = util.internal + "icon.ico", default = util.internal + "icon.ico")
 window.configure(padx = 14, pady = 8)
 
 show_additional_options = False
@@ -30,10 +29,7 @@ icon = tk.StringVar(value = "default")
 def refresh_volumes():
     global volumes, app_started
 
-    volumes = subprocess.getoutput("fsutil fsinfo drives").split(" ")
-    volumes.pop(0)
-    volumes.pop()
-
+    volumes = util.get_available_drives()
     selected_volume.set(volumes[0])
 
     menu = volume["menu"]
@@ -43,7 +39,7 @@ def refresh_volumes():
         menu.add_command(label = string, command = lambda value = string: update_volume_info(value))
 
     if not app_started and arguments.volume != None:
-        if util.is_volume_accessible(arguments.volume.upper()):
+        if os.path.exists(arguments.volume.upper()):
             update_volume_info(arguments.volume.upper())
         else:
             update_volume_info(volumes[0])
@@ -57,7 +53,7 @@ def refresh_volumes():
 def update_volume_info(volume):
     global icon, autorun
 
-    if util.is_volume_accessible(volume):
+    if os.path.exists(volume):
         selected_volume.set(volume)
 
         icon.set("default")
@@ -134,7 +130,6 @@ def change_app_theme():
 
 def draw_ui():
     global choose_icon, icon_from_image, refresh, volume, label, arrow, show_additional_options, context_menu_integration, context_menu_integration_tooltip
-
     show_additional_options = False
 
     destroy_everything(window)
@@ -361,7 +356,7 @@ def choose_icon_():
 
 
 def modify_volume_info(volume: str, label: str):
-    if util.is_volume_accessible(volume):
+    if os.path.exists(volume):
         if not icon.get() == "default" and not os.path.exists(util.roaming + "\\icon.ico"):
             messagebox.showerror(strings.lang.error, strings.lang.missing_icon_file)
             return
@@ -372,7 +367,7 @@ def modify_volume_info(volume: str, label: str):
                 id = random.randint(1000000, 9999999)
 
                 if os.path.exists(f"{volume}vl_icon"):
-                    subprocess.call(f"rmdir /s /q \"{volume}vl_icon\"", shell = True)
+                    shutil.rmtree(f"{volume}vl_icon")
 
                 os.mkdir(f"{volume}vl_icon")
                 shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}vl_icon\\icon{id}.ico")
@@ -381,11 +376,11 @@ def modify_volume_info(volume: str, label: str):
                 readme_file.write(strings.lang.icon_folder)
                 readme_file.close()
 
-                if hide_vl_icon.get():
-                    subprocess.call(f"attrib +H \"{volume}vl_icon\"", shell = True)
+                if hide_vl_icon.get(): 
+                    util.add_hidden_attribute(f"{volume}vl_icon")
 
             if os.path.exists(f"{volume}autorun.inf") and backup_existing_autorun.get():
-                if not os.path.exists(f"{volume}autorun_backups"):
+                if not os.path.exists(f"{volume}autorun_backups"): 
                     os.mkdir(f"{volume}autorun_backups")
 
                 subprocess.call(f"attrib -H \"{volume}autorun.inf\"", shell = True)
@@ -435,14 +430,14 @@ def modify_volume_info(volume: str, label: str):
             autorun_new = autorun_new.strip()
 
             try:
-                subprocess.call(f"attrib -H \"{volume}autorun.inf\"", shell = True)
+                util.remove_hidden_attribute(f"{volume}autorun.inf")
 
                 autorun_file = open(f"{selected_volume.get()}autorun.inf", "w")
                 autorun_file.write(autorun_new)
                 autorun_file.close()
             
                 if hide_autorun.get():
-                    subprocess.call(f"attrib +H \"{volume}autorun.inf\"", shell = True)
+                    util.add_hidden_attribute(f"{volume}autorun.inf")
 
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
@@ -458,14 +453,14 @@ def modify_volume_info(volume: str, label: str):
                 autorun = f"[autorun]\nlabel={label}"
                 if not icon.get() == "default": autorun += f"\nicon=vl_icon\\icon{id}.ico,0"
 
-                subprocess.call(f"attrib -H \"{volume}autorun.inf\"", shell = True)
+                util.remove_hidden_attribute(f"{volume}autorun.inf")
 
                 autorun_file = open(f"{volume}autorun.inf", "w")
                 autorun_file.write(autorun)
                 autorun_file.close()
 
                 if hide_autorun.get():
-                    subprocess.call(f"attrib +H \"{volume}autorun.inf\"", shell = True)
+                    util.add_hidden_attribute(f"{volume}autorun.inf")
 
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
@@ -495,13 +490,13 @@ def remove_personalizations(volume: str):
     confirmed = messagebox.askyesno(strings.lang.remove_customizations, strings.lang.remove_customizations_message, icon = "warning")
 
     if confirmed:
-        if util.is_volume_accessible(volume):
+        if os.path.exists(volume):
             try:
                 if os.path.exists(f"{volume}autorun.inf") and backup_existing_autorun.get():
                     if not os.path.exists(f"{volume}autorun_backups"):
                         os.mkdir(f"{volume}autorun_backups")
 
-                    subprocess.call(f"attrib -H \"{volume}autorun.inf\"", shell = True)
+                    util.remove_hidden_attribute(f"{volume}autorun.inf")
                     shutil.copyfile(f"{volume}autorun.inf", f"{volume}autorun_backups\\autorun_{str(datetime.now()).replace('-', '_').replace(':', '_')}.inf")
 
                     readme_file = open(f"{volume}autorun_backups\\! {strings.lang.readme}.txt", "w", encoding = "utf-8")
@@ -512,7 +507,7 @@ def remove_personalizations(volume: str):
                     os.remove(f"{volume}autorun.inf")
 
                 if os.path.exists(f"{volume}vl_icon"):
-                    subprocess.call(f"rmdir /s /q \"{volume}vl_icon\"", shell = True)
+                    shutil.rmtree(f"{volume}vl_icon")
 
                 update_volume_info(volume)
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)

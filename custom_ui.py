@@ -208,6 +208,7 @@ class App(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.iconbitmap(default = util.internal + "icon.ico")
         self.update()
         self.set_theme()
 

@@ -32,12 +32,6 @@ def pick_icon() -> Tuple[str, int]:
     result = ctypes.windll.shell32.PickIconDlg(None, icon_file_buffer, ctypes.sizeof(icon_file_buffer), ctypes.byref(icon_index))
     if result: return (icon_file_buffer.value, icon_index.value)
 
-def is_volume_accessible(volume: str):
-    volumes = subprocess.getoutput("fsutil fsinfo drives").split(" ")
-    volumes.pop(0)
-    volumes.pop()
-
-    return volume in volumes
 
 def get_volume_label(volume: str):
     volume = volume.replace("\\", "").upper()
@@ -45,3 +39,12 @@ def get_volume_label(volume: str):
 
     if label == f"Volume in drive {volume.replace(':', '')} has no label.": return ""
     else: return label
+
+def get_available_drives():
+    return [f"{chr(65 + i)}:\\" for i in range(26) if (ctypes.windll.kernel32.GetLogicalDrives() >> i) & 1]
+
+def add_hidden_attribute(file_path):
+    ctypes.windll.kernel32.SetFileAttributesW(file_path, 0x02)
+
+def remove_hidden_attribute(file_path):
+    ctypes.windll.kernel32.SetFileAttributesW(file_path, 0x80)
