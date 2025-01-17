@@ -1,5 +1,5 @@
-tk
-==
+tcl and tk
+==========
 
 This software is copyrighted by the Regents of the University of
 California, Sun Microsystems, Inc., Scriptics Corporation, ActiveState
