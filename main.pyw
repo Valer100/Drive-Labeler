@@ -395,7 +395,7 @@ def modify_volume_info(volume: str, label: str):
                 readme_file.write(strings.lang.autorun_backup)
                 readme_file.close()
         except PermissionError:
-            messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
+            messagebox.showerror(strings.lang.permission_denied, strings.lang.permission_denied_message)
 
 
         def modify_existing_autorun_file():
@@ -446,7 +446,7 @@ def modify_volume_info(volume: str, label: str):
 
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
-                messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
+                messagebox.showerror(strings.lang.permission_denied, strings.lang.permission_denied_message)
             except UnicodeEncodeError:
                 messagebox.showerror(strings.lang.error, strings.lang.unicode_not_supported)
             except:
@@ -469,7 +469,7 @@ def modify_volume_info(volume: str, label: str):
 
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
-                messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
+                messagebox.showerror(strings.lang.permission_denied, strings.lang.permission_denied_message)
             except UnicodeEncodeError:
                 messagebox.showerror(strings.lang.error, strings.lang.unicode_not_supported)
             except:
@@ -517,7 +517,7 @@ def remove_personalizations(volume: str):
                 update_volume_info(volume)
                 messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
             except PermissionError:
-                messagebox.showerror(strings.lang.permission_denied, strings.lang.read_only_volume_message)
+                messagebox.showerror(strings.lang.permission_denied, strings.lang.permission_denied_message)
             except:
                 messagebox.showerror(strings.lang.error, strings.lang.failure_message + traceback.format_exc())
         else:
