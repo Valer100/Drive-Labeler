@@ -69,31 +69,31 @@ class CommandLink(tk.Frame):
             is_touched = True
 
             self.configure(background = bg_hover)
-            self.arrow.configure(background = bg_hover)
-            self.text.configure(background = bg_hover)
+            self.arrow.configure(background = bg_hover, foreground = accent_link)
+            self.text.configure(background = bg_hover, foreground = accent_link)
 
         def on_leave(event):
             global is_touched
             is_touched = False
 
             self.configure(background = bg)
-            self.arrow.configure(background = bg)
-            self.text.configure(background = bg)
+            self.arrow.configure(background = bg, foreground = accent_link)
+            self.text.configure(background = bg, foreground = accent_link)
 
         def on_click(event):
             global is_touched
             is_touched = True
 
             self.configure(background = bg_press)
-            self.arrow.configure(background = bg_press)
-            self.text.configure(background = bg_press)
+            self.arrow.configure(background = bg_press, foreground = accent)
+            self.text.configure(background = bg_press, foreground = accent)
 
         def on_click_release(event):
             global is_touched
 
             self.configure(background = bg_hover)
-            self.arrow.configure(background = bg_hover)
-            self.text.configure(background = bg_hover)
+            self.arrow.configure(background = bg_hover, foreground = accent_link)
+            self.text.configure(background = bg_hover, foreground = accent_link)
 
             if not command is None and is_touched: command(); is_touched = False
 
