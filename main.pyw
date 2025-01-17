@@ -12,7 +12,7 @@ arguments = parser.parse_args()
 window = custom_ui.App()
 window.title("Volume Labeler")
 window.resizable(False, False)
-window.iconbitmap(default = util.internal + "icon.ico")
+window.iconbitmap(bitmap = util.internal + "icon.ico", default = util.internal + "icon.ico")
 window.configure(padx = 14, pady = 8)
 
 show_additional_options = False
