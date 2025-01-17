@@ -9,6 +9,7 @@ user_preferences = f"C:\\Users\\{getpass.getuser()}\\AppData\\Local\\Volume Labe
 roaming = f"C:\\Users\\{getpass.getuser()}\\AppData\\Roaming\\Volume Labeler"
 
 if not os.path.exists(user_preferences): os.mkdir(user_preferences)
+if not os.path.exists(roaming): os.mkdir(roaming)
 if not os.path.exists(user_preferences + "\\language"): open(user_preferences + "\\language", "w").write("default")
 if not os.path.exists(user_preferences + "\\theme"): open(user_preferences + "\\theme", "w").write("default")
 if not os.path.exists(user_preferences + "\\additional_prefs"): open(user_preferences + "\\additional_prefs", "w").write("111")
