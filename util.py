@@ -1,4 +1,4 @@
-import ctypes, os, getpass, strings, subprocess
+import ctypes, os, getpass, strings
 
 os.chdir(os.path.dirname(__file__))
 
@@ -32,13 +32,12 @@ def pick_icon() -> Tuple[str, int]:
     result = ctypes.windll.shell32.PickIconDlg(None, icon_file_buffer, ctypes.sizeof(icon_file_buffer), ctypes.byref(icon_index))
     if result: return (icon_file_buffer.value, icon_index.value)
 
-
 def get_volume_label(volume: str):
-    volume = volume.replace("\\", "").upper()
-    label = subprocess.getoutput("vol " + volume.replace("\\", "")).split("\n")[0].strip().replace(f"Volume in drive {volume.replace(':', '')} is ", "", 1)
-
-    if label == f"Volume in drive {volume.replace(':', '')} has no label.": return ""
-    else: return label
+    buffer = ctypes.create_unicode_buffer(261)    
+    result = ctypes.windll.kernel32.GetVolumeInformationW(ctypes.c_wchar_p(volume), buffer, ctypes.sizeof(buffer), None, None, None, None, None)
+    
+    if result: return buffer.value
+    else: return ""
 
 def get_available_drives():
     return [f"{chr(65 + i)}:\\" for i in range(26) if (ctypes.windll.kernel32.GetLogicalDrives() >> i) & 1]
