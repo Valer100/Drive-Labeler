@@ -283,7 +283,7 @@ def add_remove_context_menu_entry():
         
         messagebox.showinfo(strings.lang.context_menu_integration, strings.lang.context_menu_entry_added)
     else:
-        subprocess.call("reg delete \"HKEY_CURRENT_USER\Software\Classes\Drive\shell\Volume Labeler\" /f", shell = True)
+        subprocess.call("reg delete \"HKEY_CURRENT_USER\\Software\\Classes\\Drive\\shell\\Volume Labeler\" /f", shell = True)
 
         context_menu_integration.configure(default = "normal")
         context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = True, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
@@ -314,10 +314,10 @@ def process_icon(path, index):
     img.size = closest_size
     img.load()
     img = img.resize((32, 32), Image.Resampling.LANCZOS)
-    img.save(util.roaming + "\preview.png")
+    img.save(util.roaming + "\\preview.png")
     img.close()
 
-    preview = tk.PhotoImage(file = util.roaming + "\preview.png")
+    preview = tk.PhotoImage(file = util.roaming + "\\preview.png")
     choose_icon.configure(image = preview, text = f"{os.path.basename(path)}, {index}", width = 30)
     icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
 
@@ -342,15 +342,15 @@ def choose_icon_():
                 icon_path = image.name
 
                 img = Image.open(icon_path)
-                img.save(fp = util.roaming + "\icon.ico", format = "ICO", sizes = [(16, 16), (32, 32), (48, 48), (64, 64), (128, 128)])
+                img.save(fp = util.roaming + "\\icon.ico", format = "ICO", sizes = [(16, 16), (32, 32), (48, 48), (64, 64), (128, 128)])
 
                 preview_img = img.resize((32, int(img.height * 32 / img.width)), Image.Resampling.LANCZOS)
-                preview_img.save(util.roaming + "\preview.png")
+                preview_img.save(util.roaming + "\\preview.png")
                 preview_img.close()
 
                 img.close()
 
-                preview = tk.PhotoImage(file = util.roaming + "\preview.png")
+                preview = tk.PhotoImage(file = util.roaming + "\\preview.png")
                 icon_from_image.configure(image = preview, text = os.path.basename(icon_path), width = 30)
                 
                 choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
@@ -417,7 +417,7 @@ def modify_volume_info(volume: str, label: str):
 
                     if entry == "icon": 
                         if not icon.get() == "default":
-                            autorun_new += f"\nicon=vl_icon\icon{id}.ico,0"
+                            autorun_new += f"\nicon=vl_icon\\icon{id}.ico,0"
                             icon_changed = True
                     elif entry == "label": 
                         autorun_new += f"\nlabel={label}"
@@ -427,7 +427,7 @@ def modify_volume_info(volume: str, label: str):
                     autorun_new += "\n" + line
 
             if not icon_changed and not icon.get() == "default": 
-                autorun_new = re.sub(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nicon=vl_icon\icon{id}.ico,0", autorun_new, flags = re.MULTILINE)
+                autorun_new = re.sub(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nicon=vl_icon\\icon{id}.ico,0", autorun_new, flags = re.MULTILINE)
             
             if not label_changed: 
                 autorun_new = re.sub(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nlabel={label}", autorun_new, flags = re.MULTILINE)
