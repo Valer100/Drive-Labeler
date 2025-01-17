@@ -279,14 +279,14 @@ def add_remove_context_menu_entry():
         entry.Close()
 
         context_menu_integration.configure(default = "active")
-        tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = True, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
+        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = True, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
         
         messagebox.showinfo(strings.lang.context_menu_integration, strings.lang.context_menu_entry_added)
     else:
         subprocess.call("reg delete \"HKEY_CURRENT_USER\Software\Classes\Drive\shell\Volume Labeler\" /f", shell = True)
 
         context_menu_integration.configure(default = "normal")
-        tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = True, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
+        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = True, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
         
         messagebox.showinfo(strings.lang.context_menu_integration, strings.lang.context_menu_entry_removed)
 
