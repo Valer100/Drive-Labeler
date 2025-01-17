@@ -48,8 +48,8 @@ def show():
     links.pack(fill = "x", pady = (16, 0))
 
     custom_ui.Toolbutton(links, text = "GitHub", link = True, command = lambda: webbrowser.open("https:\\\\github.com\\Valer100\\Volume-Labeler")).pack(side = "left")
-    custom_ui.Toolbutton(links, text = "Issues", link = True, command = lambda: webbrowser.open("https:\\\\github.com\\Valer100\\Volume-Labeler\\issues")).pack(side = "left", padx = (4, 0))
-    custom_ui.Toolbutton(links, text = "Latest version", link = True, command = lambda: webbrowser.open("https:\\\\github.com\\Valer100\\Volume-Labeler\\releases\\latest")).pack(side = "left", padx = (4, 0))
+    custom_ui.Toolbutton(links, text = strings.lang.issues, link = True, command = lambda: webbrowser.open("https:\\\\github.com\\Valer100\\Volume-Labeler\\issues")).pack(side = "left", padx = (4, 0))
+    custom_ui.Toolbutton(links, text = strings.lang.latest_version, link = True, command = lambda: webbrowser.open("https:\\\\github.com\\Valer100\\Volume-Labeler\\releases\\latest")).pack(side = "left", padx = (4, 0))
 
     buttons = ttk.Frame(window)
     buttons.pack(fill = "x", pady = (16, 16))
