@@ -27,6 +27,8 @@ A simple tool for changing the label and the icon of a volume in Windows. It mak
 
 - Option to get rid of all customizations (including the ones not made by Volume Labeler).
 
+- Option in the volumes' right click context menu for easily customizing volumes (available only in the classic context menu at the moment). 
+
 - Light and dark themes and localization support.
 
 ## 📷 Screenshots
