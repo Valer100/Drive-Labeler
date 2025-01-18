@@ -26,7 +26,7 @@ backup_existing_autorun = tk.BooleanVar(value = int(util.additional_prefs[2]))
 icon = tk.StringVar(value = "default")
 
 
-def refresh_volumes():
+def refresh_volumes_list():
     global volumes, app_started
 
     volumes = util.get_available_drives()
@@ -112,7 +112,7 @@ def change_app_language():
 
     if old_language != util.language: 
         draw_ui()
-        refresh_volumes()
+        refresh_volumes_list()
 
 
 def change_app_theme():
@@ -125,7 +125,7 @@ def change_app_theme():
         custom_ui.update_colors()
         window.set_theme()
         draw_ui()
-        refresh_volumes()
+        refresh_volumes_list()
 
 
 def draw_ui():
@@ -145,7 +145,10 @@ def draw_ui():
     if custom_ui.light_theme: refresh = tk.PhotoImage(file = f"{util.internal}icons\\refresh_light.png")
     else: refresh = tk.PhotoImage(file = f"{util.internal}icons\\refresh_dark.png")
 
-    custom_ui.Button(volume_section, width = -1, command = refresh_volumes, image = refresh).pack(side = "right", padx = (8, 0))
+    refresh_volumes = custom_ui.Button(volume_section, width = -1, command = refresh_volumes_list, image = refresh)
+    refresh_volumes.pack(side = "right", padx = (8, 0))
+
+    tktooltip.ToolTip(refresh_volumes, strings.lang.refresh_volumes_list, follow = True, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
     
     volume = custom_ui.OptionMenu(volume_section, selected_volume, *volumes)
     volume.pack(side = "right")
@@ -520,6 +523,6 @@ def remove_personalizations(volume: str):
 
 
 draw_ui()
-refresh_volumes()
+refresh_volumes_list()
 custom_ui.sync_colors_with_system(window)
 window.mainloop()

@@ -23,6 +23,7 @@ hide_vl_icon = "Ascunde folderul vl_icon"
 backup_existing_autorun = "Fă backup fișierului autorun.inf (dacă există deja)"
 context_menu_integration_disabled = "Integrare în meniul contextual: Dezactivată"
 context_menu_integration_enabled = "Integrare în meniul contextual: Activată"
+refresh_volumes_list = "Reîmprospătează lista volumelor"
 
 # Messages
 done = "Gata"
