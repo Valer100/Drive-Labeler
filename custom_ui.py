@@ -199,13 +199,6 @@ class App(tk.Tk):
         pywinstyles.apply_style(self, "light" if light_theme else "dark")
         pywinstyles.change_header_color(self, bg)
 
-        version = sys.getwindowsversion()
-        
-        if version.major == 10 and version.build < 22000:
-            # A hacky way to update the title bar's color on Windows 10 (it doesn't update instantly like on Windows 11)
-            self.wm_attributes("-alpha", 0.99)
-            self.wm_attributes("-alpha", 1)
-
         style = ttk.Style()
         style.configure(".", background = bg, foreground = fg)
         self.configure(background = bg)
@@ -235,13 +228,6 @@ class Toplevel(tk.Toplevel):
 
         pywinstyles.apply_style(self, "light" if light_theme else "dark")
         pywinstyles.change_header_color(self, bg)
-
-        version = sys.getwindowsversion()
-        
-        if version.major == 10 and version.build < 22000:
-            # A hacky way to update the title bar's color on Windows 10 (it doesn't update instantly like on Windows 11)
-            self.wm_attributes("-alpha", 0.99)
-            self.wm_attributes("-alpha", 1)
 
         hPyT.maximize_minimize_button.hide(self)
 
