@@ -212,6 +212,7 @@ class App(tk.Tk):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.withdraw()
 
         self.iconbitmap(default = util.internal + "icon.ico")
         self.update()
@@ -222,7 +223,10 @@ class App(tk.Tk):
         self.set_theme()
 
         return value
-
+    
+    def mainloop(self, n = 0):
+        self.deiconify()
+        super().mainloop(n)
 
 class Toplevel(tk.Toplevel):
     def set_titlebar_theme(self):
@@ -243,6 +247,7 @@ class Toplevel(tk.Toplevel):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.withdraw()
 
         self.grab_set()
         self.focus_set()
@@ -252,6 +257,7 @@ class Toplevel(tk.Toplevel):
     def resizable(self, width: bool = None, height: bool = None):
         value = super().resizable(width, height)
         self.set_titlebar_theme()
+        self.deiconify()
 
         return value
     
