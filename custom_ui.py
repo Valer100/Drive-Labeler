@@ -46,6 +46,7 @@ def update_colors():
 
 update_colors()
 
+
 class CommandLink(tk.Frame):
     def __init__(self, master, text: str = "", command: callable = None, *args, **kwargs):
         super().__init__(master, padx = 8, pady = 8, background = bg, *args, **kwargs)
@@ -120,6 +121,7 @@ class CommandLink(tk.Frame):
         self.arrow["foreground"] = accent_link
         self.text["foreground"] = accent_link
 
+
 class Toolbutton(tk.Button):
     def __init__(self, master, text: str = "", command: callable = None, link: bool = False, icononly: bool = False, *args, **kwargs):
         super().__init__(master, text = text, command = command, padx = 2 if icononly else 4, pady = 2, background = bg, 
@@ -136,6 +138,7 @@ class Toolbutton(tk.Button):
 
     def update_colors(self):
         self.configure(background = bg, foreground = accent_link if self.link else fg, activebackground = bg_press, activeforeground = accent if self.link else fg)
+
 
 class Button(tk.Button):
     def __init__(self, master, text: str = "", command: callable = None, *args, **kwargs):
@@ -163,6 +166,9 @@ class Button(tk.Button):
                        activeforeground = fg, highlightbackground = button_bd_active if self.is_active else button_bd, 
                        highlightcolor = button_bd_active if self.is_active else button_bd)
 
+ttk.Button = Button
+
+
 class OptionMenu(tk.OptionMenu):
     def __init__(self, master, variable, value, *values):
         super().__init__(master, variable, value, *values)
@@ -187,7 +193,6 @@ class OptionMenu(tk.OptionMenu):
 
         self["menu"].configure(activebackground = winaccent.accent_normal)
 
-ttk.Button = Button
 
 class App(tk.Tk):
     def set_theme(self):
@@ -217,6 +222,7 @@ class App(tk.Tk):
         self.set_theme()
 
         return value
+
 
 class Toplevel(tk.Toplevel):
     def set_titlebar_theme(self):
@@ -249,6 +255,7 @@ class Toplevel(tk.Toplevel):
 
         return value
     
+
 def sync_colors(window):
     update_colors()
 
