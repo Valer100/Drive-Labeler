@@ -424,12 +424,19 @@ def modify_volume_info(volume: str, label: str):
                 else:
                     autorun_new += "\n" + line
 
+            
             if not icon_changed and not icon.get() == "default": 
-                autorun_new = re.sub(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nicon=vl_icon\\icon{id}.ico,0", autorun_new, flags = re.MULTILINE)
+                autorun_new, replacements = re.subn(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nicon=vl_icon\\icon{id}.ico,0", autorun_new, flags = re.MULTILINE)
+                if replacements > 0: icon_changed = True
             
             if not label_changed: 
-                autorun_new = re.sub(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nlabel={label}", autorun_new, flags = re.MULTILINE)
-            
+                autorun_new, replacements = re.subn(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nlabel={label}", autorun_new, flags = re.MULTILINE)
+                if replacements > 0: label_changed = True
+
+            if not (icon_changed or label_changed):
+                autorun_new += f"\n\n[autorun]\nlabel={label}"
+                if not icon.get() == "default": autorun_new += f"\nicon=vl_icon\\icon{id}.ico,0"
+
             autorun_new = autorun_new.strip()
 
             try:
@@ -479,7 +486,7 @@ def modify_volume_info(volume: str, label: str):
             autorun = autorun_file.read()
             autorun_file.close()
 
-            if re.search(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", autorun):
+            if re.search("(?i)^\\[[^\\]]+\\]", autorun):
                 modify_existing_autorun_file()
             else:
                 create_new_autorun_file()
