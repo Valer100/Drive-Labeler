@@ -15,7 +15,11 @@ def show():
 
     theme = tk.StringVar(value = util.theme)
 
-    ttk.Label(window, width = 25, text = strings.lang.change_theme, font = ("Segoe UI Semibold", 17)).pack(anchor = "w", pady = 8)
+    header = ttk.Frame(window)
+    header.pack(anchor = "w", pady = 8)
+
+    ttk.Label(header, text = "\ue771 ", font = ("Segoe UI Semibold", 17), padding = (0, 5, 0, 0)).pack(side = "left")
+    ttk.Label(header, width = 25, text = strings.lang.change_theme, font = ("Segoe UI Semibold", 17)).pack(side = "left")
 
     ttk.Radiobutton(window, text = strings.lang.lang_system_default, value = "default", variable = theme).pack(anchor = "w")
     ttk.Radiobutton(window, text = strings.lang.light_theme, value = "light", variable = theme).pack(anchor = "w")
