@@ -199,9 +199,9 @@ def get_available_drives() -> list:
     return [f"{chr(65 + i)}:\\" for i in range(26) if (ctypes.windll.kernel32.GetLogicalDrives() >> i) & 1]
 
 
-def add_hidden_attribute(file_path):
+def add_hidden_attribute(file_path: str) -> None:
     ctypes.windll.kernel32.SetFileAttributesW(file_path, 0x02)
 
 
-def remove_hidden_attribute(file_path):
+def remove_hidden_attribute(file_path: str) -> None:
     ctypes.windll.kernel32.SetFileAttributesW(file_path, 0x80)
