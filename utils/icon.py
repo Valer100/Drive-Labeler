@@ -3,6 +3,7 @@ from PIL import Image, IcoImagePlugin
 from icoextract import IconExtractor
 from utils import preferences
 
+
 def pick_icon(initial_icon_file_path: str = "C:\\Windows\\System32\\shell32.dll") -> tuple[str, int]:
     icon_file_buffer = ctypes.create_unicode_buffer(260)
     icon_index = ctypes.c_int(0)
