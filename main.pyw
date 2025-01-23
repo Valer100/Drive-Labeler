@@ -107,6 +107,8 @@ def remove_volume_customizations():
 
         if confirmed:
             volume.remove_volume_customizations(volume = selected_volume.get(), backup_existing_autorun = backup_existing_autorun.get())
+            update_volume_info(selected_volume.get())
+            messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
     except volume.VolumeNotAccessibleError:
         messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
     except PermissionError:
