@@ -2,6 +2,7 @@ import tkinter as tk, strings, custom_ui, webbrowser
 from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
 from utils import preferences
+from dialogs import app_license
 
 strings.load_language(open(preferences.user_preferences + "\\language", "r").read())
 
@@ -51,6 +52,7 @@ def show():
     custom_ui.Toolbutton(links, text = "GitHub", link = True, command = lambda: webbrowser.open("https:\\\\github.com\\Valer100\\Volume-Labeler")).pack(side = "left")
     custom_ui.Toolbutton(links, text = strings.lang.issues, link = True, command = lambda: webbrowser.open("https:\\\\github.com\\Valer100\\Volume-Labeler\\issues")).pack(side = "left", padx = (4, 0))
     custom_ui.Toolbutton(links, text = strings.lang.latest_version, link = True, command = lambda: webbrowser.open("https:\\\\github.com\\Valer100\\Volume-Labeler\\releases\\latest")).pack(side = "left", padx = (4, 0))
+    custom_ui.Toolbutton(links, text = strings.lang.license, link = True, command = app_license.show).pack(side = "left", padx = (4, 0))
 
     buttons = ttk.Frame(window)
     buttons.pack(fill = "x", pady = (16, 16))
@@ -61,7 +63,7 @@ def show():
 
     ttk.Button(buttons, text = strings.lang.ok, command = window.destroy, default = "active").pack(side = "right")
 
-    licenses = ScrolledText(window, width = "80", height = 20, wrap = "word", background = custom_ui.entry_bg,
+    licenses = ScrolledText(window, width = 80, height = 20, wrap = "word", background = custom_ui.entry_bg,
                                  foreground = custom_ui.fg, selectbackground = custom_ui.entry_select,
                                  selectforeground = "#ffffff", highlightthickness = 1, relief = "solid",
                                  highlightbackground = custom_ui.entry_bd, highlightcolor = custom_ui.entry_bd,
