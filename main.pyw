@@ -1,8 +1,6 @@
-import tkinter as tk, util, about, change_language, change_theme, strings, custom_ui, subprocess, os, shutil, random, traceback, re, tktooltip, argparse, winreg, sys
+import tkinter as tk, util, about, change_language, change_theme, strings, custom_ui, subprocess, os, traceback, tktooltip, argparse, winreg, sys
 from tkinter import ttk, filedialog, messagebox
-from PIL import Image, IcoImagePlugin
-from icoextract import IconExtractor
-from datetime import datetime
+from utils import volume, icon
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--volume", default = None, help = "The letter of the volume you want to customize", required = False)
@@ -23,16 +21,16 @@ selected_volume = tk.StringVar(value = "")
 hide_autorun = tk.BooleanVar(value = int(util.additional_prefs[0]))
 hide_vl_icon = tk.BooleanVar(value = int(util.additional_prefs[1]))
 backup_existing_autorun = tk.BooleanVar(value = int(util.additional_prefs[2]))
-icon = tk.StringVar(value = "default")
+icon_type = tk.StringVar(value = "default")
 
 
 def refresh_volumes_list():
     global volumes, app_started
 
-    volumes = util.get_available_drives()
+    volumes = volume.get_available_drives()
     selected_volume.set(volumes[0])
 
-    menu = volume["menu"]
+    menu = volume_dropdown["menu"]
     menu.delete(0, "end")
 
     for string in volumes:
@@ -50,53 +48,65 @@ def refresh_volumes_list():
     app_started = True
 
 
-def update_volume_info(volume):
-    global icon, autorun
+def update_volume_info(vol):
+    global icon_old
 
-    if os.path.exists(volume):
-        selected_volume.set(volume)
+    if os.path.exists(vol):
+        selected_volume.set(vol)
+        icon_type.set("default")
 
-        icon.set("default")
         choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
         icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
 
-        volume_label = util.get_volume_label(volume)
+        volume_info = volume.get_volume_label_and_icon(vol)
+
+        if not volume_info["icon_path"] == None:
+            icon_type.set("icon")
+            process_icon(volume_info["icon_path"], volume_info["icon_index"])
+
+        icon_old = icon_type.get()
 
         label.delete(0, "end")
-        label.insert(0, strings.lang.local_disk if volume == "C:\\" and volume_label == "" else strings.lang.volume if volume_label == "" else volume_label)
-
-        if os.path.exists(f"{selected_volume.get()}autorun.inf"):
-            autorun_file = open(f"{selected_volume.get()}autorun.inf")
-            autorun = autorun_file.read()
-            autorun_file.close()
-
-            autorun_lines = autorun.split("\n")
-
-            for line in autorun_lines:
-                entry_and_param = line.split("=", 1)
-
-                if len(entry_and_param) == 2:
-                    entry = entry_and_param[0].strip().lower()
-                    param = entry_and_param[1].strip()
-
-                    if entry == "icon":
-                        path_and_index = param.rsplit(",", 1)
-                        icon_path = path_and_index[0]
-
-                        if len(path_and_index) == 2: icon_index = int(path_and_index[1].strip())
-                        else: icon_index = 0
-
-                        if not icon_path.lower().startswith(volume.lower()):
-                            icon_path = volume + icon_path
-
-                        if os.path.exists(icon_path): 
-                            icon.set("icon")
-                            process_icon(icon_path, icon_index)
-                    elif entry == "label":
-                        label.delete(0, "end")
-                        label.insert(0, param)
+        label.insert(0, volume_info["label"])
     else:
         messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
+
+
+def modify_volume_info():
+    try:
+        volume.modify_volume_info(
+            volume = selected_volume.get(), 
+            label = label.get(), 
+            default_icon = icon_type.get() == "default",
+            icon_path = util.roaming + "\\icon.ico",
+            hide_autorun = hide_autorun.get(),
+            hide_vl_icon = hide_vl_icon.get(),
+            backup_existing_autorun = backup_existing_autorun.get()
+        )
+
+        messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
+    except PermissionError:
+        messagebox.showerror(strings.lang.permission_denied, strings.lang.permission_denied_message)
+    except UnicodeEncodeError:
+        messagebox.showerror(strings.lang.error, strings.lang.unicode_not_supported)
+    except volume.VolumeNotAccessibleError:
+        messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
+    except volume.IconNotFoundError:
+        messagebox.showerror(strings.lang.error, strings.lang.missing_icon_file)
+    except:
+        messagebox.showerror(strings.lang.error, strings.lang.failure_message + traceback.format_exc())
+
+
+def remove_volume_customizations():
+    try:
+        confirmed = messagebox.askyesno(strings.lang.remove_customizations, strings.lang.remove_customizations_message, icon = "warning")
+
+        if confirmed:
+            volume.remove_volume_customizations(volume = selected_volume.get(), backup_existing_autorun = backup_existing_autorun.get())
+    except volume.VolumeNotAccessibleError:
+        messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
+    except PermissionError:
+        messagebox.showerror(strings.lang.permission_denied, strings.lang.permission_denied_message)
 
 
 def destroy_everything(widget):
@@ -129,7 +139,7 @@ def change_app_theme():
 
 
 def draw_ui():
-    global choose_icon, icon_from_image, refresh, volume, label, arrow, show_additional_options, context_menu_integration, context_menu_integration_tooltip
+    global choose_icon, icon_from_image, refresh, volume_dropdown, label, arrow, show_additional_options, context_menu_integration, context_menu_integration_tooltip
     show_additional_options = False
 
     destroy_everything(window)
@@ -150,8 +160,8 @@ def draw_ui():
 
     tktooltip.ToolTip(refresh_volumes, strings.lang.refresh_volumes_list, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
     
-    volume = custom_ui.OptionMenu(volume_section, selected_volume, *volumes)
-    volume.pack(side = "right")
+    volume_dropdown = custom_ui.OptionMenu(volume_section, selected_volume, *volumes)
+    volume_dropdown.pack(side = "right")
 
     ttk.Label(window, text = strings.lang.label).pack(pady = 10, anchor = "w")
 
@@ -168,13 +178,13 @@ def draw_ui():
 
     ttk.Label(window, text = strings.lang.icon).pack(pady = (16, 8), anchor = "w")
 
-    default_icon = ttk.Radiobutton(window, text = strings.lang.default_icon, variable = icon, value = "default", command = choose_icon_)
+    default_icon = ttk.Radiobutton(window, text = strings.lang.default_icon, variable = icon_type, value = "default", command = choose_icon_)
     default_icon.pack(anchor = "w")
 
-    choose_icon = ttk.Radiobutton(window, text = strings.lang.choose_icon, variable = icon, value = "icon", command = choose_icon_, compound = "left")
+    choose_icon = ttk.Radiobutton(window, text = strings.lang.choose_icon, variable = icon_type, value = "icon", command = choose_icon_, compound = "left")
     choose_icon.pack(anchor = "w")
     
-    icon_from_image = ttk.Radiobutton(window, text = strings.lang.create_icon_from_image, variable = icon, value = "image", command = choose_icon_, compound = "left")
+    icon_from_image = ttk.Radiobutton(window, text = strings.lang.create_icon_from_image, variable = icon_type, value = "image", command = choose_icon_, compound = "left")
     icon_from_image.pack(anchor = "w")
 
     if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_light.png")
@@ -213,8 +223,8 @@ def draw_ui():
     ttk.Checkbutton(additional_options_frame, text = strings.lang.hide_vl_icon, command = save_additional_preferences, variable = hide_vl_icon)
     ttk.Checkbutton(additional_options_frame, text = strings.lang.backup_existing_autorun, command = save_additional_preferences, variable = backup_existing_autorun)
 
-    custom_ui.Button(window, text = strings.lang.apply_changes, command = lambda: modify_volume_info(selected_volume.get(), label.get()), default = "active").pack(pady = (16, 0), fill = "x")
-    custom_ui.Button(window, text = strings.lang.remove_customizations, command = lambda: remove_personalizations(selected_volume.get())).pack(pady = (8, 0), fill = "x")
+    custom_ui.Button(window, text = strings.lang.apply_changes, command = modify_volume_info, default = "active").pack(pady = (16, 0), fill = "x")
+    custom_ui.Button(window, text = strings.lang.remove_customizations, command = remove_volume_customizations).pack(pady = (8, 0), fill = "x")
 
     settings = ttk.Frame(window, height = 26)
     settings.pack(anchor = "w", pady = (20, 2), fill = "x")
@@ -292,30 +302,9 @@ def add_remove_context_menu_entry():
 def process_icon(path, index):
     global icon_from_image, choose_icon, preview
 
-    if not path.endswith(".ico"):
-        try:
-            extractor = IconExtractor(path)
-            extractor.export_icon(util.roaming + "\\icon.ico", index)
-        except:
-            extractor = IconExtractor(path.replace("System32", "SystemResources") + ".mun")
-            extractor.export_icon(util.roaming + "\\icon.ico", index)
-    else:
-        shutil.copyfile(path, util.roaming + "\\icon.ico")
-
-    img = IcoImagePlugin.IcoImageFile(util.roaming + "\\icon.ico")
-
-    closest_size = min(
-        img.info["sizes"],
-        key = lambda size: (size[0] - 32) ** 2 + (size[1] - 32) ** 2
-    )
-
-    img.size = closest_size
-    img.load()
-    img = img.resize((32, 32), Image.Resampling.LANCZOS)
-    img.save(util.roaming + "\\preview.png")
-    img.close()
-
+    icon.extract_icon(path, index)
     preview = tk.PhotoImage(file = util.roaming + "\\preview.png")
+
     choose_icon.configure(image = preview, text = f"{os.path.basename(path)}, {index}", width = 30)
     icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
 
@@ -323,210 +312,29 @@ def process_icon(path, index):
 def choose_icon_():
     global preview, icon_old
 
-    match icon.get():
+    match icon_type.get():
         case "default":
             choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
             icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
         case "icon":
             try:
-                icon_path, icon_index = util.pick_icon()
+                icon_path, icon_index = icon.pick_icon()
                 process_icon(icon_path, icon_index)                
             except:
-                icon.set(icon_old)
+                icon_type.set(icon_old)
         case "image":
             image = filedialog.askopenfile(title = strings.lang.choose_image, filetypes = [(strings.lang.images, (".png", ".jpg", ".jpeg", ".bmp", ".gif"))])
 
             if not image is None:
-                icon_path = image.name
-
-                img = Image.open(icon_path)
-                img.save(fp = util.roaming + "\\icon.ico", format = "ICO", sizes = [(16, 16), (32, 32), (48, 48), (64, 64), (128, 128)])
-
-                preview_img = img.resize((32, int(img.height * 32 / img.width)), Image.Resampling.LANCZOS)
-                preview_img.save(util.roaming + "\\preview.png")
-                preview_img.close()
-
-                img.close()
-
+                icon.convert_image_to_icon(image.name)
                 preview = tk.PhotoImage(file = util.roaming + "\\preview.png")
-                icon_from_image.configure(image = preview, text = os.path.basename(icon_path), width = 30)
                 
+                icon_from_image.configure(image = preview, text = os.path.basename(icon_path), width = 30)
                 choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
             else:
-                icon.set(icon_old)
+                icon_type.set(icon_old)
         
-    icon_old = icon.get()
-
-
-def modify_volume_info(volume: str, label: str):
-    if os.path.exists(volume):
-        if not icon.get() == "default" and not os.path.exists(util.roaming + "\\icon.ico"):
-            messagebox.showerror(strings.lang.error, strings.lang.missing_icon_file)
-            return
-        
-
-        try:
-            if not icon.get() == "default":
-                id = random.randint(1000000, 9999999)
-
-                if os.path.exists(f"{volume}vl_icon"):
-                    shutil.rmtree(f"{volume}vl_icon")
-
-                os.mkdir(f"{volume}vl_icon")
-                shutil.copyfile(util.roaming + "\\icon.ico", f"{volume}vl_icon\\icon{id}.ico")
-
-                readme_file = open(f"{volume}vl_icon\\! {strings.lang.readme}.txt", "w", encoding = "utf-8")
-                readme_file.write(strings.lang.icon_folder)
-                readme_file.close()
-
-                if hide_vl_icon.get(): 
-                    util.add_hidden_attribute(f"{volume}vl_icon")
-
-            if os.path.exists(f"{volume}autorun.inf") and backup_existing_autorun.get():
-                if not os.path.exists(f"{volume}autorun_backups"): 
-                    os.mkdir(f"{volume}autorun_backups")
-
-                subprocess.call(f"attrib -H \"{volume}autorun.inf\"", shell = True)
-                shutil.copyfile(f"{volume}autorun.inf", f"{volume}autorun_backups\\autorun_{str(datetime.now()).replace('-', '_').replace(':', '_')}.inf")
-
-                readme_file = open(f"{volume}autorun_backups\\! {strings.lang.readme}.txt", "w", encoding = "utf-8")
-                readme_file.write(strings.lang.autorun_backup)
-                readme_file.close()
-        except PermissionError:
-            messagebox.showerror(strings.lang.permission_denied, strings.lang.permission_denied_message)
-
-
-        def modify_existing_autorun_file():
-            autorun_file = open(f"{selected_volume.get()}autorun.inf")
-            autorun = autorun_file.read()
-            autorun_file.close()
-
-            autorun_new = ""
-            autorun_lines = autorun.split("\n")
-
-            icon_changed = False
-            label_changed = False
-
-            for line in autorun_lines:
-                entry_and_param = line.split("=", 1)
-
-                if len(entry_and_param) == 2:
-                    entry = entry_and_param[0].strip().lower()
-
-                    if entry == "icon": 
-                        if not icon.get() == "default":
-                            autorun_new += f"\nicon=vl_icon\\icon{id}.ico,0"
-                            icon_changed = True
-                    elif entry == "label": 
-                        autorun_new += f"\nlabel={label}"
-                        label_changed = True
-                    else: autorun_new += "\n" + line
-                else:
-                    autorun_new += "\n" + line
-
-            
-            if not icon_changed and not icon.get() == "default": 
-                autorun_new, replacements = re.subn(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nicon=vl_icon\\icon{id}.ico,0", autorun_new, flags = re.MULTILINE)
-                if replacements > 0: icon_changed = True
-            
-            if not label_changed: 
-                autorun_new, replacements = re.subn(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nlabel={label}", autorun_new, flags = re.MULTILINE)
-                if replacements > 0: label_changed = True
-
-            if not (icon_changed or label_changed):
-                autorun_new += f"\n\n[autorun]\nlabel={label}"
-                if not icon.get() == "default": autorun_new += f"\nicon=vl_icon\\icon{id}.ico,0"
-
-            autorun_new = autorun_new.strip()
-
-            try:
-                util.remove_hidden_attribute(f"{volume}autorun.inf")
-
-                autorun_file = open(f"{selected_volume.get()}autorun.inf", "w")
-                autorun_file.write(autorun_new)
-                autorun_file.close()
-            
-                if hide_autorun.get():
-                    util.add_hidden_attribute(f"{volume}autorun.inf")
-
-                messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
-            except PermissionError:
-                messagebox.showerror(strings.lang.permission_denied, strings.lang.permission_denied_message)
-            except UnicodeEncodeError:
-                messagebox.showerror(strings.lang.error, strings.lang.unicode_not_supported)
-            except:
-                messagebox.showerror(strings.lang.error, strings.lang.failure_message + traceback.format_exc())
-        
-
-        def create_new_autorun_file():
-            try:
-                autorun = f"[autorun]\nlabel={label}"
-                if not icon.get() == "default": autorun += f"\nicon=vl_icon\\icon{id}.ico,0"
-
-                util.remove_hidden_attribute(f"{volume}autorun.inf")
-
-                autorun_file = open(f"{volume}autorun.inf", "w")
-                autorun_file.write(autorun)
-                autorun_file.close()
-
-                if hide_autorun.get():
-                    util.add_hidden_attribute(f"{volume}autorun.inf")
-
-                messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
-            except PermissionError:
-                messagebox.showerror(strings.lang.permission_denied, strings.lang.permission_denied_message)
-            except UnicodeEncodeError:
-                messagebox.showerror(strings.lang.error, strings.lang.unicode_not_supported)
-            except:
-                messagebox.showerror(strings.lang.error, strings.lang.failure_message + traceback.format_exc())
-
-
-        if os.path.exists(f"{volume}autorun.inf"):
-            autorun_file = open(f"{volume}autorun.inf")
-            autorun = autorun_file.read()
-            autorun_file.close()
-
-            if re.search("(?i)^\\[[^\\]]+\\]", autorun):
-                modify_existing_autorun_file()
-            else:
-                create_new_autorun_file()
-        else:
-            create_new_autorun_file()
-    else:
-        messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
-
-
-def remove_personalizations(volume: str):
-    confirmed = messagebox.askyesno(strings.lang.remove_customizations, strings.lang.remove_customizations_message, icon = "warning")
-
-    if confirmed:
-        if os.path.exists(volume):
-            try:
-                if os.path.exists(f"{volume}autorun.inf") and backup_existing_autorun.get():
-                    if not os.path.exists(f"{volume}autorun_backups"):
-                        os.mkdir(f"{volume}autorun_backups")
-
-                    util.remove_hidden_attribute(f"{volume}autorun.inf")
-                    shutil.copyfile(f"{volume}autorun.inf", f"{volume}autorun_backups\\autorun_{str(datetime.now()).replace('-', '_').replace(':', '_')}.inf")
-
-                    readme_file = open(f"{volume}autorun_backups\\! {strings.lang.readme}.txt", "w", encoding = "utf-8")
-                    readme_file.write(strings.lang.autorun_backup)
-                    readme_file.close()
-
-                if os.path.exists(f"{volume}autorun.inf"):
-                    os.remove(f"{volume}autorun.inf")
-
-                if os.path.exists(f"{volume}vl_icon"):
-                    shutil.rmtree(f"{volume}vl_icon")
-
-                update_volume_info(volume)
-                messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
-            except PermissionError:
-                messagebox.showerror(strings.lang.permission_denied, strings.lang.permission_denied_message)
-            except:
-                messagebox.showerror(strings.lang.error, strings.lang.failure_message + traceback.format_exc())
-        else:
-            messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
+    icon_old = icon_type.get()
 
 
 draw_ui()
