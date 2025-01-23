@@ -3,6 +3,7 @@ import strings, os, util, random, re, shutil, datetime, ctypes
 class VolumeNotAccessibleError(Exception): pass
 class IconNotFoundError(Exception): pass
 
+
 def modify_volume_info(
     volume: str, label: str, default_icon: bool = False, 
     icon_path: str = util.roaming + "\\icon.ico", 
@@ -193,5 +194,5 @@ def get_volume_label_and_icon(volume: str) -> dict[str, str, int]:
         raise VolumeNotAccessibleError(f"The volume {volume} is not accessible.")
 
 
-def get_available_drives():
+def get_available_drives() -> list:
     return [f"{chr(65 + i)}:\\" for i in range(26) if (ctypes.windll.kernel32.GetLogicalDrives() >> i) & 1]
