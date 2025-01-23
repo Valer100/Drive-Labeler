@@ -14,7 +14,7 @@ def show(error: str):
     ttk.Label(header, text = "\ue7ba ", font = ("Segoe UI Semibold", 17), padding = (0, 5, 0, 0)).pack(side = "left")
     ttk.Label(header, width = 25, text = strings.lang.error, font = ("Segoe UI Semibold", 17)).pack(side = "left")
 
-    error_text = ScrolledText(window, width = "60", height = 7, wrap = "word", background = custom_ui.entry_bg,
+    error_text = ScrolledText(window, width = 60, height = 7, wrap = "word", background = custom_ui.entry_bg,
                                  foreground = custom_ui.fg, selectbackground = custom_ui.entry_select,
                                  selectforeground = "#ffffff", highlightthickness = 1, relief = "solid",
                                  highlightbackground = custom_ui.entry_bd, highlightcolor = custom_ui.entry_bd,
