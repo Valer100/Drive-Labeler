@@ -4,7 +4,7 @@ from tkinter.scrolledtext import ScrolledText
 
 def show(error: str):
     window = custom_ui.Toplevel()
-    window.title(strings.lang.open_source_licenses)
+    window.title(strings.lang.error)
     window.resizable(False, False)
     window.configure(padx = 16, pady = 0)
 
