@@ -1,4 +1,4 @@
-import tkinter as tk, strings, custom_ui, os, traceback, tktooltip, argparse, winreg, sys
+import tkinter as tk, strings, custom_ui, os, traceback, tktooltip, argparse
 from tkinter import ttk, filedialog, messagebox
 from utils import volume, icon, preferences, context_menu_entry
 from dialogs import change_language, change_theme, about, error
