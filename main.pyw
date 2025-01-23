@@ -1,6 +1,7 @@
-import tkinter as tk, util, about, change_language, change_theme, strings, custom_ui, subprocess, os, traceback, tktooltip, argparse, winreg, sys
+import tkinter as tk, util, strings, custom_ui, subprocess, os, traceback, tktooltip, argparse, winreg, sys
 from tkinter import ttk, filedialog, messagebox
 from utils import volume, icon
+from dialogs import change_language, change_theme, about
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--volume", default = None, help = "The letter of the volume you want to customize", required = False)
