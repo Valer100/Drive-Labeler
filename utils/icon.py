@@ -1,0 +1,49 @@
+import ctypes, util, shutil
+from PIL import Image, IcoImagePlugin
+from icoextract import IconExtractor
+
+
+def pick_icon(initial_icon_file_path: str = "C:\\Windows\\System32\\shell32.dll") -> tuple[str, int]:
+    icon_file_buffer = ctypes.create_unicode_buffer(260)
+    icon_index = ctypes.c_int(0)
+
+    ctypes.windll.kernel32.lstrcpyW(icon_file_buffer, initial_icon_file_path)
+
+    result = ctypes.windll.shell32.PickIconDlg(None, icon_file_buffer, ctypes.sizeof(icon_file_buffer), ctypes.byref(icon_index))
+    if result: return (icon_file_buffer.value, icon_index.value)
+
+
+def extract_icon(path: str, index: str) -> None:
+    if not path.endswith(".ico"):
+        try:
+            extractor = IconExtractor(path)
+            extractor.export_icon(util.roaming + "\\icon.ico", index)
+        except:
+            extractor = IconExtractor(path.replace("System32", "SystemResources") + ".mun")
+            extractor.export_icon(util.roaming + "\\icon.ico", index)
+    else:
+        shutil.copyfile(path, util.roaming + "\\icon.ico")
+
+    img = IcoImagePlugin.IcoImageFile(util.roaming + "\\icon.ico")
+
+    closest_size = min(
+        img.info["sizes"],
+        key = lambda size: (size[0] - 32) ** 2 + (size[1] - 32) ** 2
+    )
+
+    img.size = closest_size
+    img.load()
+    img = img.resize((32, 32), Image.Resampling.LANCZOS)
+    img.save(util.roaming + "\\preview.png")
+    img.close()
+
+
+def convert_image_to_icon(path: str) -> None:
+    img = Image.open(path)
+    img.save(fp = util.roaming + "\\icon.ico", format = "ICO", sizes = [(16, 16), (32, 32), (48, 48), (64, 64), (128, 128)])
+
+    preview_img = img.resize((32, int(img.height * 32 / img.width)), Image.Resampling.LANCZOS)
+    preview_img.save(util.roaming + "\\preview.png")
+    preview_img.close()
+
+    img.close()
