@@ -1,6 +1,6 @@
-import tkinter as tk, strings, custom_ui, subprocess, os, traceback, tktooltip, argparse, winreg, sys
+import tkinter as tk, strings, custom_ui, os, traceback, tktooltip, argparse, winreg, sys
 from tkinter import ttk, filedialog, messagebox
-from utils import volume, icon, preferences
+from utils import volume, icon, preferences, context_menu_entry
 from dialogs import change_language, change_theme, about, error
 
 os.chdir(os.path.dirname(__file__))
@@ -115,6 +115,45 @@ def remove_volume_customizations():
         error.show(traceback.format_exc())
 
 
+def process_icon(path, index):
+    global icon_from_image, choose_icon, preview
+
+    icon.extract_icon(path, index)
+    preview = tk.PhotoImage(file = preferences.roaming + "\\preview.png")
+
+    choose_icon.configure(image = preview, text = f"{os.path.basename(path)}, {index}", width = 30)
+    icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
+
+
+def choose_icon_():
+    global preview, icon_old
+
+    match icon_type.get():
+        case "default":
+            choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
+            icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
+        case "icon":
+            try:
+                icon_path, icon_index = icon.pick_icon()
+                process_icon(icon_path, icon_index)                
+            except:
+                error.show(traceback.format_exc())
+                icon_type.set(icon_old)
+        case "image":
+            image = filedialog.askopenfile(title = strings.lang.choose_image, filetypes = [(strings.lang.images, (".png", ".jpg", ".jpeg", ".bmp", ".gif"))])
+
+            if not image is None:
+                icon.convert_image_to_icon(image.name)
+                preview = tk.PhotoImage(file = preferences.roaming + "\\preview.png")
+                
+                icon_from_image.configure(image = preview, text = os.path.basename(icon_path), width = 30)
+                choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
+            else:
+                icon_type.set(icon_old)
+        
+    icon_old = icon_type.get()
+
+
 def destroy_everything(widget):
     for child in widget.winfo_children():
         child.destroy()
@@ -142,6 +181,26 @@ def change_app_theme():
         window.set_theme()
         draw_ui()
         refresh_volumes_list()
+
+
+def add_remove_context_menu_entry():
+    global context_menu_integration, context_menu_integration_tooltip
+    context_menu_integration_tooltip.destroy()
+
+    if context_menu_entry.is_context_menu_entry_added():
+        context_menu_entry.remove_context_menu_entry()
+
+        context_menu_integration.configure(default = "normal")
+        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
+        
+        messagebox.showinfo(strings.lang.context_menu_integration, strings.lang.context_menu_entry_removed)
+    else:
+        context_menu_entry.add_context_menu_entry()
+
+        context_menu_integration.configure(default = "active")
+        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
+        
+        messagebox.showinfo(strings.lang.context_menu_integration, strings.lang.context_menu_entry_added)
 
 
 def draw_ui():
@@ -245,103 +304,24 @@ def draw_ui():
     context_menu_integration = custom_ui.Toolbutton(settings, text = "\ue71d", link = True, icononly = True, anchor = "n", command = add_remove_context_menu_entry, font = ("Segoe UI", 12))
     context_menu_integration.pack(anchor = "nw", side = "left", padx = (4, 0))
 
-    try:
-        entry = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler", 0, winreg.KEY_ALL_ACCESS)
-
-        if not winreg.QueryValueEx(entry, "")[0] == strings.lang.customize_with_volume_labeler:
-            winreg.SetValueEx(entry, "", 0, winreg.REG_SZ, strings.lang.customize_with_volume_labeler)
-            
-        entry.Close()
-
-        context_menu_integration.configure(default = "active")
-        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
-    except:
-        context_menu_integration.configure(default = "normal")
-        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
-
     about_app = custom_ui.Toolbutton(settings, text = "\ue946", link = True, icononly = True, anchor = "n", command = about.show, font = ("Segoe UI", 13))
     about_app.pack(anchor = "nw", side = "left", padx = (4, 0))
     
+
     tktooltip.ToolTip(language, strings.lang.change_language, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
     tktooltip.ToolTip(theme, strings.lang.change_theme, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
     tktooltip.ToolTip(about_app, strings.lang.about_this_app, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
 
-    window.update()
+    context_menu_entry.update_context_menu_entry_string()
 
-
-def add_remove_context_menu_entry():
-    global app_in_context_menu, context_menu_integration, context_menu_integration_tooltip
-    context_menu_integration_tooltip.destroy()
-
-    try:
-        entry = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler")
-        entry.Close()
-        app_in_context_menu = True
-    except:
-        app_in_context_menu = False
-
-    app_in_context_menu = not app_in_context_menu
-
-    if app_in_context_menu:
-        entry = winreg.CreateKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler")
-        winreg.SetValueEx(entry, "", 0, winreg.REG_SZ, strings.lang.customize_with_volume_labeler)
-        winreg.SetValueEx(entry, "Icon", 0, winreg.REG_SZ, sys.executable)
-        entry.Close()
-
-        entry_command = winreg.CreateKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler\\command")
-        winreg.SetValueEx(entry_command, "", 0, winreg.REG_SZ, f"\"{sys.executable}\" --volume %1")
-        entry_command.Close()
-
+    if context_menu_entry.is_context_menu_entry_added():
         context_menu_integration.configure(default = "active")
         context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
-        
-        messagebox.showinfo(strings.lang.context_menu_integration, strings.lang.context_menu_entry_added)
     else:
-        subprocess.call("reg delete \"HKEY_CURRENT_USER\\Software\\Classes\\Drive\\shell\\Volume Labeler\" /f", shell = True)
-
         context_menu_integration.configure(default = "normal")
         context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
-        
-        messagebox.showinfo(strings.lang.context_menu_integration, strings.lang.context_menu_entry_removed)
 
-
-def process_icon(path, index):
-    global icon_from_image, choose_icon, preview
-
-    icon.extract_icon(path, index)
-    preview = tk.PhotoImage(file = preferences.roaming + "\\preview.png")
-
-    choose_icon.configure(image = preview, text = f"{os.path.basename(path)}, {index}", width = 30)
-    icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
-
-
-def choose_icon_():
-    global preview, icon_old
-
-    match icon_type.get():
-        case "default":
-            choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
-            icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
-        case "icon":
-            try:
-                icon_path, icon_index = icon.pick_icon()
-                process_icon(icon_path, icon_index)                
-            except:
-                error.show(traceback.format_exc())
-                icon_type.set(icon_old)
-        case "image":
-            image = filedialog.askopenfile(title = strings.lang.choose_image, filetypes = [(strings.lang.images, (".png", ".jpg", ".jpeg", ".bmp", ".gif"))])
-
-            if not image is None:
-                icon.convert_image_to_icon(image.name)
-                preview = tk.PhotoImage(file = preferences.roaming + "\\preview.png")
-                
-                icon_from_image.configure(image = preview, text = os.path.basename(icon_path), width = 30)
-                choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
-            else:
-                icon_type.set(icon_old)
-        
-    icon_old = icon_type.get()
+    window.update()
 
 
 draw_ui()

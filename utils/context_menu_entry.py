@@ -1,0 +1,38 @@
+import winreg, strings, sys, subprocess
+
+
+def is_context_menu_entry_added() -> bool:
+    try:
+        entry = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler", 0, winreg.KEY_ALL_ACCESS)
+        entry.Close()
+
+        return True
+    except:
+        return False
+    
+
+def add_context_menu_entry() -> None:
+    entry = winreg.CreateKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler")
+    winreg.SetValueEx(entry, "", 0, winreg.REG_SZ, strings.lang.customize_with_volume_labeler)
+    winreg.SetValueEx(entry, "Icon", 0, winreg.REG_SZ, sys.executable)
+    entry.Close()
+
+    entry_command = winreg.CreateKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler\\command")
+    winreg.SetValueEx(entry_command, "", 0, winreg.REG_SZ, f"\"{sys.executable}\" --volume %1")
+    entry_command.Close()
+
+
+def remove_context_menu_entry() -> None:
+    subprocess.call("C:\\Windows\\System32\\reg.exe delete \"HKEY_CURRENT_USER\\Software\\Classes\\Drive\\shell\\Volume Labeler\" /f", shell = True)
+
+
+def update_context_menu_entry_string():
+    try:
+        entry = winreg.OpenKey(winreg.HKEY_CURRENT_USER, "Software\\Classes\\Drive\\shell\\Volume Labeler", 0, winreg.KEY_ALL_ACCESS)
+    
+        if not winreg.QueryValueEx(entry, "")[0] == strings.lang.customize_with_volume_labeler:
+            winreg.SetValueEx(entry, "", 0, winreg.REG_SZ, strings.lang.customize_with_volume_labeler)
+                
+        entry.Close()
+    except:
+        pass
