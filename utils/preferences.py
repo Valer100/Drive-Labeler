@@ -1,9 +1,4 @@
-import ctypes, os, getpass, strings
-
-os.chdir(os.path.dirname(__file__))
-
-if os.path.exists("icon.ico"): internal = ""
-else: internal = "_internal\\"
+import os, getpass, strings
 
 user_preferences = f"C:\\Users\\{getpass.getuser()}\\AppData\\Local\\Volume Labeler"
 roaming = f"C:\\Users\\{getpass.getuser()}\\AppData\\Roaming\\Volume Labeler"
@@ -19,9 +14,3 @@ language = open(user_preferences + "\\language", "r").read()
 additional_prefs = open(user_preferences + "\\additional_prefs", "r").read()
 
 strings.load_language(language)
-
-def add_hidden_attribute(file_path):
-    ctypes.windll.kernel32.SetFileAttributesW(file_path, 0x02)
-
-def remove_hidden_attribute(file_path):
-    ctypes.windll.kernel32.SetFileAttributesW(file_path, 0x80)

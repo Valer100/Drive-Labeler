@@ -1,8 +1,9 @@
 import strings.en_US, strings.ro_RO
-import tkinter as tk, util, strings, custom_ui
+import tkinter as tk, strings, custom_ui
 from tkinter import ttk
+from utils import preferences
 
-strings.load_language(open(util.user_preferences + "\\language", "r").read())
+strings.load_language(open(preferences.user_preferences + "\\language", "r").read())
 window = None
 
 def show():
@@ -13,7 +14,7 @@ def show():
     window.resizable(False, False)
     window.configure(padx = 16, pady = 0)
 
-    theme = tk.StringVar(value = util.theme)
+    theme = tk.StringVar(value = preferences.theme)
 
     header = ttk.Frame(window)
     header.pack(anchor = "w", pady = 8)
@@ -29,8 +30,8 @@ def show():
     buttons.pack(pady = 16, anchor = "e")
 
     def apply_theme():
-        open(util.user_preferences + "\\theme", "w").write(theme.get())
-        util.theme = theme.get()
+        open(preferences.user_preferences + "\\theme", "w").write(theme.get())
+        preferences.theme = theme.get()
         window.destroy()
 
     ok_btn = ttk.Button(buttons, text = strings.lang.ok, default = "active", command = apply_theme).pack(side = "right", padx = (8, 0))

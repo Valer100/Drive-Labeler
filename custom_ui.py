@@ -1,11 +1,12 @@
-import tkinter as tk, pywinstyles, winaccent, sys, hPyT, util, threading
+import tkinter as tk, pywinstyles, winaccent, sys, hPyT, threading
 from tkinter import ttk
+from utils import preferences
 
 entry_select = winaccent.accent_normal
 
 def update_colors():
     global light_theme, bg, bg_hover, bg_press, fg, entry_focus, entry_bd, entry_bg, button_bg, button_hover, button_press, button_bd, button_bd_active, tooltip_bg, tooltip_bd, tooltip_fg, accent, accent_link
-    light_theme = winaccent.apps_use_light_theme if util.theme == "default" else True if util.theme == "light" else False
+    light_theme = winaccent.apps_use_light_theme if preferences.theme == "default" else True if preferences.theme == "light" else False
 
     if light_theme:
         bg = "#f0f0f0"
@@ -173,8 +174,8 @@ class OptionMenu(tk.OptionMenu):
     def __init__(self, master, variable, value, *values):
         super().__init__(master, variable, value, *values)
 
-        if light_theme: self.arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_light.png")
-        else: self.arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_dark.png")
+        if light_theme: self.arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_light.png")
+        else: self.arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_dark.png")
 
         self.configure(background = button_bg, foreground = fg, activebackground = button_hover, 
                        activeforeground = fg, highlightbackground = button_bd, highlightcolor = button_bd, 
@@ -184,8 +185,8 @@ class OptionMenu(tk.OptionMenu):
         self["menu"].configure(activebackground = winaccent.accent_normal)
 
     def update_colors(self):
-        if light_theme: self.arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_light.png")
-        else: self.arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_dark.png")
+        if light_theme: self.arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_light.png")
+        else: self.arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_dark.png")
 
         self.configure(background = button_bg, foreground = fg, activebackground = button_hover, 
                        activeforeground = fg, highlightbackground = button_bd, highlightcolor = button_bd, 
@@ -207,7 +208,7 @@ class App(tk.Tk):
         super().__init__(*args, **kwargs)
         self.withdraw()
 
-        self.iconbitmap(default = util.internal + "icon.ico")
+        self.iconbitmap(default = preferences.internal + "icon.ico")
         self.update()
         self.set_theme()
 

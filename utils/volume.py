@@ -1,4 +1,5 @@
-import strings, os, util, random, re, shutil, datetime, ctypes
+import strings, os, random, re, shutil, datetime, ctypes
+from utils import preferences
 
 class VolumeNotAccessibleError(Exception): pass
 class IconNotFoundError(Exception): pass
@@ -6,7 +7,7 @@ class IconNotFoundError(Exception): pass
 
 def modify_volume_info(
     volume: str, label: str, default_icon: bool = False, 
-    icon_path: str = util.roaming + "\\icon.ico", 
+    icon_path: str = preferences.roaming + "\\icon.ico", 
     hide_autorun: bool = True, hide_vl_icon: bool = True, 
     backup_existing_autorun: bool = True
 ) -> None:
@@ -29,13 +30,13 @@ def modify_volume_info(
             readme_file.close()
 
             if hide_vl_icon: 
-                util.add_hidden_attribute(f"{volume}vl_icon")
+                preferences.add_hidden_attribute(f"{volume}vl_icon")
 
         if os.path.exists(f"{volume}autorun.inf") and backup_existing_autorun:
             if not os.path.exists(f"{volume}autorun_backups"): 
                 os.mkdir(f"{volume}autorun_backups")
 
-            util.remove_hidden_attribute(f"{volume}autorun.inf")
+            preferences.remove_hidden_attribute(f"{volume}autorun.inf")
             shutil.copyfile(f"{volume}autorun.inf", f"{volume}autorun_backups\\autorun_{str(datetime.datetime.now()).replace('-', '_').replace(':', '_')}.inf")
 
             readme_file = open(f"{volume}autorun_backups\\! {strings.lang.readme}.txt", "w", encoding = "utf-8")
@@ -86,27 +87,27 @@ def modify_volume_info(
 
             autorun_new = autorun_new.strip()
 
-            util.remove_hidden_attribute(f"{volume}autorun.inf")
+            preferences.remove_hidden_attribute(f"{volume}autorun.inf")
             autorun_file = open(f"{volume}autorun.inf", "w")
             autorun_file.write(autorun_new)
             autorun_file.close()
             
             if hide_autorun:
-                util.add_hidden_attribute(f"{volume}autorun.inf")
+                preferences.add_hidden_attribute(f"{volume}autorun.inf")
         
 
         def create_new_autorun_file():
             autorun = f"[autorun]\nlabel={label}"
             if not default_icon == "default": autorun += f"\nicon=vl_icon\\icon{id}.ico,0"
 
-            util.remove_hidden_attribute(f"{volume}autorun.inf")
+            preferences.remove_hidden_attribute(f"{volume}autorun.inf")
 
             autorun_file = open(f"{volume}autorun.inf", "w")
             autorun_file.write(autorun)
             autorun_file.close()
 
             if hide_autorun:
-                util.add_hidden_attribute(f"{volume}autorun.inf")
+                preferences.add_hidden_attribute(f"{volume}autorun.inf")
 
 
         if os.path.exists(f"{volume}autorun.inf"):
@@ -130,7 +131,7 @@ def remove_volume_customizations(volume: str, backup_existing_autorun: bool = Tr
             if not os.path.exists(f"{volume}autorun_backups"):
                 os.mkdir(f"{volume}autorun_backups")
 
-            util.remove_hidden_attribute(f"{volume}autorun.inf")
+            preferences.remove_hidden_attribute(f"{volume}autorun.inf")
             shutil.copyfile(f"{volume}autorun.inf", f"{volume}autorun_backups\\autorun_{str(datetime.datetime.now()).replace('-', '_').replace(':', '_')}.inf")
 
             readme_file = open(f"{volume}autorun_backups\\! {strings.lang.readme}.txt", "w", encoding = "utf-8")

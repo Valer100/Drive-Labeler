@@ -1,11 +1,14 @@
-import tkinter as tk, util, strings, custom_ui, subprocess, os, traceback, tktooltip, argparse, winreg, sys
+import tkinter as tk, strings, custom_ui, subprocess, os, traceback, tktooltip, argparse, winreg, sys
 from tkinter import ttk, filedialog, messagebox
-from utils import volume, icon
+from utils import volume, icon, preferences
 from dialogs import change_language, change_theme, about
+
+os.chdir(os.path.dirname(__file__))
+if os.path.exists("icon.ico"): preferences.internal = ""
+else: preferences.internal = "_internal\\"
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--volume", default = None, help = "The letter of the volume you want to customize", required = False)
-
 arguments = parser.parse_args()
 
 window = custom_ui.App()
@@ -19,9 +22,9 @@ volumes = [""]
 autorun = ""
 app_started = False
 selected_volume = tk.StringVar(value = "")
-hide_autorun = tk.BooleanVar(value = int(util.additional_prefs[0]))
-hide_vl_icon = tk.BooleanVar(value = int(util.additional_prefs[1]))
-backup_existing_autorun = tk.BooleanVar(value = int(util.additional_prefs[2]))
+hide_autorun = tk.BooleanVar(value = int(preferences.additional_prefs[0]))
+hide_vl_icon = tk.BooleanVar(value = int(preferences.additional_prefs[1]))
+backup_existing_autorun = tk.BooleanVar(value = int(preferences.additional_prefs[2]))
 icon_type = tk.StringVar(value = "default")
 
 
@@ -79,7 +82,7 @@ def modify_volume_info():
             volume = selected_volume.get(), 
             label = label.get(), 
             default_icon = icon_type.get() == "default",
-            icon_path = util.roaming + "\\icon.ico",
+            icon_path = preferences.roaming + "\\icon.ico",
             hide_autorun = hide_autorun.get(),
             hide_vl_icon = hide_vl_icon.get(),
             backup_existing_autorun = backup_existing_autorun.get()
@@ -116,23 +119,23 @@ def destroy_everything(widget):
 
 
 def change_app_language():
-    old_language = util.language
+    old_language = preferences.language
 
     change_language.show()
     window.wait_window(change_language.window)
 
-    if old_language != util.language: 
+    if old_language != preferences.language: 
         draw_ui()
         refresh_volumes_list()
 
 
 def change_app_theme():
-    old_theme = util.theme
+    old_theme = preferences.theme
 
     change_theme.show()
     window.wait_window(change_theme.window)
 
-    if old_theme != util.theme:
+    if old_theme != preferences.theme:
         custom_ui.update_colors()
         window.set_theme()
         draw_ui()
@@ -144,7 +147,7 @@ def draw_ui():
     show_additional_options = False
 
     destroy_everything(window)
-    strings.load_language(open(util.user_preferences + "\\language", "r").read())
+    strings.load_language(open(preferences.user_preferences + "\\language", "r").read())
 
     ttk.Label(window, text = "Volume Labeler", font = ("Segoe UI Semibold", 17)).pack(anchor = "w")
 
@@ -153,8 +156,8 @@ def draw_ui():
 
     ttk.Label(volume_section, text = strings.lang.volume).pack(side = "left")
 
-    if custom_ui.light_theme: refresh = tk.PhotoImage(file = f"{util.internal}icons\\refresh_light.png")
-    else: refresh = tk.PhotoImage(file = f"{util.internal}icons\\refresh_dark.png")
+    if custom_ui.light_theme: refresh = tk.PhotoImage(file = f"{preferences.internal}icons\\refresh_light.png")
+    else: refresh = tk.PhotoImage(file = f"{preferences.internal}icons\\refresh_dark.png")
 
     refresh_volumes = custom_ui.Button(volume_section, width = -1, command = refresh_volumes_list, image = refresh)
     refresh_volumes.pack(side = "right", padx = (8, 0))
@@ -188,8 +191,8 @@ def draw_ui():
     icon_from_image = ttk.Radiobutton(window, text = strings.lang.create_icon_from_image, variable = icon_type, value = "image", command = choose_icon_, compound = "left")
     icon_from_image.pack(anchor = "w")
 
-    if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_light.png")
-    else: arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_dark.png")
+    if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_light.png")
+    else: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_dark.png")
 
     additional_options = custom_ui.Toolbutton(window, text = " " + strings.lang.additional_options, command = lambda: show_hide_additional_options(), anchor = "w", compound = "left", image = arrow)
     additional_options.pack(pady = (14, 0), anchor = "w")
@@ -203,8 +206,8 @@ def draw_ui():
         show_additional_options = not show_additional_options
 
         for widget in additional_options_frame.winfo_children():
-            if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown{'_up' if show_additional_options else ''}_light.png")
-            else: arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown{'_up' if show_additional_options else ''}_dark.png")
+            if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown{'_up' if show_additional_options else ''}_light.png")
+            else: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown{'_up' if show_additional_options else ''}_dark.png")
             
             additional_options.configure(image = arrow)
 
@@ -218,7 +221,7 @@ def draw_ui():
         if show_additional_options: additional_options_frame.configure(height = -1)
         else: additional_options_frame.configure(height = 1)
 
-    def save_additional_preferences(): open(util.user_preferences + "\\additional_prefs", "w").write(f"{int(hide_autorun.get())}{int(hide_vl_icon.get())}{int(backup_existing_autorun.get())}")
+    def save_additional_preferences(): open(preferences.user_preferences + "\\additional_prefs", "w").write(f"{int(hide_autorun.get())}{int(hide_vl_icon.get())}{int(backup_existing_autorun.get())}")
 
     ttk.Checkbutton(additional_options_frame, text = strings.lang.hide_autorun, command = save_additional_preferences, variable = hide_autorun)
     ttk.Checkbutton(additional_options_frame, text = strings.lang.hide_vl_icon, command = save_additional_preferences, variable = hide_vl_icon)
@@ -304,7 +307,7 @@ def process_icon(path, index):
     global icon_from_image, choose_icon, preview
 
     icon.extract_icon(path, index)
-    preview = tk.PhotoImage(file = util.roaming + "\\preview.png")
+    preview = tk.PhotoImage(file = preferences.roaming + "\\preview.png")
 
     choose_icon.configure(image = preview, text = f"{os.path.basename(path)}, {index}", width = 30)
     icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
@@ -328,7 +331,7 @@ def choose_icon_():
 
             if not image is None:
                 icon.convert_image_to_icon(image.name)
-                preview = tk.PhotoImage(file = util.roaming + "\\preview.png")
+                preview = tk.PhotoImage(file = preferences.roaming + "\\preview.png")
                 
                 icon_from_image.configure(image = preview, text = os.path.basename(icon_path), width = 30)
                 choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)

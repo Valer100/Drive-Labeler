@@ -1,8 +1,9 @@
-import tkinter as tk, util, strings, custom_ui, util, webbrowser
+import tkinter as tk, strings, custom_ui, webbrowser
 from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
+from utils import preferences
 
-strings.load_language(open(util.user_preferences + "\\language", "r").read())
+strings.load_language(open(preferences.user_preferences + "\\language", "r").read())
 
 def show():
     global arrow, show_os_licenses, show_licenses
@@ -14,7 +15,7 @@ def show():
     window.resizable(False, False)
     window.configure(padx = 16, pady = 0)
 
-    icon = tk.PhotoImage(file = f"{util.internal}icons\\icon.png")
+    icon = tk.PhotoImage(file = f"{preferences.internal}icons\\icon.png")
 
     def show_hide_licenses():
         global arrow, show_os_licenses
@@ -23,8 +24,8 @@ def show():
         if show_os_licenses: licenses.pack(pady = 16)
         else: licenses.forget()
 
-        if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown{'_up' if show_os_licenses else ''}_light.png")
-        else: arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown{'_up' if show_os_licenses else ''}_dark.png")
+        if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown{'_up' if show_os_licenses else ''}_light.png")
+        else: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown{'_up' if show_os_licenses else ''}_dark.png")
 
         show_licenses.configure(image = arrow)
 
@@ -41,8 +42,8 @@ def show():
     ttk.Label(app_name_and_version, text = "Volume Labeler", width = 20, font = ("Segoe UI Semibold", 17)).pack(anchor = "w", pady = (8, 0))
     ttk.Label(app_name_and_version, text = strings.lang.version.replace("%v", "1.0.0 alpha")).pack(anchor = "w")
 
-    if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_light.png")
-    else: arrow = tk.PhotoImage(file = f"{util.internal}icons/dropdown_dark.png")
+    if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_light.png")
+    else: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_dark.png")
 
     links = ttk.Frame(window)
     links.pack(fill = "x", pady = (16, 0))
@@ -66,7 +67,7 @@ def show():
                                  highlightbackground = custom_ui.entry_bd, highlightcolor = custom_ui.entry_bd,
                                  border = 0, font = ("Consolas", 10))
 
-    licenses.insert("1.0", open(util.internal + "OPEN_SOURCE_LICENSES.txt", "r", encoding = "utf8").read())
+    licenses.insert("1.0", open(preferences.internal + "OPEN_SOURCE_LICENSES.txt", "r", encoding = "utf8").read())
     licenses.configure(state = "disabled")
 
     window.focus_set()
