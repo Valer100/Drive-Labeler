@@ -1,0 +1,36 @@
+import tkinter as tk, strings, custom_ui
+from tkinter import ttk, messagebox
+from tkinter.scrolledtext import ScrolledText
+
+def show(error: str):
+    window = custom_ui.Toplevel()
+    window.title(strings.lang.open_source_licenses)
+    window.resizable(False, False)
+    window.configure(padx = 16, pady = 0)
+
+    header = ttk.Frame(window)
+    header.pack(anchor = "w", pady = (8, 16))
+
+    ttk.Label(header, text = "\ue7ba ", font = ("Segoe UI Semibold", 17), padding = (0, 5, 0, 0)).pack(side = "left")
+    ttk.Label(header, width = 25, text = strings.lang.error, font = ("Segoe UI Semibold", 17)).pack(side = "left")
+
+    error_text = ScrolledText(window, width = "60", height = 7, wrap = "word", background = custom_ui.entry_bg,
+                                 foreground = custom_ui.fg, selectbackground = custom_ui.entry_select,
+                                 selectforeground = "#ffffff", highlightthickness = 1, relief = "solid",
+                                 highlightbackground = custom_ui.entry_bd, highlightcolor = custom_ui.entry_bd,
+                                 border = 0, font = ("Consolas", 10))
+    error_text.pack()
+    error_text.insert("1.0", error)
+    error_text.configure(state = "disabled")
+
+    def copy_traceback():
+        window.clipboard_append(error)
+        messagebox.showinfo(parent = window, title = strings.lang.copy_traceback, message = strings.lang.copy_traceback_success)
+
+    buttons = ttk.Frame(window)
+    buttons.pack(pady = 16, anchor = "e")
+
+    ttk.Button(buttons, text = strings.lang.ok, default = "active", command = window.destroy).pack(side = "right", padx = (8, 0))
+    ttk.Button(buttons, text = strings.lang.copy_traceback, command = copy_traceback).pack(side = "right")
+
+    window.focus_set()

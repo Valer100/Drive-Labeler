@@ -1,7 +1,7 @@
 import tkinter as tk, strings, custom_ui, subprocess, os, traceback, tktooltip, argparse, winreg, sys
 from tkinter import ttk, filedialog, messagebox
 from utils import volume, icon, preferences
-from dialogs import change_language, change_theme, about
+from dialogs import change_language, change_theme, about, error
 
 os.chdir(os.path.dirname(__file__))
 if os.path.exists("icon.ico"): preferences.internal = ""
@@ -98,7 +98,7 @@ def modify_volume_info():
     except volume.IconNotFoundError:
         messagebox.showerror(strings.lang.error, strings.lang.missing_icon_file)
     except:
-        messagebox.showerror(strings.lang.error, strings.lang.failure_message + traceback.format_exc())
+        error.show(traceback.format_exc())
 
 
 def remove_volume_customizations():
@@ -111,6 +111,8 @@ def remove_volume_customizations():
         messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
     except PermissionError:
         messagebox.showerror(strings.lang.permission_denied, strings.lang.permission_denied_message)
+    except:
+        error.show(traceback.format_exc())
 
 
 def destroy_everything(widget):
@@ -325,6 +327,7 @@ def choose_icon_():
                 icon_path, icon_index = icon.pick_icon()
                 process_icon(icon_path, icon_index)                
             except:
+                error.show(traceback.format_exc())
                 icon_type.set(icon_old)
         case "image":
             image = filedialog.askopenfile(title = strings.lang.choose_image, filetypes = [(strings.lang.images, (".png", ".jpg", ".jpeg", ".bmp", ".gif"))])
