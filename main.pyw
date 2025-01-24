@@ -59,8 +59,8 @@ def update_volume_info(vol):
         selected_volume.set(vol)
         icon_type.set("default")
 
-        choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
-        icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
+        choose_icon.configure(text = strings.lang.choose_icon, image = ic_icon, width = 0)
+        icon_from_image.configure(text = strings.lang.create_icon_from_image, image = ic_image, width = 0)
 
         volume_info = volume.get_volume_label_and_icon(vol)
 
@@ -124,7 +124,7 @@ def process_icon(path, index):
     preview = tk.PhotoImage(file = preferences.roaming + "\\preview.png")
 
     choose_icon.configure(image = preview, text = f"{os.path.basename(path)}, {index}", width = 30)
-    icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
+    icon_from_image.configure(text = strings.lang.create_icon_from_image, image = ic_image, width = 0)
 
 
 def choose_icon_():
@@ -132,8 +132,8 @@ def choose_icon_():
 
     match icon_type.get():
         case "default":
-            choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
-            icon_from_image.configure(text = strings.lang.create_icon_from_image, image = "", width = 0)
+            choose_icon.configure(text = strings.lang.choose_icon, image = ic_icon, width = 0)
+            icon_from_image.configure(text = strings.lang.create_icon_from_image, image = ic_image, width = 0)
         case "icon":
             try:
                 icon_path, icon_index = icon.pick_icon()
@@ -148,7 +148,7 @@ def choose_icon_():
                 preview = tk.PhotoImage(file = preferences.roaming + "\\preview.png")
                 
                 icon_from_image.configure(image = preview, text = os.path.basename(icon_path), width = 30)
-                choose_icon.configure(text = strings.lang.choose_icon, image = "", width = 0)
+                choose_icon.configure(text = strings.lang.choose_icon, image = ic_icon, width = 0)
             else:
                 icon_type.set(icon_old)
         
@@ -205,8 +205,12 @@ def add_remove_context_menu_entry():
 
 
 def draw_ui():
-    global choose_icon, icon_from_image, refresh, volume_dropdown, label, arrow, show_additional_options, context_menu_integration, context_menu_integration_tooltip
+    global choose_icon, icon_from_image, refresh, volume_dropdown, label, arrow, show_additional_options, context_menu_integration, context_menu_integration_tooltip, ic_icon, ic_image, ic_volume
     show_additional_options = False
+
+    ic_volume = tk.PhotoImage(file = preferences.internal + f"icons\\volume_{'light' if custom_ui.light_theme else 'dark'}.png")
+    ic_icon = tk.PhotoImage(file = preferences.internal + f"icons\\icon_{'light' if custom_ui.light_theme else 'dark'}.png")
+    ic_image = tk.PhotoImage(file = preferences.internal + f"icons\\image_{'light' if custom_ui.light_theme else 'dark'}.png")
 
     destroy_everything(window)
     strings.load_language(open(preferences.user_preferences + "\\language", "r").read())
@@ -244,13 +248,13 @@ def draw_ui():
 
     ttk.Label(window, text = strings.lang.icon).pack(pady = (16, 8), anchor = "w")
 
-    default_icon = ttk.Radiobutton(window, text = strings.lang.default_icon, variable = icon_type, value = "default", command = choose_icon_)
+    default_icon = ttk.Radiobutton(window, text = strings.lang.default_icon, variable = icon_type, value = "default", command = choose_icon_, image = ic_volume, compound = "left")
     default_icon.pack(anchor = "w")
 
-    choose_icon = ttk.Radiobutton(window, text = strings.lang.choose_icon, variable = icon_type, value = "icon", command = choose_icon_, compound = "left")
+    choose_icon = ttk.Radiobutton(window, text = strings.lang.choose_icon, variable = icon_type, value = "icon", command = choose_icon_, image = ic_icon, compound = "left")
     choose_icon.pack(anchor = "w")
     
-    icon_from_image = ttk.Radiobutton(window, text = strings.lang.create_icon_from_image, variable = icon_type, value = "image", command = choose_icon_, compound = "left")
+    icon_from_image = ttk.Radiobutton(window, text = strings.lang.create_icon_from_image, variable = icon_type, value = "image", image = ic_image, command = choose_icon_, compound = "left")
     icon_from_image.pack(anchor = "w")
 
     if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_light.png")
