@@ -85,6 +85,8 @@ class ToolTip(tk.Toplevel):
         self.withdraw()  # Hide initially in case there is a delay
         # Disable ToolTip's title bar
         self.overrideredirect(True)
+        # Don't show Tooltip's window on the taskbar
+        self.wm_attributes("-toolwindow", True)
 
         # StringVar instance for msg string|function
         self.msg_var = tk.StringVar()
