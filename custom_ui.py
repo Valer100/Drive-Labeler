@@ -195,6 +195,37 @@ class OptionMenu(tk.OptionMenu):
         self["menu"].configure(activebackground = winaccent.accent_normal)
 
 
+class Radiobutton2(tk.Radiobutton):
+    def __init__(self, master, variable: tk.StringVar, value: str, *args, **kwargs):
+        self.variable = variable
+        self.value = value
+
+        super().__init__(master, variable = variable, value = value, background = bg, foreground = fg, 
+                         activebackground = bg_press, activeforeground = fg, indicatoron = False, 
+                         border = 0, relief = "solid", selectcolor = bg, *args, **kwargs)
+
+        self.master.configure(highlightthickness = 1)
+
+        self.bind("<Enter>", lambda event: self.configure(background = bg_hover, selectcolor = bg_hover))
+        self.bind("<Leave>", lambda event: self.configure(background = bg, selectcolor = bg))
+
+        def on_value_change(var = None, index = None, mode = None):
+            if variable.get() == value:
+                self.master.configure(highlightcolor = "#646464", highlightbackground = "#646464")
+            else:
+                self.master.configure(highlightcolor = bg, highlightbackground = bg)
+
+        variable.trace_add("write", on_value_change)
+        on_value_change()
+
+    def update_colors(self):
+        self.configure(background = bg, foreground = fg, activebackground = bg_press, activeforeground = fg,
+                       relief = "solid", selectcolor = bg)
+        
+        if self.variable.get() != self.value:
+            self.master.configure(highlightcolor = bg, highlightbackground = bg)
+
+
 class App(tk.Tk):
     def set_theme(self):
         pywinstyles.apply_style(self, "light" if light_theme else "dark")
@@ -221,6 +252,7 @@ class App(tk.Tk):
     def mainloop(self, n = 0):
         self.deiconify()
         super().mainloop(n)
+
 
 class Toplevel(tk.Toplevel):
     def set_titlebar_theme(self):
@@ -256,7 +288,7 @@ def sync_colors(window):
     elif isinstance(window, Toplevel): window.set_titlebar_theme()
 
     for widget in window.winfo_children():
-        if isinstance(widget, (CommandLink, Toolbutton, Button, OptionMenu)):
+        if isinstance(widget, (CommandLink, Toolbutton, Button, OptionMenu, Radiobutton2)):
             widget.update_colors()
         elif isinstance(widget, tk.Entry):
             widget.configure(background = entry_bg, foreground = fg, highlightcolor = entry_bg, highlightbackground = entry_bg, insertbackground = fg, selectbackground = entry_select)
