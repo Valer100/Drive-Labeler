@@ -169,3 +169,8 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Tinted icons at runtime
+icons/volume_tinted.png
+icons/icon_custom.png
+icons/image.png
