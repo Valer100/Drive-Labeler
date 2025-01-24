@@ -1,4 +1,4 @@
-import ctypes, shutil
+import ctypes, shutil, os
 from PIL import Image, IcoImagePlugin
 from icoextract import IconExtractor
 from utils import preferences
@@ -48,3 +48,19 @@ def convert_image_to_icon(path: str) -> None:
     preview_img.close()
 
     img.close()
+
+
+def tint_image(image_path, output_path, color):
+    color = color.lstrip('#')  # Remove the '#' if present
+    rgb_color = tuple(int(color[i:i+2], 16) for i in (0, 2, 4))
+
+    img = Image.open(image_path).convert("RGBA")
+    pixels = img.load()
+
+    for y in range(img.height):
+        for x in range(img.width):
+            _, _, _, alpha = pixels[x, y]
+            if alpha > 0:
+                pixels[x, y] = rgb_color + (alpha,)
+    
+    img.save(output_path)
