@@ -139,7 +139,6 @@ def choose_icon_():
                 icon_path, icon_index = icon.pick_icon()
                 process_icon(icon_path, icon_index)                
             except:
-                error.show(traceback.format_exc())
                 icon_type.set(icon_old)
         case "image":
             image = filedialog.askopenfile(title = strings.lang.choose_image, filetypes = [(strings.lang.images, (".png", ".jpg", ".jpeg", ".bmp", ".gif"))])
