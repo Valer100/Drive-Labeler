@@ -1,6 +1,6 @@
 import tkinter as tk, pywinstyles, winaccent, sys, hPyT, threading
 from tkinter import ttk
-from utils import preferences
+from utils import preferences, icon
 
 entry_select = winaccent.accent_normal
 
@@ -47,6 +47,21 @@ def update_colors():
 
 update_colors()
 
+
+def update_icons():
+    global ic_volume, ic_icon, ic_image, ic_refresh, ic_arrow_down, ic_arrow_up
+    theme = "light" if light_theme else "dark"
+
+    icon.tint_image(preferences.internal + "icons\\volume.png", preferences.internal + "icons\\volume_tinted.png", accent)
+    icon.tint_image(preferences.internal + "icons\\icon_custom.png", preferences.internal + "icons\\icon_custom_tinted.png", accent)
+    icon.tint_image(preferences.internal + "icons\\image.png", preferences.internal + "icons\\image_tinted.png", accent)
+
+    ic_volume = tk.PhotoImage(file = preferences.internal + "icons\\volume_tinted.png")
+    ic_icon = tk.PhotoImage(file = preferences.internal + "icons\\icon_custom_tinted.png")
+    ic_image = tk.PhotoImage(file = preferences.internal + "icons\\image_tinted.png")
+    ic_refresh = tk.PhotoImage(file = f"{preferences.internal}icons\\refresh_{theme}.png")
+    ic_arrow_down = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_{theme}.png")
+    ic_arrow_up = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_up_{theme}.png")
 
 class CommandLink(tk.Frame):
     def __init__(self, master, text: str = "", command: callable = None, *args, **kwargs):
@@ -174,23 +189,17 @@ class OptionMenu(tk.OptionMenu):
     def __init__(self, master, variable, value, *values):
         super().__init__(master, variable, value, *values)
 
-        if light_theme: self.arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_light.png")
-        else: self.arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_dark.png")
-
         self.configure(background = button_bg, foreground = fg, activebackground = button_hover, 
                        activeforeground = fg, highlightbackground = button_bd, highlightcolor = button_bd, 
-                       image = self.arrow, compound = "right", indicatoron = False, border = 0, relief = "solid", 
+                       image = ic_arrow_down, compound = "right", indicatoron = False, border = 0, relief = "solid", 
                        highlightthickness = 1, pady = 4, padx = 7)
         
         self["menu"].configure(activebackground = winaccent.accent_normal)
 
     def update_colors(self):
-        if light_theme: self.arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_light.png")
-        else: self.arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_dark.png")
-
         self.configure(background = button_bg, foreground = fg, activebackground = button_hover, 
                        activeforeground = fg, highlightbackground = button_bd, highlightcolor = button_bd, 
-                       image = self.arrow)
+                       image = ic_arrow_down)
 
         self["menu"].configure(activebackground = winaccent.accent_normal)
 
@@ -210,10 +219,13 @@ class Radiobutton2(tk.Radiobutton):
         self.bind("<Leave>", lambda event: self.configure(background = bg, selectcolor = bg))
 
         def on_value_change(var = None, index = None, mode = None):
-            if variable.get() == value:
-                self.master.configure(highlightcolor = "#646464", highlightbackground = "#646464")
-            else:
-                self.master.configure(highlightcolor = bg, highlightbackground = bg)
+            try:
+                if variable.get() == value:
+                    self.master.configure(highlightcolor = "#646464", highlightbackground = "#646464")
+                else:
+                    self.master.configure(highlightcolor = bg, highlightbackground = bg)
+            except:
+                pass
 
         variable.trace_add("write", on_value_change)
         on_value_change()
@@ -242,6 +254,7 @@ class App(tk.Tk):
         self.iconbitmap(default = preferences.internal + "icon.ico")
         self.update()
         self.set_theme()
+        update_icons()
 
     def resizable(self, width: bool = None, height: bool = None):
         value = super().resizable(width, height)
@@ -281,8 +294,12 @@ class Toplevel(tk.Toplevel):
         return value
     
 
-def sync_colors(window):
+def sync_colors(window, callback):
     update_colors()
+
+    if not callback is None: 
+        update_icons()
+        callback()
 
     if isinstance(window, App): window.set_theme()
     elif isinstance(window, Toplevel): window.set_titlebar_theme()
@@ -296,6 +313,7 @@ def sync_colors(window):
         elif isinstance(widget, tk.Canvas):
             widget.configure(background = bg)
         elif isinstance(widget, (Toplevel, ttk.Frame, tk.Frame)):
-            sync_colors(widget)
+            sync_colors(widget, None)
 
-def sync_colors_with_system(window): threading.Thread(target = lambda: winaccent.on_appearance_changed(lambda: sync_colors(window)), daemon = True).start()
+def sync_colors_with_system(window, callback = None): 
+    threading.Thread(target = lambda: winaccent.on_appearance_changed(lambda: sync_colors(window, callback)), daemon = True).start()

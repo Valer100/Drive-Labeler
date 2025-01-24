@@ -2,7 +2,6 @@ import tkinter as tk, strings, custom_ui, os, traceback, tktooltip, argparse
 from tkinter import ttk, filedialog, messagebox
 from utils import volume, icon, preferences, context_menu_entry
 from dialogs import change_language, change_theme, about, error
-from PIL import Image
 
 os.chdir(os.path.dirname(__file__))
 if os.path.exists("icon.ico"): preferences.internal = ""
@@ -60,8 +59,8 @@ def update_volume_info(vol):
         selected_volume.set(vol)
         icon_type.set("default")
 
-        choose_icon.configure(text = "  " + strings.lang.choose_icon, image = ic_icon, width = 0)
-        icon_from_image.configure(text = "  " + strings.lang.create_icon_from_image, image = ic_image, width = 0)
+        choose_icon.configure(text = "  " + strings.lang.choose_icon, image = custom_ui.ic_icon, width = 0)
+        icon_from_image.configure(text = "  " + strings.lang.create_icon_from_image, image = custom_ui.ic_image, width = 0)
 
         volume_info = volume.get_volume_label_and_icon(vol)
 
@@ -125,7 +124,7 @@ def process_icon(path, index):
     preview = tk.PhotoImage(file = preferences.roaming + "\\preview.png")
 
     choose_icon.configure(image = preview, text = f"  {os.path.basename(path)}, {index}")
-    icon_from_image.configure(text = "  " + strings.lang.create_icon_from_image, image = ic_image)
+    icon_from_image.configure(text = "  " + strings.lang.create_icon_from_image, image = custom_ui.ic_image)
 
 
 def choose_icon_():
@@ -133,8 +132,8 @@ def choose_icon_():
 
     match icon_type.get():
         case "default":
-            choose_icon.configure(text = "  " + strings.lang.choose_icon, image = ic_icon)
-            icon_from_image.configure(text = "  " + strings.lang.create_icon_from_image, image = ic_image)
+            choose_icon.configure(text = "  " + strings.lang.choose_icon, image = custom_ui.ic_icon)
+            icon_from_image.configure(text = "  " + strings.lang.create_icon_from_image, image = custom_ui.ic_image)
         case "icon":
             try:
                 icon_path, icon_index = icon.pick_icon()
@@ -149,7 +148,7 @@ def choose_icon_():
                 preview = tk.PhotoImage(file = preferences.roaming + "\\preview.png")
                 
                 icon_from_image.configure(image = preview, text = "  " + os.path.basename(image.name))
-                choose_icon.configure(text = "  " + strings.lang.choose_icon, image = ic_icon, width = 0)
+                choose_icon.configure(text = "  " + strings.lang.choose_icon, image = custom_ui.ic_icon, width = 0)
             else:
                 icon_type.set(icon_old)
         
@@ -181,6 +180,7 @@ def change_app_theme():
     if old_theme != preferences.theme:
         custom_ui.update_colors()
         window.set_theme()
+        custom_ui.update_icons()
         draw_ui()
         refresh_volumes_list()
 
@@ -206,17 +206,8 @@ def add_remove_context_menu_entry():
 
 
 def draw_ui():
-    global choose_icon, icon_from_image, refresh, volume_dropdown, label, arrow, show_additional_options, context_menu_integration, context_menu_integration_tooltip, ic_icon, ic_image, ic_volume
+    global choose_icon, icon_from_image, refresh, volume_dropdown, label, show_additional_options, context_menu_integration, context_menu_integration_tooltip, refresh_volumes, additional_options, default_icon, choose_icon, icon_from_image
     show_additional_options = False
-
-    icon.tint_image(preferences.internal + "icons\\volume.png", preferences.internal + "icons\\volume_tinted.png", custom_ui.accent)
-    icon.tint_image(preferences.internal + "icons\\icon_custom.png", preferences.internal + "icons\\icon_custom_tinted.png", custom_ui.accent)
-    icon.tint_image(preferences.internal + "icons\\image.png", preferences.internal + "icons\\image_tinted.png", custom_ui.accent)
-
-    ic_volume = tk.PhotoImage(file = preferences.internal + "icons\\volume_tinted.png")
-    ic_icon = tk.PhotoImage(file = preferences.internal + "icons\\icon_custom_tinted.png")
-    ic_image = tk.PhotoImage(file = preferences.internal + "icons\\image_tinted.png")
-
     destroy_everything(window)
     strings.load_language(open(preferences.user_preferences + "\\language", "r").read())
 
@@ -227,10 +218,7 @@ def draw_ui():
 
     ttk.Label(volume_section, text = strings.lang.volume).pack(side = "left")
 
-    if custom_ui.light_theme: refresh = tk.PhotoImage(file = f"{preferences.internal}icons\\refresh_light.png")
-    else: refresh = tk.PhotoImage(file = f"{preferences.internal}icons\\refresh_dark.png")
-
-    refresh_volumes = custom_ui.Button(volume_section, width = -1, command = refresh_volumes_list, image = refresh)
+    refresh_volumes = custom_ui.Button(volume_section, width = -1, command = refresh_volumes_list, image = custom_ui.ic_refresh)
     refresh_volumes.pack(side = "right", padx = (8, 0))
 
     tktooltip.ToolTip(refresh_volumes, strings.lang.refresh_volumes_list, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
@@ -256,25 +244,22 @@ def draw_ui():
     default_icon_frame = tk.Frame(window)
     default_icon_frame.pack(fill = "x", pady = 2)
 
-    default_icon = custom_ui.Radiobutton2(default_icon_frame, text = "  " + strings.lang.default_icon, variable = icon_type, value = "default", command = choose_icon_, image = ic_volume, compound = "left", anchor = "w")
+    default_icon = custom_ui.Radiobutton2(default_icon_frame, text = "  " + strings.lang.default_icon, variable = icon_type, value = "default", command = choose_icon_, image = custom_ui.ic_volume, compound = "left", anchor = "w")
     default_icon.pack(anchor = "w", fill = "x")
 
     choose_icon_frame = tk.Frame(window)
     choose_icon_frame.pack(fill = "x", pady = 2)
 
-    choose_icon = custom_ui.Radiobutton2(choose_icon_frame, text = "  " + strings.lang.choose_icon, variable = icon_type, value = "icon", command = choose_icon_, image = ic_icon, compound = "left", anchor = "w")
+    choose_icon = custom_ui.Radiobutton2(choose_icon_frame, text = "  " + strings.lang.choose_icon, variable = icon_type, value = "icon", command = choose_icon_, image = custom_ui.ic_icon, compound = "left", anchor = "w")
     choose_icon.pack(anchor = "w", fill = "x")
 
     icon_from_image_frame = tk.Frame(window)
     icon_from_image_frame.pack(fill = "x", pady = 2)
 
-    icon_from_image = custom_ui.Radiobutton2(icon_from_image_frame, text = "  " + strings.lang.create_icon_from_image, variable = icon_type, value = "image", image = ic_image, command = choose_icon_, compound = "left", anchor = "w")
+    icon_from_image = custom_ui.Radiobutton2(icon_from_image_frame, text = "  " + strings.lang.create_icon_from_image, variable = icon_type, value = "image", image = custom_ui.ic_image, command = choose_icon_, compound = "left", anchor = "w")
     icon_from_image.pack(anchor = "w", fill = "x")
 
-    if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_light.png")
-    else: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_dark.png")
-
-    additional_options = custom_ui.Toolbutton(window, text = " " + strings.lang.additional_options, command = lambda: show_hide_additional_options(), anchor = "w", compound = "left", image = arrow)
+    additional_options = custom_ui.Toolbutton(window, text = " " + strings.lang.additional_options, command = lambda: show_hide_additional_options(), anchor = "w", compound = "left", image = custom_ui.ic_arrow_down)
     additional_options.pack(pady = (14, 0), anchor = "w")
     additional_options.configure(padx = 0)
 
@@ -286,11 +271,6 @@ def draw_ui():
         show_additional_options = not show_additional_options
 
         for widget in additional_options_frame.winfo_children():
-            if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown{'_up' if show_additional_options else ''}_light.png")
-            else: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown{'_up' if show_additional_options else ''}_dark.png")
-            
-            additional_options.configure(image = arrow)
-
             if show_additional_options: 
                 if widget["text"] == strings.lang.hide_autorun:
                     widget.pack(pady = (6, 0), anchor = "w")
@@ -298,8 +278,12 @@ def draw_ui():
                     widget.pack(anchor = "w")
             else: widget.forget()
 
-        if show_additional_options: additional_options_frame.configure(height = -1)
-        else: additional_options_frame.configure(height = 1)
+        if show_additional_options: 
+            additional_options_frame.configure(height = -1)
+            additional_options.configure(image = custom_ui.ic_arrow_up)
+        else: 
+            additional_options_frame.configure(height = 1)
+            additional_options.configure(image = custom_ui.ic_arrow_down)
 
     def save_additional_preferences(): open(preferences.user_preferences + "\\additional_prefs", "w").write(f"{int(hide_autorun.get())}{int(hide_vl_icon.get())}{int(backup_existing_autorun.get())}")
 
@@ -343,7 +327,22 @@ def draw_ui():
     window.update()
 
 
+def update_icons():
+    refresh_volumes.configure(image = custom_ui.ic_refresh)
+
+    if show_additional_options: additional_options.configure(image = custom_ui.ic_arrow_up)
+    else: additional_options.configure(image = custom_ui.ic_arrow_down)
+
+    default_icon.configure(image = custom_ui.ic_volume)
+
+    if choose_icon["text"] == "  " + strings.lang.choose_icon:
+        choose_icon.configure(image = custom_ui.ic_icon)
+
+    if icon_from_image["text"] == "  " + strings.lang.create_icon_from_image:
+        icon_from_image.configure(image = custom_ui.ic_image)
+        
+
 draw_ui()
 refresh_volumes_list()
-custom_ui.sync_colors_with_system(window)
+custom_ui.sync_colors_with_system(window, update_icons)
 window.mainloop()
