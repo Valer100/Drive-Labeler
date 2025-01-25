@@ -20,11 +20,19 @@ def show():
     header.pack(anchor = "w", pady = 8)
 
     ttk.Label(header, text = "\ue771 ", font = ("Segoe UI", 17), padding = (0, 5, 0, 0)).pack(side = "left")
-    ttk.Label(header, width = 25, text = strings.lang.change_theme, font = ("Segoe UI Semibold", 17)).pack(side = "left")
+    ttk.Label(header, width = 20, text = strings.lang.change_theme, font = ("Segoe UI Semibold", 17)).pack(side = "left")
 
-    ttk.Radiobutton(window, text = strings.lang.lang_system_default, value = "default", variable = theme).pack(anchor = "w")
-    ttk.Radiobutton(window, text = strings.lang.light_theme, value = "light", variable = theme).pack(anchor = "w")
-    ttk.Radiobutton(window, text = strings.lang.dark_theme, value = "dark", variable = theme).pack(anchor = "w")
+    system_default = tk.Frame(window)
+    system_default.pack(fill = "x", pady = 2)
+    custom_ui.Radiobutton2(system_default, text = "  " + strings.lang.lang_system_default, value = "default", variable = theme, image = custom_ui.ic_system, compound = "left").pack(anchor = "w", fill = "x")
+    
+    light_theme = tk.Frame(window)
+    light_theme.pack(fill = "x", pady = 2)
+    custom_ui.Radiobutton2(light_theme, text = "  " + strings.lang.light_theme, value = "light", variable = theme, image = custom_ui.ic_light_mode, compound = "left").pack(anchor = "w", fill = "x")
+    
+    dark_theme = tk.Frame(window)
+    dark_theme.pack(fill = "x", pady = 2)
+    custom_ui.Radiobutton2(dark_theme, text = "  " + strings.lang.dark_theme, value = "dark", variable = theme, image = custom_ui.ic_dark_mode, compound = "left").pack(anchor = "w", fill = "x")
 
     buttons = ttk.Frame(window)
     buttons.pack(pady = 16, anchor = "e")
