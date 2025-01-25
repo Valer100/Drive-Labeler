@@ -17,17 +17,25 @@ def show():
     language = tk.StringVar(value = preferences.language)
 
     header = ttk.Frame(window)
-    header.pack(anchor = "w", pady = 8)
+    header.pack(anchor = "w", pady = (4, 8))
 
     ttk.Label(header, text = "\ue774 ", font = ("Segoe UI", 17), padding = (0, 5, 0, 0)).pack(side = "left")
-    ttk.Label(header, width = 25, text = strings.lang.change_language, font = ("Segoe UI Semibold", 17)).pack(side = "left")
+    ttk.Label(header, text = strings.lang.change_language, font = ("Segoe UI Semibold", 17)).pack(side = "left")
 
-    ttk.Radiobutton(window, text = strings.lang.lang_system_default, value = "default", variable = language).pack(anchor = "w")
-    ttk.Radiobutton(window, text = strings.en_US.language, value = "en_US", variable = language).pack(anchor = "w")
-    ttk.Radiobutton(window, text = strings.ro_RO.language, value = "ro_RO", variable = language).pack(anchor = "w")
+    system_default = tk.Frame(window)
+    system_default.pack(fill = "x", pady = 2)
+    custom_ui.Radiobutton2(system_default, text = "  " + strings.lang.lang_system_default + "  ", value = "default", variable = language, image = custom_ui.ic_system, compound = "left").pack(anchor = "w", fill = "x")
+    
+    en_us = tk.Frame(window)
+    en_us.pack(fill = "x", pady = 2)
+    custom_ui.Radiobutton2(en_us, text = "  " + strings.en_US.language + "  ", value = "en_US", variable = language, image = custom_ui.ic_language, compound = "left").pack(anchor = "w", fill = "x")
+    
+    ro_ro = tk.Frame(window)
+    ro_ro.pack(fill = "x", pady = 2)
+    custom_ui.Radiobutton2(ro_ro, text = "  " + strings.ro_RO.language + "  ", value = "ro_RO", variable = language, image = custom_ui.ic_language, compound = "left").pack(anchor = "w", fill = "x")
 
     buttons = ttk.Frame(window)
-    buttons.pack(pady = 16, anchor = "e")
+    buttons.pack(pady = 16, fill = "x")
 
     def apply_language():
         open(preferences.user_preferences + "\\language", "w").write(language.get())
@@ -35,7 +43,9 @@ def show():
 
         window.destroy()
 
-    ok_btn = ttk.Button(buttons, text = strings.lang.ok, default = "active", command = apply_language).pack(side = "right", padx = (8, 0))
-    cancel_btn = ttk.Button(buttons, text = strings.lang.cancel, command = window.destroy).pack(side = "right")
+    buttons.grid_columnconfigure(index = [0, 1], weight = 1)
+
+    ttk.Button(buttons, text = strings.lang.cancel, command = window.destroy).grid(row = 0, column = 0, padx = (0, 4), sticky = "ew")
+    ttk.Button(buttons, text = strings.lang.ok, default = "active", command = apply_language).grid(row = 0, column = 1, padx = (4, 0), sticky = "ew")
 
     window.focus_set()
