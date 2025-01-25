@@ -160,6 +160,9 @@ class Toolbutton(tk.Button):
 
         if icononly: self.configure(width = 2)
 
+        if self["default"] == "active" and (self["background"] != option_selected and self["background"] != bg_hover and self["background"] != bg_press):
+            self.configure(background = option_selected)
+
         self.bind("<Enter>", lambda event: self.configure(background = bg_hover))
         self.bind("<Leave>", lambda event: self.configure(background = bg))
 
@@ -173,6 +176,9 @@ class Toolbutton(tk.Button):
         self.configure(background = bg, foreground = accent_link if self.link else fg, activebackground = bg_press, 
                        activeforeground = accent if self.link else fg, highlightbackground = option_bd, 
                        highlightcolor = option_bd)
+        
+        if self["default"] == "active" and (self["background"] != option_selected and self["background"] != bg_hover and self["background"] != bg_press):
+            self.configure(background = option_selected)
 
 
 class Button(tk.Button):
@@ -252,9 +258,11 @@ class Radiobutton2(tk.Radiobutton):
 
     def update_colors(self):
         self.configure(background = bg, foreground = fg, activebackground = bg_press, activeforeground = fg,
-                       relief = "solid", selectcolor = bg)
+                       relief = "solid", selectcolor = option_selected)
         
-        if self.variable.get() != self.value:
+        if self.variable.get() == self.value:
+            self.master.configure(highlightcolor = option_bd, highlightbackground = option_bd)
+        else:
             self.master.configure(highlightcolor = bg, highlightbackground = bg)
 
 
