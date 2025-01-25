@@ -172,5 +172,5 @@ cython_debug/
 
 # Tinted icons at runtime
 icons/volume_tinted.png
-icons/icon_custom.png
-icons/image.png
+icons/icon_custom_tinted.png
+icons/image_tinted.png
