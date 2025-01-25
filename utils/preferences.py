@@ -14,3 +14,9 @@ language = open(user_preferences + "\\language", "r").read()
 additional_prefs = open(user_preferences + "\\additional_prefs", "r").read()
 
 strings.load_language(language)
+
+def limit_string(string: str) -> str:
+    if len(string) > 24:
+        return "..." + string[-21:]
+    
+    return string
