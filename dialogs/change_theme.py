@@ -17,10 +17,10 @@ def show():
     theme = tk.StringVar(value = preferences.theme)
 
     header = ttk.Frame(window)
-    header.pack(anchor = "w", pady = 8)
+    header.pack(anchor = "w", pady = (4, 8))
 
     ttk.Label(header, text = "\ue771 ", font = ("Segoe UI", 17), padding = (0, 5, 0, 0)).pack(side = "left")
-    ttk.Label(header, width = 20, text = strings.lang.change_theme, font = ("Segoe UI Semibold", 17)).pack(side = "left")
+    ttk.Label(header, text = strings.lang.change_theme, font = ("Segoe UI Semibold", 17)).pack(side = "left")
 
     system_default = tk.Frame(window)
     system_default.pack(fill = "x", pady = 2)
@@ -35,14 +35,16 @@ def show():
     custom_ui.Radiobutton2(dark_theme, text = "  " + strings.lang.dark_theme, value = "dark", variable = theme, image = custom_ui.ic_dark_mode, compound = "left").pack(anchor = "w", fill = "x")
 
     buttons = ttk.Frame(window)
-    buttons.pack(pady = 16, anchor = "e")
+    buttons.pack(pady = 16, fill = "x")
 
     def apply_theme():
         open(preferences.user_preferences + "\\theme", "w").write(theme.get())
         preferences.theme = theme.get()
         window.destroy()
 
-    ok_btn = ttk.Button(buttons, text = strings.lang.ok, default = "active", command = apply_theme).pack(side = "right", padx = (8, 0))
-    cancel_btn = ttk.Button(buttons, text = strings.lang.cancel, command = window.destroy).pack(side = "right")
+    buttons.grid_columnconfigure(index = [0, 1], weight = 1)
+
+    ttk.Button(buttons, text = strings.lang.cancel, command = window.destroy).grid(row = 0, column = 0, padx = (0, 4), sticky = "ew")
+    ttk.Button(buttons, text = strings.lang.ok, default = "active", command = apply_theme).grid(row = 0, column = 1, padx = (4, 0), sticky = "ew")
 
     window.focus_set()
