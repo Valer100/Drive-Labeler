@@ -123,7 +123,7 @@ def process_icon(path, index):
     icon.extract_icon(path, index)
     preview = tk.PhotoImage(file = preferences.roaming + "\\preview.png")
 
-    choose_icon.configure(image = preview, text = f"  {os.path.basename(path)}, {index}")
+    choose_icon.configure(image = preview, text = f"  {preferences.limit_string(os.path.basename(path))}, {index}")
     icon_from_image.configure(text = "  " + strings.lang.create_icon_from_image, image = custom_ui.ic_image)
 
 
@@ -147,7 +147,7 @@ def choose_icon_():
                 icon.convert_image_to_icon(image.name)
                 preview = tk.PhotoImage(file = preferences.roaming + "\\preview.png")
                 
-                icon_from_image.configure(image = preview, text = "  " + os.path.basename(image.name))
+                icon_from_image.configure(image = preview, text = "  " + preferences.limit_string(os.path.basename(image.name)))
                 choose_icon.configure(text = "  " + strings.lang.choose_icon, image = custom_ui.ic_icon, width = 0)
             else:
                 icon_type.set(icon_old)
