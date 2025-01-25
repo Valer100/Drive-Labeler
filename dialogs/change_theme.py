@@ -24,15 +24,15 @@ def show():
 
     system_default = tk.Frame(window)
     system_default.pack(fill = "x", pady = 2)
-    custom_ui.Radiobutton2(system_default, text = "  " + strings.lang.lang_system_default, value = "default", variable = theme, image = custom_ui.ic_system, compound = "left").pack(anchor = "w", fill = "x")
+    custom_ui.Radiobutton2(system_default, text = "  " + strings.lang.lang_system_default + "  ", value = "default", variable = theme, image = custom_ui.ic_system, compound = "left").pack(anchor = "w", fill = "x")
     
     light_theme = tk.Frame(window)
     light_theme.pack(fill = "x", pady = 2)
-    custom_ui.Radiobutton2(light_theme, text = "  " + strings.lang.light_theme, value = "light", variable = theme, image = custom_ui.ic_light_mode, compound = "left").pack(anchor = "w", fill = "x")
+    custom_ui.Radiobutton2(light_theme, text = "  " + strings.lang.light_theme + "  ", value = "light", variable = theme, image = custom_ui.ic_light_mode, compound = "left").pack(anchor = "w", fill = "x")
     
     dark_theme = tk.Frame(window)
     dark_theme.pack(fill = "x", pady = 2)
-    custom_ui.Radiobutton2(dark_theme, text = "  " + strings.lang.dark_theme, value = "dark", variable = theme, image = custom_ui.ic_dark_mode, compound = "left").pack(anchor = "w", fill = "x")
+    custom_ui.Radiobutton2(dark_theme, text = "  " + strings.lang.dark_theme + "  ", value = "dark", variable = theme, image = custom_ui.ic_dark_mode, compound = "left").pack(anchor = "w", fill = "x")
 
     buttons = ttk.Frame(window)
     buttons.pack(pady = 16, fill = "x")
