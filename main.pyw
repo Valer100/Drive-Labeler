@@ -340,7 +340,7 @@ def update_icons():
 
     if icon_from_image["text"] == "  " + strings.lang.create_icon_from_image:
         icon_from_image.configure(image = custom_ui.ic_image)
-        
+
 
 draw_ui()
 refresh_volumes_list()

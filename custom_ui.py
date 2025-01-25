@@ -5,7 +5,7 @@ from utils import preferences, icon
 entry_select = winaccent.accent_normal
 
 def update_colors():
-    global light_theme, bg, bg_hover, bg_press, fg, entry_focus, entry_bd, entry_bg, button_bg, button_hover, button_press, button_bd, button_bd_active, tooltip_bg, tooltip_bd, tooltip_fg, accent, accent_link
+    global light_theme, bg, bg_hover, bg_press, fg, entry_focus, entry_bd, entry_bg, button_bg, button_hover, button_press, button_bd, button_bd_active, tooltip_bg, tooltip_bd, tooltip_fg, accent, accent_link, option_selected, option_bd
     light_theme = winaccent.apps_use_light_theme if preferences.theme == "default" else True if preferences.theme == "light" else False
 
     if light_theme:
@@ -24,6 +24,8 @@ def update_colors():
         tooltip_bg = "#ffffff"
         tooltip_bd = "#8f8f8f"
         tooltip_fg = "#505050"
+        option_bd = "#afafaf"
+        option_selected = "#dedede"
         accent = winaccent.accent_dark
         accent_link = winaccent.accent_dark_2
     else:
@@ -42,6 +44,8 @@ def update_colors():
         tooltip_bg = "#2b2b2b"
         tooltip_bd = "#747474"
         tooltip_fg = "#ffffff"
+        option_bd = "#505050"
+        option_selected = "#2e2e2e"
         accent = winaccent.accent_light
         accent_link = winaccent.accent_light_3
 
@@ -52,9 +56,9 @@ def update_icons():
     global ic_volume, ic_icon, ic_image, ic_refresh, ic_arrow_down, ic_arrow_up
     theme = "light" if light_theme else "dark"
 
-    icon.tint_image(preferences.internal + "icons\\volume.png", preferences.internal + "icons\\volume_tinted.png", accent)
-    icon.tint_image(preferences.internal + "icons\\icon_custom.png", preferences.internal + "icons\\icon_custom_tinted.png", accent)
-    icon.tint_image(preferences.internal + "icons\\image.png", preferences.internal + "icons\\image_tinted.png", accent)
+    icon.tint_image(preferences.internal + "icons\\volume.png", preferences.internal + "icons\\volume_tinted.png", accent_link)
+    icon.tint_image(preferences.internal + "icons\\icon_custom.png", preferences.internal + "icons\\icon_custom_tinted.png", accent_link)
+    icon.tint_image(preferences.internal + "icons\\image.png", preferences.internal + "icons\\image_tinted.png", accent_link)
 
     ic_volume = tk.PhotoImage(file = preferences.internal + "icons\\volume_tinted.png")
     ic_icon = tk.PhotoImage(file = preferences.internal + "icons\\icon_custom_tinted.png")
@@ -143,7 +147,8 @@ class Toolbutton(tk.Button):
         super().__init__(master, text = text, command = command, padx = 2 if icononly else 4, pady = 2, background = bg, 
                          foreground = accent_link if link else fg, border = 0, relief = "solid", 
                          activebackground = bg_press, activeforeground = accent if link else fg,
-                         cursor = "hand2" if link and not icononly else "", *args, **kwargs)
+                         cursor = "hand2" if link and not icononly else "", highlightbackground = option_bd, 
+                         highlightcolor = option_bd, *args, **kwargs)
 
         self.link = link
 
@@ -152,8 +157,16 @@ class Toolbutton(tk.Button):
         self.bind("<Enter>", lambda event: self.configure(background = bg_hover))
         self.bind("<Leave>", lambda event: self.configure(background = bg))
 
+    def configure(self, *args, **kwargs):
+        super().configure(*args, **kwargs)
+
+        if self["default"] == "active" and (self["background"] != option_selected and self["background"] != bg_hover and self["background"] != bg_press):
+            self.configure(background = option_selected)
+
     def update_colors(self):
-        self.configure(background = bg, foreground = accent_link if self.link else fg, activebackground = bg_press, activeforeground = accent if self.link else fg)
+        self.configure(background = bg, foreground = accent_link if self.link else fg, activebackground = bg_press, 
+                       activeforeground = accent if self.link else fg, highlightbackground = option_bd, 
+                       highlightcolor = option_bd)
 
 
 class Button(tk.Button):
@@ -211,17 +224,17 @@ class Radiobutton2(tk.Radiobutton):
 
         super().__init__(master, variable = variable, value = value, background = bg, foreground = fg, 
                          activebackground = bg_press, activeforeground = fg, indicatoron = False, 
-                         border = 0, relief = "solid", selectcolor = bg, *args, **kwargs)
+                         border = 0, relief = "solid", selectcolor = option_selected, *args, **kwargs)
 
         self.master.configure(highlightthickness = 1)
 
         self.bind("<Enter>", lambda event: self.configure(background = bg_hover, selectcolor = bg_hover))
-        self.bind("<Leave>", lambda event: self.configure(background = bg, selectcolor = bg))
+        self.bind("<Leave>", lambda event: self.configure(background = bg, selectcolor = option_selected))
 
         def on_value_change(var = None, index = None, mode = None):
             try:
                 if variable.get() == value:
-                    self.master.configure(highlightcolor = "#646464", highlightbackground = "#646464")
+                    self.master.configure(highlightcolor = option_bd, highlightbackground = option_bd)
                 else:
                     self.master.configure(highlightcolor = bg, highlightbackground = bg)
             except:
