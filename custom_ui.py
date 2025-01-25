@@ -224,7 +224,8 @@ class Radiobutton2(tk.Radiobutton):
 
         super().__init__(master, variable = variable, value = value, background = bg, foreground = fg, 
                          activebackground = bg_press, activeforeground = fg, indicatoron = False, 
-                         border = 0, relief = "solid", selectcolor = option_selected, *args, **kwargs)
+                         border = 0, relief = "solid", selectcolor = option_selected, anchor = "w",
+                         *args, **kwargs)
 
         self.master.configure(highlightthickness = 1)
 

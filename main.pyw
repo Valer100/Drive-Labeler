@@ -243,20 +243,17 @@ def draw_ui():
 
     default_icon_frame = tk.Frame(window)
     default_icon_frame.pack(fill = "x", pady = 2)
-
-    default_icon = custom_ui.Radiobutton2(default_icon_frame, text = "  " + strings.lang.default_icon, variable = icon_type, value = "default", command = choose_icon_, image = custom_ui.ic_volume, compound = "left", anchor = "w")
+    default_icon = custom_ui.Radiobutton2(default_icon_frame, text = "  " + strings.lang.default_icon, variable = icon_type, value = "default", command = choose_icon_, image = custom_ui.ic_volume, compound = "left")
     default_icon.pack(anchor = "w", fill = "x")
 
     choose_icon_frame = tk.Frame(window)
     choose_icon_frame.pack(fill = "x", pady = 2)
-
-    choose_icon = custom_ui.Radiobutton2(choose_icon_frame, text = "  " + strings.lang.choose_icon, variable = icon_type, value = "icon", command = choose_icon_, image = custom_ui.ic_icon, compound = "left", anchor = "w")
+    choose_icon = custom_ui.Radiobutton2(choose_icon_frame, text = "  " + strings.lang.choose_icon, variable = icon_type, value = "icon", command = choose_icon_, image = custom_ui.ic_icon, compound = "left")
     choose_icon.pack(anchor = "w", fill = "x")
 
     icon_from_image_frame = tk.Frame(window)
     icon_from_image_frame.pack(fill = "x", pady = 2)
-
-    icon_from_image = custom_ui.Radiobutton2(icon_from_image_frame, text = "  " + strings.lang.create_icon_from_image, variable = icon_type, value = "image", image = custom_ui.ic_image, command = choose_icon_, compound = "left", anchor = "w")
+    icon_from_image = custom_ui.Radiobutton2(icon_from_image_frame, text = "  " + strings.lang.create_icon_from_image, variable = icon_type, value = "image", image = custom_ui.ic_image, command = choose_icon_, compound = "left")
     icon_from_image.pack(anchor = "w", fill = "x")
 
     additional_options = custom_ui.Toolbutton(window, text = " " + strings.lang.additional_options, command = lambda: show_hide_additional_options(), anchor = "w", compound = "left", image = custom_ui.ic_arrow_down)
