@@ -291,7 +291,7 @@ def draw_ui():
     custom_ui.Button(window, text = strings.lang.apply_changes, command = modify_volume_info, default = "active").pack(pady = (16, 0), fill = "x")
     custom_ui.Button(window, text = strings.lang.remove_customizations, command = remove_volume_customizations).pack(pady = (8, 0), fill = "x")
 
-    settings = ttk.Frame(window, height = 26)
+    settings = ttk.Frame(window)
     settings.pack(anchor = "w", pady = (20, 2), fill = "x")
     settings.pack_propagate(False)
     
@@ -307,6 +307,9 @@ def draw_ui():
     about_app = custom_ui.Toolbutton(settings, text = "\ue946", link = True, icononly = True, anchor = "n", command = about.show, font = ("Segoe UI", 13))
     about_app.pack(anchor = "nw", side = "left", padx = (4, 0))
     
+    language.update()
+    settings.configure(height = language.winfo_reqwidth())
+
 
     tktooltip.ToolTip(language, strings.lang.change_language, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
     tktooltip.ToolTip(theme, strings.lang.change_theme, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
