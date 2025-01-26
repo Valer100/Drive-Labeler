@@ -19,6 +19,7 @@ window.title("Volume Labeler")
 window.resizable(False, False)
 window.configure(padx = 14, pady = 8)
 
+icon_pack = "C:\\Windows\\System32\\shell32.dll"
 show_additional_options = False
 icon_old = "default"
 volumes = [""]
@@ -131,7 +132,7 @@ def process_icon(path, index):
 
 
 def choose_icon_():
-    global preview, icon_old
+    global preview, icon_old, icon_pack
 
     match icon_type.get():
         case "default":
@@ -139,10 +140,12 @@ def choose_icon_():
             icon_from_image.configure(text = "  " + strings.lang.create_icon_from_image, image = custom_ui.ic_image)
         case "icon":
             try:
-                icon_path, icon_index = icon.pick_icon()
-                process_icon(icon_path, icon_index)                
+                icon_path, icon_index = icon.pick_icon(icon_pack)
+                process_icon(icon_path, icon_index)
             except:
                 icon_type.set(icon_old)
+            
+            icon_pack = "C:\\Windows\\System32\\shell32.dll"
         case "image":
             image = filedialog.askopenfile(title = strings.lang.choose_image, filetypes = [(strings.lang.images, (".png", ".jpg", ".jpeg", ".bmp", ".gif"))])
 
@@ -346,7 +349,20 @@ def update_icons():
         icon_from_image.configure(image = custom_ui.ic_image)
 
 
+def enable_new_icon_pack(event):
+    global icon_pack
+    icon_pack = os.path.abspath("icons.icl")
+
+
+def disable_new_icon_pack(event):
+    global icon_pack
+    icon_pack = "C:\\Windows\\System32\\shell32.dll"
+
+
 draw_ui()
 refresh_volumes_list()
 custom_ui.sync_colors_with_system(window, update_icons)
+
+window.bind("<Shift_L>", enable_new_icon_pack)
+window.bind("<KeyRelease-Shift_L>", disable_new_icon_pack)
 window.mainloop()
