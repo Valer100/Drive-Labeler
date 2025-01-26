@@ -221,8 +221,11 @@ def draw_ui():
 
     ttk.Label(volume_section, text = strings.lang.volume).pack(side = "left")
 
-    refresh_volumes = custom_ui.Button(volume_section, width = -1, command = refresh_volumes_list, image = custom_ui.ic_refresh)
-    refresh_volumes.pack(side = "right", padx = (8, 0))
+    refresh_volumes_frame = ttk.Frame(volume_section)
+    refresh_volumes_frame.pack(side = "right", padx = (8, 0), fill = "both")
+
+    refresh_volumes = custom_ui.Button(refresh_volumes_frame, width = 3, command = refresh_volumes_list, text = "\ue72c", font = ("Segoe MDL2 Assets", 8))
+    refresh_volumes.pack(fill = "both", expand = True)
 
     tktooltip.ToolTip(refresh_volumes, strings.lang.refresh_volumes_list, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
     
