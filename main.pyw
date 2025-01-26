@@ -334,8 +334,6 @@ def draw_ui():
 
 
 def update_icons():
-    refresh_volumes.configure(image = custom_ui.ic_refresh)
-
     if show_additional_options: additional_options.configure(image = custom_ui.ic_arrow_up)
     else: additional_options.configure(image = custom_ui.ic_arrow_down)
 

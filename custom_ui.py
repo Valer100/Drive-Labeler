@@ -71,9 +71,9 @@ def update_icons():
     ic_light_mode = tk.PhotoImage(file = preferences.internal + "icons\\light_mode_tinted.png")
     ic_dark_mode = tk.PhotoImage(file = preferences.internal + "icons\\dark_mode_tinted.png")
     ic_language = tk.PhotoImage(file = preferences.internal + "icons\\language_tinted.png")
-    ic_refresh = tk.PhotoImage(file = f"{preferences.internal}icons\\refresh_{theme}.png")
     ic_arrow_down = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_{theme}.png")
     ic_arrow_up = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_up_{theme}.png")
+
 
 class CommandLink(tk.Frame):
     def __init__(self, master, text: str = "", command: callable = None, *args, **kwargs):
