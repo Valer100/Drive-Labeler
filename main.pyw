@@ -144,8 +144,9 @@ def choose_icon_():
                 process_icon(icon_path, icon_index)
             except:
                 icon_type.set(icon_old)
-            
+
             icon_pack = "C:\\Windows\\System32\\shell32.dll"
+            window.after(200, lambda: window.bind("<Shift_L>", enable_new_icon_pack))
         case "image":
             image = filedialog.askopenfile(title = strings.lang.choose_image, filetypes = [(strings.lang.images, (".png", ".jpg", ".jpeg", ".bmp", ".gif"))])
 
@@ -353,10 +354,16 @@ def enable_new_icon_pack(event):
     global icon_pack
     icon_pack = os.path.abspath("icons.icl")
 
+    window.unbind("<Shift_L>")
+    window.bind("<KeyRelease-Shift_L>", disable_new_icon_pack)
+
 
 def disable_new_icon_pack(event):
     global icon_pack
     icon_pack = "C:\\Windows\\System32\\shell32.dll"
+
+    window.unbind("<KeyRelease-_L>")
+    window.bind("<Shift_L>", enable_new_icon_pack)
 
 
 draw_ui()
@@ -364,5 +371,4 @@ refresh_volumes_list()
 custom_ui.sync_colors_with_system(window, update_icons)
 
 window.bind("<Shift_L>", enable_new_icon_pack)
-window.bind("<KeyRelease-Shift_L>", disable_new_icon_pack)
 window.mainloop()
