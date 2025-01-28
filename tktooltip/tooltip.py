@@ -4,7 +4,7 @@ Module defining the ToolTip widget
 
 from __future__ import annotations
 
-import time, threading
+import time, threading, custom_ui
 import tkinter as tk
 from contextlib import suppress
 from enum import Enum, auto
@@ -35,8 +35,6 @@ class ToolTip(tk.Toplevel):
     Creates a ToolTip (pop-up) widget for tkinter
     """
 
-    DEFAULT_PARENT_KWARGS = {"bg": "black", "padx": 1, "pady": 1}
-    DEFAULT_MESSAGE_KWARGS = {"aspect": 1000}
     S_TO_MS = 1000
 
     def __init__(
@@ -48,8 +46,6 @@ class ToolTip(tk.Toplevel):
         refresh: float = 1.0,
         x_offset: int = +10,
         y_offset: int = +10,
-        parent_kwargs: dict | None = None,
-        **message_kwargs: Any,
     ):
         """Create a ToolTip. Allows for `**kwargs` to be passed on both
             the parent frame and the ToolTip message
@@ -73,15 +69,11 @@ class ToolTip(tk.Toplevel):
             x-coordinate offset for the ToolTip, by default +10
         y_offset : `int`, optional
             y-coordinate offset for the ToolTip, by default +10
-        parent_kwargs : `dict`, optional
-            Optional kwargs to be passed into the parent frame,
-            by default `{"bg": "black", "padx": 1, "pady": 1}`
-        **message_kwargs : tkinter `**kwargs` passed directly into the ToolTip
         """
         self.widget = widget
         # ToolTip should have the same parent as the widget unless stated
         # otherwise in the `parent_kwargs`
-        tk.Toplevel.__init__(self, **(parent_kwargs or self.DEFAULT_PARENT_KWARGS))
+        tk.Toplevel.__init__(self, padx = 1, pady = 1)
         self.withdraw()  # Hide initially in case there is a delay
         # Disable ToolTip's title bar
         self.overrideredirect(True)
@@ -101,13 +93,7 @@ class ToolTip(tk.Toplevel):
         self.status = ToolTipStatus.OUTSIDE
         self.last_moved = 0.0
         # use Message widget to host ToolTip
-        self.message_kwargs: dict = self.DEFAULT_MESSAGE_KWARGS.copy()
-        self.message_kwargs.update(message_kwargs)
-        self.message_widget = tk.Message(
-            self,
-            textvariable=self.msg_var,
-            **self.message_kwargs,
-        )
+        self.message_widget = tk.Message(self, textvariable=self.msg_var, aspect=1000)
         self.message_widget.grid()
         self.bindigs = self._init_bindings()
 
@@ -188,6 +174,9 @@ class ToolTip(tk.Toplevel):
 
         Recursively queues `_show` in the scheduler every `self.refresh` seconds
         """
+        self.configure(bg = custom_ui.tooltip_bd)
+        self.message_widget.configure(bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg)
+
         if (
             self.status == ToolTipStatus.INSIDE
             and time.perf_counter() - self.last_moved >= self.delay

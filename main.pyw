@@ -199,14 +199,14 @@ def add_remove_context_menu_entry():
         context_menu_entry.remove_context_menu_entry()
 
         context_menu_integration.configure(default = "normal")
-        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg": custom_ui.tooltip_bd, "padx": 1, "pady": 1})
+        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = False, delay = 1)
         
         messagebox.showinfo(strings.lang.context_menu_integration, strings.lang.context_menu_entry_removed)
     else:
         context_menu_entry.add_context_menu_entry()
 
         context_menu_integration.configure(default = "active")
-        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg": custom_ui.tooltip_bd, "padx": 1, "pady": 1})
+        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = False, delay = 1)
         
         messagebox.showinfo(strings.lang.context_menu_integration, strings.lang.context_menu_entry_added)
 
@@ -230,7 +230,7 @@ def draw_ui():
     refresh_volumes = custom_ui.Button(refresh_volumes_frame, width = 3, command = refresh_volumes_list, text = "\ue72c", font = ("Segoe MDL2 Assets", 8))
     refresh_volumes.pack(fill = "both", expand = True)
 
-    tktooltip.ToolTip(refresh_volumes, strings.lang.refresh_volumes_list, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
+    tktooltip.ToolTip(refresh_volumes, strings.lang.refresh_volumes_list, follow = False, delay = 1)
     
     volume_dropdown = custom_ui.OptionMenu(volume_section, selected_volume, *volumes)
     volume_dropdown.pack(side = "right")
@@ -320,18 +320,18 @@ def draw_ui():
     settings.configure(height = language.winfo_reqwidth())
 
 
-    tktooltip.ToolTip(language, strings.lang.change_language, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
-    tktooltip.ToolTip(theme, strings.lang.change_theme, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
-    tktooltip.ToolTip(about_app, strings.lang.about_this_app, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
+    tktooltip.ToolTip(language, strings.lang.change_language, follow = False, delay = 1)
+    tktooltip.ToolTip(theme, strings.lang.change_theme, follow = False, delay = 1)
+    tktooltip.ToolTip(about_app, strings.lang.about_this_app, follow = False, delay = 1)
 
     context_menu_entry.update_context_menu_entry_string()
 
     if context_menu_entry.is_context_menu_entry_added():
         context_menu_integration.configure(default = "active")
-        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg": custom_ui.tooltip_bd, "padx": 1, "pady": 1})
+        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = False, delay = 1)
     else:
         context_menu_integration.configure(default = "normal")
-        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg": custom_ui.tooltip_bd, "padx": 1, "pady": 1})
+        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = False, delay = 1)
 
     window.update()
 
