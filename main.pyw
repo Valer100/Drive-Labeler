@@ -199,14 +199,14 @@ def add_remove_context_menu_entry():
         context_menu_entry.remove_context_menu_entry()
 
         context_menu_integration.configure(default = "normal")
-        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
+        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg": custom_ui.tooltip_bd, "padx": 1, "pady": 1})
         
         messagebox.showinfo(strings.lang.context_menu_integration, strings.lang.context_menu_entry_removed)
     else:
         context_menu_entry.add_context_menu_entry()
 
         context_menu_integration.configure(default = "active")
-        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
+        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg": custom_ui.tooltip_bd, "padx": 1, "pady": 1})
         
         messagebox.showinfo(strings.lang.context_menu_integration, strings.lang.context_menu_entry_added)
 
@@ -328,10 +328,10 @@ def draw_ui():
 
     if context_menu_entry.is_context_menu_entry_added():
         context_menu_integration.configure(default = "active")
-        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
+        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg": custom_ui.tooltip_bd, "padx": 1, "pady": 1})
     else:
         context_menu_integration.configure(default = "normal")
-        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg":custom_ui.tooltip_bd, "padx": 1, "pady": 1})
+        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = False, delay = 1, bg = custom_ui.tooltip_bg, fg = custom_ui.tooltip_fg, parent_kwargs = {"bg": custom_ui.tooltip_bd, "padx": 1, "pady": 1})
 
     window.update()
 
