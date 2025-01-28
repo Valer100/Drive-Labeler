@@ -188,8 +188,7 @@ def change_app_theme():
         custom_ui.update_colors()
         window.set_theme()
         custom_ui.update_icons()
-        draw_ui()
-        refresh_volumes_list()
+        custom_ui.sync_colors(window, update_icons)
 
 
 def add_remove_context_menu_entry():
