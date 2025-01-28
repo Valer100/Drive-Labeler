@@ -1,5 +1,7 @@
 import tkinter as tk, pywinstyles, winaccent, sys, hPyT, threading
 from tkinter import ttk
+
+import winaccent._utils
 from utils import preferences, icon
 
 def update_colors():
@@ -24,8 +26,8 @@ def update_colors():
         tooltip_bg = "#ffffff"
         tooltip_bd = "#8f8f8f"
         tooltip_fg = "#505050"
-        option_bd = "#afafaf"
-        option_selected = "#dedede"
+        option_bd = winaccent._utils.blend_colors(winaccent.accent_dark, "#ffffff", 70)
+        option_selected = winaccent._utils.blend_colors(winaccent.accent_dark, "#ffffff", 20)
         accent = winaccent.accent_dark
         accent_link = winaccent.accent_dark_2
     else:
