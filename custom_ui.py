@@ -53,7 +53,7 @@ update_colors()
 
 
 def update_icons():
-    global ic_volume, ic_icon, ic_image, ic_refresh, ic_arrow_down, ic_arrow_up, ic_system, ic_light_mode, ic_dark_mode, ic_language
+    global ic_volume, ic_icon, ic_image, ic_arrow_down, ic_arrow_up, ic_system, ic_light_mode, ic_dark_mode, ic_language
     theme = "light" if light_theme else "dark"
 
     icon.tint_image(preferences.internal + "icons\\volume.png", preferences.internal + "icons\\volume_tinted.png", accent_link)
