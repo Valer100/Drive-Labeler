@@ -122,6 +122,7 @@ def modify_volume_info():
             backup_existing_autorun = backup_existing_autorun.get()
         )
 
+        disable_undo_button()
         messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
     except PermissionError:
         messagebox.showerror(strings.lang.permission_denied, strings.lang.permission_denied_message)
