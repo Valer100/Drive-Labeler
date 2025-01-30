@@ -45,7 +45,7 @@ def modify_volume_info(
 
 
         def modify_existing_autorun_file():
-            autorun_file = open(f"{volume}autorun.inf")
+            autorun_file = open(f"{volume}autorun.inf", encoding = "utf-16-le")
             autorun = autorun_file.read()
             autorun_file.close()
 
@@ -88,7 +88,7 @@ def modify_volume_info(
             autorun_new = autorun_new.strip()
 
             remove_hidden_attribute(f"{volume}autorun.inf")
-            autorun_file = open(f"{volume}autorun.inf", "w")
+            autorun_file = open(f"{volume}autorun.inf", "w", encoding = "utf-16-le")
             autorun_file.write(autorun_new)
             autorun_file.close()
             
@@ -102,7 +102,7 @@ def modify_volume_info(
 
             remove_hidden_attribute(f"{volume}autorun.inf")
 
-            autorun_file = open(f"{volume}autorun.inf", "w")
+            autorun_file = open(f"{volume}autorun.inf", "w", encoding = "utf-16-le")
             autorun_file.write(autorun)
             autorun_file.close()
 
@@ -111,7 +111,7 @@ def modify_volume_info(
 
 
         if os.path.exists(f"{volume}autorun.inf"):
-            autorun_file = open(f"{volume}autorun.inf")
+            autorun_file = open(f"{volume}autorun.inf", encoding = "utf-16-le")
             autorun = autorun_file.read()
             autorun_file.close()
 
@@ -164,7 +164,7 @@ def get_volume_label_and_icon(volume: str) -> dict[str, str, int]:
         volume_label = strings.lang.local_disk if volume == "C:\\" and volume_label == "" else strings.lang.volume if volume_label == "" else volume_label
 
         if os.path.exists(f"{volume}autorun.inf"):
-            autorun_file = open(f"{volume}autorun.inf")
+            autorun_file = open(f"{volume}autorun.inf", encoding = "utf-16-le")
             autorun = autorun_file.read()
             autorun_file.close()
 
