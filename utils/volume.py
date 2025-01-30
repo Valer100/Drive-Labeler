@@ -13,7 +13,7 @@ def modify_volume_info(
 ) -> None:
     
     if os.path.exists(volume):
-        if not default_icon == "default" and not os.path.exists(icon_path):
+        if not default_icon and not os.path.exists(icon_path):
             raise IconNotFoundError(f"Icon not found. Path: " + icon_path)
         
         if not default_icon:
@@ -73,7 +73,7 @@ def modify_volume_info(
                     autorun_new += "\n" + line
 
             
-            if not icon_changed and not default_icon == "default": 
+            if not icon_changed and not default_icon: 
                 autorun_new, replacements = re.subn(r"(?i)^\[autorun(?:\.[a-zA-Z0-9_]+)?\]", lambda match: f"{match.group(0)}\nicon=vl_icon\\icon{id}.ico,0", autorun_new, flags = re.MULTILINE)
                 if replacements > 0: icon_changed = True
             
@@ -98,7 +98,7 @@ def modify_volume_info(
 
         def create_new_autorun_file():
             autorun = f"[autorun]\nlabel={label}"
-            if not default_icon == "default": autorun += f"\nicon=vl_icon\\icon{id}.ico,0"
+            if not default_icon: autorun += f"\nicon=vl_icon\\icon{id}.ico,0"
 
             remove_hidden_attribute(f"{volume}autorun.inf")
 
