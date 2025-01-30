@@ -36,7 +36,7 @@ error = "An error occurred"
 failure_message = "Failed to change the volume's information.\n\n"
 missing_icon_file = "The copied icon file is missing."
 context_menu_integration = "Context menu integration"
-context_menu_entry_added = "The context menu entry was successfully added."
+context_menu_entry_added = "The context menu entry was successfully added.\n\nNote: The context menu entry will only appear in the classic full context menu on Windows 11."
 context_menu_entry_removed = "The context menu entry was successfully removed."
 copy_traceback_success = "The traceback was successfully copied to clipboard."
 

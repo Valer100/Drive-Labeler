@@ -36,7 +36,7 @@ error = "A intervenit o eroare"
 failure_message = "Nu s-au putut modifica informațiile volumului.\n\n"
 missing_icon_file = "Fișierul pictogramei copiate lipsește."
 context_menu_integration = "Integrare în meniul contextual"
-context_menu_entry_added = "Intrarea în meniul contextual a fost adăugată cu succes."
+context_menu_entry_added = "Intrarea în meniul contextual a fost adăugată cu succes.\n\nNotă: Intrarea în meniul contextual va apărea numai în meniul contextual clasic complet pe Windows 11."
 context_menu_entry_removed = "Intrarea în meniul contextual a fost eliminată cu succes."
 copy_traceback_success = "Traceback-ul a fost copiat cu succes în clipboard."
 
