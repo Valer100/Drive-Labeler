@@ -1,4 +1,4 @@
-import tkinter as tk, strings, custom_ui, os, traceback, tktooltip, argparse
+import tkinter as tk, strings, custom_ui, os, traceback, tktooltip, argparse, pywinstyles
 from tkinter import ttk, filedialog, messagebox
 from utils import volume, icon, preferences, context_menu_entry
 from dialogs import change_language, change_theme, about, error
@@ -25,6 +25,7 @@ icon_old = "default"
 volumes = [""]
 autorun = ""
 app_started = False
+undo_button_enabled = False
 selected_volume = tk.StringVar(value = "")
 hide_autorun = tk.BooleanVar(value = int(preferences.additional_prefs[0]))
 hide_vl_icon = tk.BooleanVar(value = int(preferences.additional_prefs[1]))
@@ -76,6 +77,35 @@ def update_volume_info(vol):
 
         label.delete(0, "end")
         label.insert(0, volume_info["label"])
+        disable_undo_button()
+    else:
+        messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
+
+
+def disable_undo_button():
+    global undo_button_enabled
+
+    undo_changes.unbind("<Enter>")
+    undo_changes.configure(command = None)
+    undo_changes.unbind("<Leave>")
+    undo_changes.configure(background = custom_ui.button_bg)
+    pywinstyles.set_opacity(undo_changes, 0.5)
+
+
+def enable_undo_button():
+    global undo_button_enabled
+
+    undo_changes.configure(command = undo_changes_)
+    undo_changes.bind("<Enter>", lambda event: undo_changes.configure(background = custom_ui.button_hover))
+    undo_changes.bind("<Leave>", lambda event: undo_changes.configure(background = custom_ui.button_bg))
+    undo_changes.configure(background = custom_ui.button_bg)
+    pywinstyles.set_opacity(undo_changes, 1)
+
+
+def undo_changes_():
+    if os.path.exists(selected_volume.get()):
+        update_volume_info(selected_volume.get())
+        disable_undo_button()
     else:
         messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
 
@@ -136,10 +166,13 @@ def choose_icon_():
         case "default":
             choose_icon.configure(text = "  " + strings.lang.choose_icon, image = custom_ui.ic_icon)
             icon_from_image.configure(text = "  " + strings.lang.create_icon_from_image, image = custom_ui.ic_image)
+
+            enable_undo_button()
         case "icon":
             try:
                 icon_path, icon_index = icon.pick_icon(icon_pack)
                 process_icon(icon_path, icon_index)
+                enable_undo_button()
             except:
                 icon_type.set(icon_old)
 
@@ -154,6 +187,7 @@ def choose_icon_():
                 
                 icon_from_image.configure(image = preview, text = "  " + preferences.limit_string(os.path.basename(image.name)))
                 choose_icon.configure(text = "  " + strings.lang.choose_icon, image = custom_ui.ic_icon, width = 0)
+                enable_undo_button()
             else:
                 icon_type.set(icon_old)
         
@@ -210,7 +244,7 @@ def add_remove_context_menu_entry():
 
 
 def draw_ui():
-    global choose_icon, icon_from_image, refresh, volume_dropdown, label, show_additional_options, context_menu_integration, context_menu_integration_tooltip, refresh_volumes, additional_options, default_icon, choose_icon, icon_from_image
+    global choose_icon, icon_from_image, undo_changes, volume_dropdown, label, show_additional_options, context_menu_integration, context_menu_integration_tooltip, refresh_volumes, additional_options, default_icon, choose_icon, icon_from_image
     show_additional_options = False
     destroy_everything(window)
     strings.load_language(open(preferences.user_preferences + "\\language", "r").read())
@@ -235,6 +269,10 @@ def draw_ui():
 
     ttk.Label(window, text = strings.lang.label).pack(pady = 10, anchor = "w")
 
+    def on_label_change():
+        enable_undo_button()
+        return True
+
     label_frame = tk.Frame(window, highlightbackground = custom_ui.entry_bd, highlightcolor = custom_ui.entry_focus,
                           highlightthickness = 1)
     label_frame.pack(anchor = "w", fill = "x")
@@ -243,7 +281,7 @@ def draw_ui():
                     foreground = custom_ui.fg, border = 0, highlightthickness = 2, 
                     highlightcolor = custom_ui.entry_bg, highlightbackground = custom_ui.entry_bg, 
                     insertbackground = custom_ui.fg, insertwidth = 1, selectbackground = custom_ui.entry_select,
-                    selectforeground = "#FFFFFF")
+                    selectforeground = "#FFFFFF", validate = "key", validatecommand = on_label_change)
     label.pack(fill = "x")
 
     ttk.Label(window, text = strings.lang.icon).pack(pady = (16, 8), anchor = "w")
@@ -295,8 +333,19 @@ def draw_ui():
     ttk.Checkbutton(additional_options_frame, text = strings.lang.hide_vl_icon, command = save_additional_preferences, variable = hide_vl_icon)
     ttk.Checkbutton(additional_options_frame, text = strings.lang.backup_existing_autorun, command = save_additional_preferences, variable = backup_existing_autorun)
 
-    custom_ui.Button(window, text = strings.lang.apply_changes, command = modify_volume_info, default = "active").pack(pady = (16, 0), fill = "x")
-    custom_ui.Button(window, text = strings.lang.remove_customizations, command = remove_volume_customizations).pack(pady = (8, 0), fill = "x")
+    buttons = ttk.Frame(window)
+    buttons.pack(fill = "x", pady = (16, 0))
+    buttons.columnconfigure([0, 1], weight = 1)
+
+    apply_changes = custom_ui.Button(buttons, width = 1, text = strings.lang.apply_changes, command = modify_volume_info, default = "active")
+    apply_changes.grid(row = 0, column = 0, padx = (0, 4), sticky = "ew")
+    
+    undo_changes = custom_ui.Button(buttons, width = 1, text = strings.lang.undo_changes)
+    undo_changes.grid(row = 0, column = 1, padx = (4, 0), sticky = "ew")
+    pywinstyles.set_opacity(undo_changes, 0.5)
+
+    remove_customizations = custom_ui.Button(window, text = strings.lang.remove_customizations, command = remove_volume_customizations)
+    remove_customizations.pack(pady = (8, 0), fill = "x")
 
     settings = ttk.Frame(window)
     settings.pack(anchor = "w", pady = (20, 2), fill = "x")
