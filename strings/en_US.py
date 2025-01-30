@@ -24,6 +24,7 @@ backup_existing_autorun = "Backup autorun.inf file (if it already exists)"
 context_menu_integration_disabled = "Context menu integration: Disabled"
 context_menu_integration_enabled = "Context menu integration: Enabled"
 refresh_volumes_list = "Refresh volumes list"
+undo_changes = "Undo changes"
 
 # Messages
 done = "Done"
