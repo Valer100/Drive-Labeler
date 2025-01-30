@@ -95,8 +95,6 @@ def modify_volume_info():
         messagebox.showinfo(strings.lang.done, strings.lang.operation_complete)
     except PermissionError:
         messagebox.showerror(strings.lang.permission_denied, strings.lang.permission_denied_message)
-    except UnicodeEncodeError:
-        messagebox.showerror(strings.lang.error, strings.lang.unicode_not_supported)
     except volume.VolumeNotAccessibleError:
         messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
     except volume.IconNotFoundError:
