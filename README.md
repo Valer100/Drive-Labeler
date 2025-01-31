@@ -65,4 +65,4 @@ At the moment, there are no stable realeses published. However, if you want to t
 > At the moment, the binaries from Releases tab were built only for 64 bit Windows. They will not work on 32 bit Windows. -->
 
 ## 📜 License
-[MIT](https://github.com/Valer100/Volume-Labeler/blob/main/LICENSE)
+Volume Labeler is MIT-licensed. You can read the license text [here](https://github.com/Valer100/Volume-Labeler/blob/main/LICENSE).
