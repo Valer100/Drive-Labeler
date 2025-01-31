@@ -3,6 +3,27 @@ from utils import preferences
 
 class VolumeNotAccessibleError(Exception): pass
 class IconNotFoundError(Exception): pass
+class AutorunEncodingError(Exception): pass
+
+
+def read_autorun_file(volume: str) -> str:
+    try: 
+        autorun_file = open(f"{volume}autorun.inf", encoding = "utf-16-le")
+        autorun_contents = autorun_file.read()
+    except:
+        try: 
+            autorun_file = open(f"{volume}autorun.inf", encoding = "utf-8")
+            autorun_contents = autorun_file.read()
+        except:
+            try:
+                autorun_file = open(f"{volume}autorun.inf")
+                autorun_contents = autorun_file.read()
+            except:
+                raise AutorunEncodingError("Invalid `autorun.inf` file encoding.")
+            
+    autorun_file.close()
+
+    return autorun_contents
 
 
 def modify_volume_info(
@@ -45,10 +66,7 @@ def modify_volume_info(
 
 
         def modify_existing_autorun_file():
-            autorun_file = open(f"{volume}autorun.inf", encoding = "utf-16-le")
-            autorun = autorun_file.read()
-            autorun_file.close()
-
+            autorun = read_autorun_file(volume)
             autorun_new = ""
             autorun_lines = autorun.split("\n")
 
@@ -111,9 +129,7 @@ def modify_volume_info(
 
 
         if os.path.exists(f"{volume}autorun.inf"):
-            autorun_file = open(f"{volume}autorun.inf", encoding = "utf-16-le")
-            autorun = autorun_file.read()
-            autorun_file.close()
+            autorun = read_autorun_file(volume)
 
             if re.search("(?i)^\\[[^\\]]+\\]", autorun):
                 modify_existing_autorun_file()
@@ -164,10 +180,7 @@ def get_volume_label_and_icon(volume: str) -> dict[str, str, int]:
         volume_label = strings.lang.local_disk if volume == "C:\\" and volume_label == "" else strings.lang.volume if volume_label == "" else volume_label
 
         if os.path.exists(f"{volume}autorun.inf"):
-            autorun_file = open(f"{volume}autorun.inf", encoding = "utf-16-le")
-            autorun = autorun_file.read()
-            autorun_file.close()
-
+            autorun = read_autorun_file(volume)
             autorun_lines = autorun.split("\n")
 
             for line in autorun_lines:
