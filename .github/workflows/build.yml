@@ -21,7 +21,9 @@ jobs:
             Start-Process -FilePath "is.exe" -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" -NoNewWindow -Wait
   
       - name: Build application
-        run: .\build_app.bat
+        run: |
+            $env:PATH = "C:\hostedtoolcache\windows\python\3.11.9\x64\Scripts;C:\hostedtoolcache\windows\python\3.11.9\x64;$env:PATH"
+            .\build_app.bat
 
       - name: Build installer
         run: |
