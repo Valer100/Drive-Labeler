@@ -46,7 +46,7 @@ def update_colors():
         tooltip_bg = "#2b2b2b"
         tooltip_bd = "#747474"
         tooltip_fg = "#ffffff"
-        option_bd = winaccent._utils.blend_colors(winaccent.accent_light, bg, 50)
+        option_bd = winaccent._utils.blend_colors(winaccent.accent_light, bg, 40)
         option_selected = winaccent._utils.blend_colors(winaccent.accent_light, bg, 10)
         accent = winaccent.accent_light
         accent_link = winaccent.accent_light_3
