@@ -26,8 +26,8 @@ def update_colors():
         tooltip_bg = "#ffffff"
         tooltip_bd = "#8f8f8f"
         tooltip_fg = "#505050"
-        option_bd = winaccent._utils.blend_colors(winaccent.accent_dark, "#ffffff", 70)
-        option_selected = winaccent._utils.blend_colors(winaccent.accent_dark, "#ffffff", 20)
+        option_bd = winaccent._utils.blend_colors(winaccent.accent_dark, bg, 70)
+        option_selected = winaccent._utils.blend_colors(winaccent.accent_dark, bg, 20)
         accent = winaccent.accent_dark
         accent_link = winaccent.accent_dark_2
     else:
@@ -35,19 +35,19 @@ def update_colors():
         bg_hover = "#333333"
         bg_press = "#292929"
         fg = "#ffffff"
-        entry_focus = "#ffffff"
+        entry_focus = winaccent.accent_light_3
         entry_bd = "#6e6e6e"
         entry_bg = "#404040"
         button_bg = "#333333"
         button_hover = "#454545"
         button_press = "#676767"
         button_bd = "#9b9b9b"
-        button_bd_active = "#ffffff"
+        button_bd_active = winaccent.accent_light_3
         tooltip_bg = "#2b2b2b"
         tooltip_bd = "#747474"
         tooltip_fg = "#ffffff"
-        option_bd = "#505050"
-        option_selected = "#2a2a2a"
+        option_bd = winaccent._utils.blend_colors(winaccent.accent_light, bg, 50)
+        option_selected = winaccent._utils.blend_colors(winaccent.accent_light, bg, 10)
         accent = winaccent.accent_light
         accent_link = winaccent.accent_light_3
 
