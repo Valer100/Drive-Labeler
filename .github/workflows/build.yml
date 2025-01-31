@@ -1,0 +1,42 @@
+name: Build binaries
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Python 3.11.9
+        run: |
+          Invoke-WebRequest -Uri "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe" -OutFile "python-installer.exe"
+          Start-Process -FilePath "python-installer.exe" -ArgumentList "/quiet", "InstallAllUsers=1", "PrependPath=1", "Include_tcltk=1" -NoNewWindow -Wait
+
+      - name: Install Inno Setup Compiler
+        run: |
+            Invoke-WebRequest -Uri "https://jrsoftware.org/download.php/is.exe" -OutFile "is.exe"
+            Start-Process -FilePath "is.exe" -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" -NoNewWindow -Wait
+  
+      - name: Build application
+        run: build_app.bat
+
+      - name: Build installer
+        run: |
+          $iscc = "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe"
+          if (!(Test-Path $iscc)) { $iscc = "${env:ProgramFiles}\Inno Setup 6\ISCC.exe" }
+          & $iscc build_installer.iss
+
+      - name: Upload build
+        uses: actions/upload-artifact@v4
+        with:
+          name: volume_labeler_portable_x64
+          path: build/volume_labeler
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: volume_labeler_installer_x64.exe
+          path: build/volume_labeler_installer_x64.exe
