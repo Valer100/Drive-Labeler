@@ -33,5 +33,3 @@ ren "dist" "build"
 
 echo.
 echo Volume Labeler has been successfully built.
-echo Press any key to exit...
-timeout /t -1 > NUL
