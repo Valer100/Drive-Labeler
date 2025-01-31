@@ -4,7 +4,7 @@
 #define MyAppName "Volume Labeler"
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "Valer"
-#define MyAppURL "https://github.com/Valer100/Volume-Labler"
+#define MyAppURL "https://github.com/Valer100/Volume-Labeler"
 #define MyAppExeName "volume_labeler.exe"
 
 [Setup]
@@ -55,7 +55,7 @@ Source: "build\volume_labeler\*"; DestDir: "{app}"; Flags: ignoreversion recurse
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Comment: "Edit the label and the icon of a volume."; Tasks: desktopicon
 
 [Registry]
 Root: HKCU; Subkey: "Software\Classes\Drive\shell\Volume Labeler"; ValueType: string; ValueName: ""; ValueData: "Customize with Volume Labeler"; Flags: uninsdeletekey; Tasks: contextmenuintegration
