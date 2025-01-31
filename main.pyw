@@ -86,9 +86,9 @@ def disable_undo_button():
     global undo_button_enabled
 
     undo_changes.unbind("<Enter>")
-    undo_changes.configure(command = None)
+    undo_changes.configure(command = lambda: None)
     undo_changes.unbind("<Leave>")
-    undo_changes.configure(background = custom_ui.button_bg)
+    undo_changes.configure(background = custom_ui.button_bg, activebackground = custom_ui.button_bg)
     pywinstyles.set_opacity(undo_changes, 0.5)
 
 
@@ -98,7 +98,7 @@ def enable_undo_button():
     undo_changes.configure(command = undo_changes_)
     undo_changes.bind("<Enter>", lambda event: undo_changes.configure(background = custom_ui.button_hover))
     undo_changes.bind("<Leave>", lambda event: undo_changes.configure(background = custom_ui.button_bg))
-    undo_changes.configure(background = custom_ui.button_bg)
+    undo_changes.configure(background = custom_ui.button_bg, activebackground = custom_ui.button_press)
     pywinstyles.set_opacity(undo_changes, 1)
 
 
