@@ -7,6 +7,7 @@
 [![Pre-release](https://img.shields.io/github/v/release/Valer100/Volume-Labeler?include_prereleases&label=pre-release)](https://github.com/Valer100/Volume-Labeler/releases)
 [![Windows](https://img.shields.io/badge/windows-10+-blue)]()
 [![Architecture](https://img.shields.io/badge/architecture-x64-blue)]()
+[![Build status](https://img.shields.io/github/actions/workflow/status/Valer100/Volume-Labeler/build.yml)](https://github.com/Valer100/Volume-Labeler/actions)
 [![Downloads](https://img.shields.io/github/downloads/Valer100/Volume-Labeler/total)](https://github.com/Valer100/Volume-Labeler/releases)
 [![Stars](https://img.shields.io/github/stars/Valer100/Volume-Labeler?style=flat&color=yellow)](https://github.com/Valer100/Volume-Labeler/stargazers)
 [![Contributors](https://img.shields.io/github/contributors/Valer100/Volume-Labeler)](https://github.com/Valer100/Volume-Labeler/graphs/contributors)
@@ -57,7 +58,7 @@ Before building the installer, you must install Inno Setup Compiler on your comp
 Also, you must build the app first before building the installer. After building the app, make sure a `build` folder appears. If it doesn't and appears a `dist` folder intstead, rename that folder to `build`. After that, right-click `build_installer.iss` and choose `Compile`. After the installer was built, you can find it in the same `build` folder.
 
 ## 💿 Download
-Comming soon.
+At the moment, there are no stable realeses published. However, if you want to try unstable versions, you can check out the builds from [GitHub Actions](https://github.com/Valer100/Volume-Labeler/actions).
 <!-- Click [here](https://github.com/Valer100/Volume-Labeler/releases/latest) to download the latest version. You can download either the portable or the installer version.
 
 > [!WARNING]
