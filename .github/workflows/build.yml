@@ -41,5 +41,5 @@ jobs:
       - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
-          name: volume_labeler_installer_x64.exe
+          name: volume_labeler_installer_x64
           path: build/volume_labeler_installer_x64.exe
