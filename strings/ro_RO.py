@@ -24,7 +24,7 @@ backup_existing_autorun = "Fă backup fișierului autorun.inf (dacă există dej
 context_menu_integration_disabled = "Integrare în meniul contextual: Dezactivată"
 context_menu_integration_enabled = "Integrare în meniul contextual: Activată"
 refresh_volumes_list = "Reîmprospătează lista volumelor"
-undo_changes = "Anulează modificările"
+reset_changes = "Resetează modificările"
 
 # Messages
 done = "Gata"

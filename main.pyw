@@ -85,21 +85,21 @@ def update_volume_info(vol):
 def disable_undo_button():
     global undo_button_enabled
 
-    undo_changes.unbind("<Enter>")
-    undo_changes.configure(command = lambda: None)
-    undo_changes.unbind("<Leave>")
-    undo_changes.configure(background = custom_ui.button_bg, activebackground = custom_ui.button_bg)
-    pywinstyles.set_opacity(undo_changes, 0.5)
+    reset_changes.unbind("<Enter>")
+    reset_changes.configure(command = lambda: None)
+    reset_changes.unbind("<Leave>")
+    reset_changes.configure(background = custom_ui.button_bg, activebackground = custom_ui.button_bg)
+    pywinstyles.set_opacity(reset_changes, 0.5)
 
 
 def enable_undo_button():
     global undo_button_enabled
 
-    undo_changes.configure(command = undo_changes_)
-    undo_changes.bind("<Enter>", lambda event: undo_changes.configure(background = custom_ui.button_hover))
-    undo_changes.bind("<Leave>", lambda event: undo_changes.configure(background = custom_ui.button_bg))
-    undo_changes.configure(background = custom_ui.button_bg, activebackground = custom_ui.button_press)
-    pywinstyles.set_opacity(undo_changes, 1)
+    reset_changes.configure(command = undo_changes_)
+    reset_changes.bind("<Enter>", lambda event: reset_changes.configure(background = custom_ui.button_hover))
+    reset_changes.bind("<Leave>", lambda event: reset_changes.configure(background = custom_ui.button_bg))
+    reset_changes.configure(background = custom_ui.button_bg, activebackground = custom_ui.button_press)
+    pywinstyles.set_opacity(reset_changes, 1)
 
 
 def undo_changes_():
@@ -245,7 +245,7 @@ def add_remove_context_menu_entry():
 
 
 def draw_ui():
-    global choose_icon, icon_from_image, undo_changes, volume_dropdown, label, show_additional_options, context_menu_integration, context_menu_integration_tooltip, refresh_volumes, additional_options, default_icon, choose_icon, icon_from_image
+    global choose_icon, icon_from_image, reset_changes, volume_dropdown, label, show_additional_options, context_menu_integration, context_menu_integration_tooltip, refresh_volumes, additional_options, default_icon, choose_icon, icon_from_image
     show_additional_options = False
     destroy_everything(window)
     strings.load_language(open(preferences.user_preferences + "\\language", "r").read())
@@ -341,9 +341,9 @@ def draw_ui():
     apply_changes = custom_ui.Button(buttons, width = 1, text = strings.lang.apply_changes, command = modify_volume_info, default = "active")
     apply_changes.grid(row = 0, column = 0, padx = (0, 4), sticky = "ew")
     
-    undo_changes = custom_ui.Button(buttons, width = 1, text = strings.lang.undo_changes)
-    undo_changes.grid(row = 0, column = 1, padx = (4, 0), sticky = "ew")
-    pywinstyles.set_opacity(undo_changes, 0.5)
+    reset_changes = custom_ui.Button(buttons, width = 1, text = strings.lang.reset_changes)
+    reset_changes.grid(row = 0, column = 1, padx = (4, 0), sticky = "ew")
+    pywinstyles.set_opacity(reset_changes, 0.5)
 
     remove_customizations = custom_ui.Button(window, text = strings.lang.remove_customizations, command = remove_volume_customizations)
     remove_customizations.pack(pady = (8, 0), fill = "x")
