@@ -136,7 +136,7 @@ def modify_volume_info():
 
 def remove_volume_customizations():
     try:
-        confirmed = messagebox.askyesno(strings.lang.remove_customizations, strings.lang.remove_customizations_message, icon = "warning")
+        confirmed = messagebox.askyesno(strings.lang.remove_customizations, strings.lang.remove_customizations_message, icon = "warning", default = "no")
 
         if confirmed:
             volume.remove_volume_customizations(volume = selected_volume.get(), backup_existing_autorun = backup_existing_autorun.get())
