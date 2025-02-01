@@ -338,12 +338,17 @@ def draw_ui():
     buttons.pack(fill = "x", pady = (16, 0))
     buttons.columnconfigure([0, 1], weight = 1)
 
-    apply_changes = custom_ui.Button(buttons, width = 1, text = strings.lang.apply_changes, command = modify_volume_info, default = "active")
+    apply_changes = custom_ui.Button(buttons, width = -1, text = strings.lang.apply_changes, command = modify_volume_info, default = "active")
     apply_changes.grid(row = 0, column = 0, padx = (0, 4), sticky = "ew")
-    
-    reset_changes = custom_ui.Button(buttons, width = 1, text = strings.lang.reset_changes)
+    apply_changes.update()
+
+    reset_changes = custom_ui.Button(buttons, width = -1, text = strings.lang.reset_changes)
     reset_changes.grid(row = 0, column = 1, padx = (4, 0), sticky = "ew")
+    reset_changes.update()
     pywinstyles.set_opacity(reset_changes, 0.5)
+    
+    button_width = apply_changes.winfo_reqwidth() if apply_changes.winfo_reqwidth() >= reset_changes.winfo_reqwidth() else reset_changes.winfo_reqwidth()
+    buttons.columnconfigure([0, 1], minsize = button_width)
 
     remove_customizations = custom_ui.Button(window, text = strings.lang.remove_customizations, command = remove_volume_customizations)
     remove_customizations.pack(pady = (8, 0), fill = "x")
