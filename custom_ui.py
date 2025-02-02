@@ -5,7 +5,7 @@ import winaccent._utils
 from utils import preferences, icon
 
 def update_colors():
-    global light_theme, bg, bg_hover, bg_press, fg, entry_focus, entry_bd, entry_bg, button_bg, button_hover, button_press, button_bd, button_bd_active, tooltip_bg, tooltip_bd, tooltip_fg, accent, accent_link, option_selected, option_bd, entry_select
+    global light_theme, bg, bg_hover, bg_press, fg, entry_focus, entry_bd, entry_bg, button_bg, button_hover, button_press, button_bd, button_bd_active, tooltip_bg, tooltip_bd, tooltip_fg, accent, accent_link, option_selected, option_bd, entry_select, accent_hover, accent_press
     light_theme = winaccent.apps_use_light_theme if preferences.theme == "default" else True if preferences.theme == "light" else False
 
     entry_select = winaccent.accent_normal
@@ -50,6 +50,9 @@ def update_colors():
         option_selected = winaccent._utils.blend_colors(winaccent.accent_light, bg, 10)
         accent = winaccent.accent_light
         accent_link = winaccent.accent_light_3
+
+    accent_hover = winaccent._utils.blend_colors(accent, bg, 80)
+    accent_press = winaccent._utils.blend_colors(accent, bg, 60)
 
 update_colors()
 
@@ -233,6 +236,80 @@ class OptionMenu(tk.OptionMenu):
         self["menu"].configure(activebackground = winaccent.accent_normal)
 
 
+class Checkbutton(ttk.Frame):
+    touching = False
+
+    def __init__(self, master, text: str = "", variable: tk.BooleanVar = None, command: callable = None):
+        super().__init__(master)
+        self.variable = variable
+        self.command = command
+
+        self.checkbox = ttk.Frame(self)
+        self.checkbox.pack(side = "left", padx = (0, 2), pady = (1, 0))
+        self.checkbox.pack_propagate(False)
+
+        self.checkbox_glyph = tk.Label(self.checkbox, text = "\ue73d" if variable.get() else "\ue739", font = ("Segoe UI", 11), 
+                                       background = bg, foreground = accent if variable.get() else "#404040", 
+                                       padx = 0, pady = 0)
+        self.checkbox_glyph.pack(side = "left")
+        self.checkbox_glyph.update()
+        self.checkbox.configure(width = self.checkbox_glyph.winfo_reqwidth(), height = self.checkbox_glyph.winfo_reqwidth())
+
+        self.text = ttk.Label(self, text = text)
+        self.text.pack(side = "left")
+
+        self.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() else "#5f5f5f"))
+        self.checkbox.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() else "#5f5f5f"))
+        self.checkbox_glyph.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() else "#5f5f5f"))
+        self.text.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() else "#5f5f5f"))
+
+        self.bind("<ButtonRelease-1>", self.invoke)
+        self.checkbox.bind("<ButtonRelease-1>", self.invoke)
+        self.checkbox_glyph.bind("<ButtonRelease-1>", self.invoke)
+        self.text.bind("<ButtonRelease-1>", self.invoke)
+
+        def on_enter(event): 
+            self.touching = True
+            self.checkbox_glyph.configure(foreground = accent_hover if self.variable.get() else "#4f4f4f")
+
+        def on_leave(event): 
+            self.touching = False
+            self.checkbox_glyph.configure(foreground = accent if self.variable.get() else "#404040")
+
+        self.bind("<Enter>", on_enter)
+        self.checkbox.bind("<Enter>", on_enter)
+        self.checkbox_glyph.bind("<Enter>", on_enter)
+        self.text.bind("<Enter>", on_enter)
+
+        self.bind("<Leave>", on_leave)
+        self.checkbox.bind("<Leave>", on_leave)
+        self.checkbox_glyph.bind("<Leave>", on_leave)
+        self.text.bind("<Leave>", on_leave)
+
+    def __getitem__(self, key):
+        if key == "text": return self.text["text"]
+        return super().__getitem__(key)
+
+    def __setitem__(self, key, value):
+        if key == "text": self.text["text"] = value
+        else: super().__setitem__(key, value)
+
+    def invoke(self, event: tk.Event = None):
+        if event != None and self.touching:
+            self.variable.set(not self.variable.get())
+        elif event == None:
+            self.variable.set(not self.variable.get())
+
+        self.checkbox_glyph.configure(text = "\ue73d" if self.variable.get() else "\ue739", 
+                                      foreground = accent if self.variable.get() else "#404040")
+
+        if self.command != None: self.command()
+
+    def update_colors(self):
+        self.checkbox_glyph.configure(background = bg, text = "\ue73d" if self.variable.get() else "\ue739", 
+                                      foreground = accent if self.variable.get() else "#404040")
+
+
 class Radiobutton2(tk.Radiobutton):
     def __init__(self, master, variable: tk.StringVar, value: str, *args, **kwargs):
         self.variable = variable
@@ -337,7 +414,7 @@ def sync_colors(window, callback):
     elif isinstance(window, Toplevel): window.set_titlebar_theme()
 
     for widget in window.winfo_children():
-        if isinstance(widget, (CommandLink, Toolbutton, Button, OptionMenu, Radiobutton2)):
+        if isinstance(widget, (CommandLink, Toolbutton, Button, OptionMenu, Checkbutton, Radiobutton2)):
             widget.update_colors()
         elif isinstance(widget, tk.Entry):
             widget.configure(background = entry_bg, foreground = fg, highlightcolor = entry_bg, highlightbackground = entry_bg, insertbackground = fg, selectbackground = entry_select)
