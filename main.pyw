@@ -304,7 +304,7 @@ def draw_ui():
 
     additional_options = custom_ui.Toolbutton(window, text = " " + strings.lang.additional_options, command = lambda: show_hide_additional_options(), anchor = "w", compound = "left", image = custom_ui.ic_arrow_down)
     additional_options.pack(pady = (14, 0), anchor = "w")
-    additional_options.configure(padx = 0)
+    additional_options.configure(padx = 2)
 
     additional_options_frame = ttk.Frame(window)
     additional_options_frame.pack(anchor = "w")
