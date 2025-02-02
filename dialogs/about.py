@@ -59,7 +59,7 @@ def show():
 
     show_licenses = custom_ui.Button(buttons, text = strings.lang.open_source_licenses, command = show_hide_licenses, compound = "left", image = arrow)
     show_licenses.pack(anchor = "w", side = "left")
-    show_licenses.configure(width = 0)
+    show_licenses.configure(width = 0, padx = 5)
 
     ttk.Button(buttons, text = strings.lang.ok, command = window.destroy, default = "active").pack(side = "right")
 
