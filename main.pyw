@@ -33,6 +33,13 @@ backup_existing_autorun = tk.BooleanVar(value = int(preferences.additional_prefs
 icon_type = tk.StringVar(value = "default")
 
 
+def select_first_accessible_volume():
+    for volume in volumes:
+        if os.path.exists(volume):
+            update_volume_info(volume)
+            break
+
+
 def refresh_volumes_list():
     global volumes, app_started
 
@@ -49,10 +56,10 @@ def refresh_volumes_list():
         if os.path.exists(arguments.volume.upper()):
             update_volume_info(arguments.volume.upper())
         else:
-            update_volume_info(volumes[0])
+            select_first_accessible_volume()
             messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
     else:
-        update_volume_info(volumes[0])
+        select_first_accessible_volume()
 
     app_started = True
 
