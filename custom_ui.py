@@ -351,7 +351,7 @@ class Radiobutton2(tk.Radiobutton):
 class App(tk.Tk):
     def set_theme(self):
         pywinstyles.apply_style(self, "light" if light_theme else "dark")
-        pywinstyles.change_header_color(self, bg)
+        pywinstyles.change_header_color(self, winaccent.titlebar_active if winaccent.is_titlebar_colored else bg)
 
         style = ttk.Style()
         style.configure(".", background = bg, foreground = fg)
@@ -383,7 +383,7 @@ class Toplevel(tk.Toplevel):
         self.configure(background = bg)
 
         pywinstyles.apply_style(self, "light" if light_theme else "dark")
-        pywinstyles.change_header_color(self, bg)
+        pywinstyles.change_header_color(self, winaccent.titlebar_active if winaccent.is_titlebar_colored else bg)
 
         hPyT.maximize_minimize_button.hide(self)
 
