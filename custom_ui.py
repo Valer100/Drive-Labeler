@@ -209,10 +209,10 @@ class Button(tk.Button):
 
         self.bind("<Enter>", lambda event: self.configure(background = button_hover))
         self.bind("<Leave>", lambda event: self.configure(background = button_bg))
-
+    
     def update_colors(self):
         self.configure(background = button_bg, foreground = fg, activebackground = button_press, 
-                       activeforeground = fg, highlightbackground = button_bd_active if self.is_active else button_bd, 
+                       activeforeground = fg, highlightbackground = button_bd_active if self.is_active else button_bd,
                        highlightcolor = button_bd_active if self.is_active else button_bd)
 
 ttk.Button = Button
@@ -223,7 +223,7 @@ class OptionMenu(tk.OptionMenu):
         super().__init__(master, variable, value, *values)
 
         self.configure(background = button_bg, foreground = fg, activebackground = button_hover, 
-                       activeforeground = fg, highlightbackground = button_bd, highlightcolor = button_bd, 
+                       activeforeground = fg, highlightbackground = button_bd, highlightcolor = fg, 
                        image = ic_arrow_down, compound = "right", indicatoron = False, border = 0, relief = "solid", 
                        highlightthickness = 1, pady = 4, padx = 7, takefocus = True)
 
@@ -237,7 +237,7 @@ class OptionMenu(tk.OptionMenu):
 
     def update_colors(self):
         self.configure(background = button_bg, foreground = fg, activebackground = button_hover, 
-                       activeforeground = fg, highlightbackground = button_bd, highlightcolor = button_bd, 
+                       activeforeground = fg, highlightbackground = button_bd, highlightcolor = fg, 
                        image = ic_arrow_down)
 
         self["menu"].configure(activebackground = winaccent.accent_normal)
