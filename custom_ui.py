@@ -29,6 +29,8 @@ def update_colors():
         option_bd = winaccent._utils.blend_colors(winaccent.accent_dark, bg, 70)
         option_selected = winaccent._utils.blend_colors(winaccent.accent_dark, bg, 20)
         accent = winaccent.accent_dark
+        accent_hover = winaccent._utils.blend_colors(accent, bg, 90)
+        accent_press = winaccent._utils.blend_colors(accent, bg, 80)
         accent_link = winaccent.accent_dark_2
     else:
         bg = "#202020"
@@ -49,10 +51,9 @@ def update_colors():
         option_bd = winaccent._utils.blend_colors(winaccent.accent_light, bg, 40)
         option_selected = winaccent._utils.blend_colors(winaccent.accent_light, bg, 10)
         accent = winaccent.accent_light
+        accent_hover = winaccent._utils.blend_colors(accent, bg, 80)
+        accent_press = winaccent._utils.blend_colors(accent, bg, 60)
         accent_link = winaccent.accent_light_3
-
-    accent_hover = winaccent._utils.blend_colors(accent, bg, 80)
-    accent_press = winaccent._utils.blend_colors(accent, bg, 60)
 
 update_colors()
 
@@ -248,7 +249,7 @@ class Checkbutton(ttk.Frame):
         self.checkbox.pack(side = "left", padx = (0, 2), pady = (1, 0))
         self.checkbox.pack_propagate(False)
 
-        self.checkbox_glyph = tk.Label(self.checkbox, text = "\ue73d" if variable.get() else "\ue739", font = ("Segoe UI", 11), 
+        self.checkbox_glyph = tk.Label(self.checkbox, text = "\ue73d" if variable.get() else "\ue739", font = ("Segoe UI", 10), 
                                        background = bg, foreground = accent if variable.get() else "#404040", 
                                        padx = 0, pady = 0)
         self.checkbox_glyph.pack(side = "left")
