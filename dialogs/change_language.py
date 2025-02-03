@@ -22,17 +22,9 @@ def show():
     ttk.Label(header, text = "\ue774 ", font = ("Segoe UI", 17), padding = (0, 5, 0, 0)).pack(side = "left")
     ttk.Label(header, text = strings.lang.change_language, font = ("Segoe UI Semibold", 17)).pack(side = "left")
 
-    system_default = tk.Frame(window)
-    system_default.pack(fill = "x", pady = 2)
-    custom_ui.Radiobutton2(system_default, text = "  " + strings.lang.lang_system_default + "  ", value = "default", variable = language, image = custom_ui.ic_system, compound = "left").pack(anchor = "w", fill = "x")
-    
-    en_us = tk.Frame(window)
-    en_us.pack(fill = "x", pady = 2)
-    custom_ui.Radiobutton2(en_us, text = "  " + strings.en_US.language + "  ", value = "en_US", variable = language, image = custom_ui.ic_language, compound = "left").pack(anchor = "w", fill = "x")
-    
-    ro_ro = tk.Frame(window)
-    ro_ro.pack(fill = "x", pady = 2)
-    custom_ui.Radiobutton2(ro_ro, text = "  " + strings.ro_RO.language + "  ", value = "ro_RO", variable = language, image = custom_ui.ic_language, compound = "left").pack(anchor = "w", fill = "x")
+    custom_ui.Radiobutton2(window, text = "  " + strings.lang.lang_system_default + "  ", value = "default", variable = language, image = custom_ui.ic_system, compound = "left").pack(anchor = "w", fill = "x", pady = 2)
+    custom_ui.Radiobutton2(window, text = "  " + strings.en_US.language + "  ", value = "en_US", variable = language, image = custom_ui.ic_language, compound = "left").pack(anchor = "w", fill = "x", pady = 2)
+    custom_ui.Radiobutton2(window, text = "  " + strings.ro_RO.language + "  ", value = "ro_RO", variable = language, image = custom_ui.ic_language, compound = "left").pack(anchor = "w", fill = "x", pady = 2)
 
     buttons = ttk.Frame(window)
     buttons.pack(pady = 16, fill = "x")

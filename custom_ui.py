@@ -328,41 +328,45 @@ class Checkbutton(tk.Frame):
                                       foreground = accent if self.variable.get() else "#404040")
 
 
-class Radiobutton2(tk.Radiobutton):
+class Radiobutton2(tk.Frame):
     def __init__(self, master, variable: tk.StringVar, value: str, *args, **kwargs):
         self.variable = variable
         self.value = value
+        self.onetime = False
 
-        super().__init__(master, variable = variable, value = value, background = bg, foreground = fg, 
+        super().__init__(master, highlightthickness = 1, highlightcolor = fg, takefocus = True)
+        self.bind("<space>", lambda event: self.radio.invoke())
+
+        self.radio = tk.Radiobutton(self, variable = variable, value = value, background = bg, foreground = fg, 
                          activebackground = bg_press, activeforeground = fg, indicatoron = False, 
                          border = 0, relief = "solid", selectcolor = option_selected, anchor = "w",
-                         *args, **kwargs)
+                         takefocus = False, *args, **kwargs)
+        self.radio.pack(anchor = "w", fill = "x")
 
-        self.master.configure(highlightthickness = 1)
-
-        self.bind("<Enter>", lambda event: self.configure(background = bg_hover, selectcolor = bg_hover))
-        self.bind("<Leave>", lambda event: self.configure(background = bg, selectcolor = option_selected))
+        self.radio.bind("<Enter>", lambda event: self.configure(background = bg_hover, selectcolor = bg_hover))
+        self.radio.bind("<Leave>", lambda event: self.configure(background = bg, selectcolor = option_selected))
 
         def on_value_change(var = None, index = None, mode = None):
-            try:
-                if variable.get() == value:
-                    self.master.configure(highlightcolor = option_bd, highlightbackground = option_bd)
-                else:
-                    self.master.configure(highlightcolor = bg, highlightbackground = bg)
-            except:
-                pass
+            try: self.config(highlightbackground = option_bd if self.variable.get() == self.value else bg)
+            except: pass
 
         variable.trace_add("write", on_value_change)
         on_value_change()
 
+    def configure(self, highlightcolor: str = None, highlightbackground: str = None, *args, **kwargs):
+        return self.radio.configure(*args, **kwargs)
+
+    def __getitem__(self, key):
+        return self.radio.__getitem__(key)
+
+    def __setitem__(self, key, value):
+        self.radio.__setitem__(key, value)
+
     def update_colors(self):
-        self.configure(background = bg, foreground = fg, activebackground = bg_press, activeforeground = fg,
+        self.radio.configure(background = bg, foreground = fg, activebackground = bg_press, activeforeground = fg,
                        relief = "solid", selectcolor = option_selected)
         
-        if self.variable.get() == self.value:
-            self.master.configure(highlightcolor = option_bd, highlightbackground = option_bd)
-        else:
-            self.master.configure(highlightcolor = bg, highlightbackground = bg)
+        self.config(highlightcolor = fg, highlightbackground = option_bd if self.variable.get() == self.value else bg)
 
 
 class App(tk.Tk):
