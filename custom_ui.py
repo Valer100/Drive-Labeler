@@ -225,9 +225,15 @@ class OptionMenu(tk.OptionMenu):
         self.configure(background = button_bg, foreground = fg, activebackground = button_hover, 
                        activeforeground = fg, highlightbackground = button_bd, highlightcolor = button_bd, 
                        image = ic_arrow_down, compound = "right", indicatoron = False, border = 0, relief = "solid", 
-                       highlightthickness = 1, pady = 4, padx = 7)
-        
+                       highlightthickness = 1, pady = 4, padx = 7, takefocus = True)
+
         self["menu"].configure(activebackground = winaccent.accent_normal)
+
+        def open_option_menu(event):
+            self["menu"].post(self.winfo_rootx(), self.winfo_rooty() + self.winfo_height())
+            return "break"
+        
+        self.bind("<space>", open_option_menu)
 
     def update_colors(self):
         self.configure(background = button_bg, foreground = fg, activebackground = button_hover, 
@@ -237,16 +243,17 @@ class OptionMenu(tk.OptionMenu):
         self["menu"].configure(activebackground = winaccent.accent_normal)
 
 
-class Checkbutton(ttk.Frame):
+class Checkbutton(tk.Frame):
     touching = False
 
     def __init__(self, master, text: str = "", variable: tk.BooleanVar = None, command: callable = None):
-        super().__init__(master)
+        super().__init__(master, takefocus = True, background = bg, highlightthickness = 1, highlightbackground = bg, highlightcolor = fg)
+
         self.variable = variable
         self.command = command
 
         self.checkbox = ttk.Frame(self)
-        self.checkbox.pack(side = "left", padx = (0, 2), pady = (1, 0))
+        self.checkbox.pack(side = "left", padx = (0, 2), pady = (2, 0))
         self.checkbox.pack_propagate(False)
 
         self.checkbox_glyph = tk.Label(self.checkbox, text = "\ue73d" if variable.get() else "\ue739", font = ("Segoe UI", 10), 
@@ -287,6 +294,14 @@ class Checkbutton(ttk.Frame):
         self.checkbox_glyph.bind("<Leave>", on_leave)
         self.text.bind("<Leave>", on_leave)
 
+        def invoke_with_keyboard(event):
+            if self.focus_get():
+                self.touching = True
+                self.invoke(event)
+                self.touching = False
+
+        self.bind("<space>", invoke_with_keyboard)
+
     def __getitem__(self, key):
         if key == "text": return self.text["text"]
         return super().__getitem__(key)
@@ -307,6 +322,8 @@ class Checkbutton(ttk.Frame):
         if self.command != None: self.command()
 
     def update_colors(self):
+        self.configure(background = bg, highlightbackground = bg, highlightcolor = fg)
+
         self.checkbox_glyph.configure(background = bg, text = "\ue73d" if self.variable.get() else "\ue739", 
                                       foreground = accent if self.variable.get() else "#404040")
 
