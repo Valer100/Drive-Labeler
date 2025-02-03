@@ -40,14 +40,21 @@ def extract_icon(path: str, index: str) -> None:
 
 
 def convert_image_to_icon(path: str) -> None:
-    img = Image.open(path)
-    img.save(fp = preferences.roaming + "\\icon.ico", format = "ICO", sizes = [(16, 16), (32, 32), (48, 48), (64, 64), (128, 128)])
+    img = Image.open(path).convert("RGBA")
 
-    preview_img = img.resize((32, int(img.height * 32 / img.width)), Image.Resampling.LANCZOS)
-    preview_img.save(preferences.roaming + "\\preview.png")
-    preview_img.close()
+    max_side = max(img.size)
+    new_img = Image.new("RGBA", (max_side, max_side), (0, 0, 0, 0))
 
+    x_offset = (max_side - img.width) // 2
+    y_offset = (max_side - img.height) // 2
+
+    new_img.paste(img, (x_offset, y_offset), img)
     img.close()
+
+    new_img.save(fp = preferences.roaming + "\\icon.ico", format = "ICO", sizes = [(16, 16), (20, 20), (24, 24), (30, 30), (32, 32), (48, 48), (64, 64), (72, 72), (96, 96), (128, 128), (144, 144), (196, 196), (256, 256)])
+    new_img = new_img.resize((32, 32), Image.Resampling.LANCZOS)
+    new_img.save(preferences.roaming + "\\preview.png")
+    new_img.close()
 
 
 def tint_image(image_path, output_path, color):
