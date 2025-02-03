@@ -323,9 +323,7 @@ class Checkbutton(tk.Frame):
 
     def update_colors(self):
         self.configure(background = bg, highlightbackground = bg, highlightcolor = fg)
-
-        self.checkbox_glyph.configure(background = bg, text = "\ue73d" if self.variable.get() else "\ue739", 
-                                      foreground = accent if self.variable.get() else "#404040")
+        self.checkbox_glyph.configure(background = bg, foreground = accent if self.variable.get() else "#404040")
 
 
 class Radiobutton2(tk.Frame):
