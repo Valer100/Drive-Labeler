@@ -1,4 +1,4 @@
-import tkinter as tk, strings, custom_ui, os, traceback, tktooltip, argparse, pywinstyles
+import tkinter as tk, strings, custom_ui, os, traceback, tktooltip, argparse, pywinstyles, sys
 from tkinter import ttk, filedialog, messagebox
 from utils import volume, icon, preferences, context_menu_entry
 from dialogs import change_language, change_theme, about, error
@@ -401,6 +401,14 @@ def update_icons():
 
     if icon_from_image["text"] == "  " + strings.lang.create_icon_from_image:
         icon_from_image.configure(image = custom_ui.ic_image)
+
+
+    # A hacky way to force the title bar to redraw on Windows 10
+    if sys.getwindowsversion() == 10 and sys.getwindowsversion() < 22000:
+        dummy_widget = tk.Frame(window)
+        dummy_widget.pack()
+        window.update_idletasks()
+        dummy_widget.destroy()
 
 
 def enable_new_icon_pack(event):
