@@ -22,6 +22,7 @@ window.configure(padx = 14, pady = 8)
 icon_pack = "C:\\Windows\\System32\\shell32.dll"
 show_additional_options = False
 icon_old = "default"
+selected_volume_old = ""
 volumes = [""]
 autorun = ""
 app_started = False
@@ -68,7 +69,7 @@ def refresh_volumes_list():
 
 
 def update_volume_info(vol):
-    global icon_old
+    global icon_old, selected_volume_old
 
     if os.path.exists(vol):
         selected_volume.set(vol)
@@ -88,7 +89,10 @@ def update_volume_info(vol):
         label.delete(0, "end")
         label.insert(0, volume_info["label"])
         disable_undo_button()
+
+        selected_volume_old = selected_volume.get()
     else:
+        selected_volume.set(selected_volume_old)
         messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
 
 
