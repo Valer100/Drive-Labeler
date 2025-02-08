@@ -46,8 +46,6 @@ def refresh_volumes_list():
     volumes = volume.get_available_drives()
     selected_volume.set(volumes[0])
 
-    # tk.Menu.configure()
-
     menu = volume_dropdown["menu"]
     menu.configure()
     menu.delete(0, "end")
@@ -406,7 +404,7 @@ def update_icons():
 
 
     # A hacky way to force the title bar to redraw on Windows 10
-    if sys.getwindowsversion() == 10 and sys.getwindowsversion() < 22000:
+    if sys.getwindowsversion().major == 10 and sys.getwindowsversion().build < 22000:
         dummy_widget = tk.Frame(window)
         dummy_widget.pack()
         window.update_idletasks()
