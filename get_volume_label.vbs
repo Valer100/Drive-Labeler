@@ -1,1 +1,0 @@
-WScript.Echo CreateObject("Shell.Application").Namespace(WScript.Arguments(0)).Self.Name
