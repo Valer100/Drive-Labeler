@@ -46,11 +46,17 @@ def refresh_volumes_list():
     volumes = volume.get_available_drives()
     selected_volume.set(volumes[0])
 
+    # tk.Menu.configure()
+
     menu = volume_dropdown["menu"]
+    menu.configure()
     menu.delete(0, "end")
 
     for string in volumes:
-        menu.add_command(label = string, command = lambda value = string: update_volume_info(value))
+        try: volume_label = volume.get_volume_label_and_icon(string)["label"]
+        except: volume_label = strings.lang.volume
+
+        menu.add_command(label = f"{volume_label}  ({string})", command = lambda value = string: update_volume_info(value))
 
     if not app_started and arguments.volume != None:
         if os.path.exists(arguments.volume.upper()):
