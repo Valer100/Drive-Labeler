@@ -202,11 +202,6 @@ def choose_icon_():
     icon_old = icon_type.get()
 
 
-def destroy_everything(widget):
-    for child in widget.winfo_children():
-        child.destroy()
-
-
 def change_app_language():
     old_language = preferences.language
 
@@ -254,7 +249,8 @@ def add_remove_context_menu_entry():
 def draw_ui():
     global choose_icon, icon_from_image, reset_changes, volume_dropdown, label, show_additional_options, context_menu_integration, context_menu_integration_tooltip, refresh_volumes, additional_options, default_icon, choose_icon, icon_from_image
     show_additional_options = False
-    destroy_everything(window)
+    
+    for widget in window.winfo_children(): widget.destroy()
     strings.load_language(open(preferences.user_preferences + "\\language", "r").read())
 
     ttk.Label(window, text = "Volume Labeler", font = ("Segoe UI Semibold", 17)).pack(anchor = "w")
