@@ -47,14 +47,13 @@ def refresh_volumes_list():
     selected_volume.set(volumes[0])
 
     menu = volume_dropdown["menu"]
-    menu.configure()
     menu.delete(0, "end")
 
     for string in volumes:
         try: volume_label = volume.get_volume_label_and_icon(string)["label"]
         except: volume_label = strings.lang.volume
 
-        menu.add_command(label = f"{volume_label}  ({string})", command = lambda value = string: update_volume_info(value))
+        menu.add_checkbutton(label = f"{volume_label}  ({string})", command = lambda value = string: update_volume_info(value), variable = selected_volume, onvalue = string)
 
     if not app_started and arguments.volume != None:
         if os.path.exists(arguments.volume.upper()):
