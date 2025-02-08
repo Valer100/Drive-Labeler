@@ -4,3 +4,4 @@ winaccent
 hPyT
 icoextract
 tkinter-tooltip
+pywin32
