@@ -24,8 +24,8 @@ def update_colors():
         button_bd = "#d0d0d0"
         button_bd_active = winaccent.accent_dark
         tooltip_bg = "#ffffff"
-        tooltip_bd = "#8f8f8f"
-        tooltip_fg = "#505050"
+        tooltip_bd = "#767676"
+        tooltip_fg = "#575757"
         option_bd = winaccent._utils.blend_colors(winaccent.accent_dark, bg, 70)
         option_selected = winaccent._utils.blend_colors(winaccent.accent_dark, bg, 20)
         accent = winaccent.accent_dark
