@@ -1,4 +1,4 @@
-import strings, os, random, re, shutil, datetime, ctypes
+import strings, os, random, re, shutil, datetime, ctypes, subprocess
 from utils import preferences
 
 class VolumeNotAccessibleError(Exception): pass
@@ -167,8 +167,8 @@ def get_volume_label(volume: str) -> str:
     buffer = ctypes.create_unicode_buffer(261)    
     result = ctypes.windll.kernel32.GetVolumeInformationW(ctypes.c_wchar_p(volume), buffer, ctypes.sizeof(buffer), None, None, None, None, None)
     
-    if result: return buffer.value
-    else: return ""
+    if result: return buffer.value if buffer.value != "" else subprocess.getoutput(f"C:\\Windows\\System32\\cscript.exe get_volume_label.vbs {volume.replace('//', '')}").split("\n")[3][:-5]
+    else: return subprocess.getoutput(f"C:\\Windows\\System32\\cscript.exe get_volume_label.vbs {volume.replace('//', '')}").split("\n")[3][:-5]
 
 
 def get_volume_label_and_icon(volume: str) -> dict[str, str, int]:
@@ -177,7 +177,6 @@ def get_volume_label_and_icon(volume: str) -> dict[str, str, int]:
         icon_index = 0
 
         volume_label = get_volume_label(volume)
-        volume_label = strings.lang.local_disk if volume == "C:\\" and volume_label == "" else strings.lang.volume if volume_label == "" else volume_label
 
         if os.path.exists(f"{volume}autorun.inf"):
             autorun = read_autorun_file(volume)
