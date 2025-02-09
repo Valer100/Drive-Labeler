@@ -60,8 +60,9 @@ def refresh_volumes_list():
         if os.path.exists(arguments.volume.upper()):
             update_volume_info(arguments.volume.upper())
         else:
-            select_first_accessible_volume()
             messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
+            window.destroy()
+            sys.exit(1)
     else:
         select_first_accessible_volume()
 
