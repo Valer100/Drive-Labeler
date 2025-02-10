@@ -11,7 +11,6 @@ def show():
 
     window = custom_ui.Toplevel()
     window.title(strings.lang.change_language)
-    window.resizable(False, False)
     window.configure(padx = 16, pady = 0)
 
     language = tk.StringVar(value = preferences.language)
@@ -22,9 +21,9 @@ def show():
     ttk.Label(header, text = "\ue774 ", font = ("Segoe UI", 17), padding = (0, 5, 0, 0)).pack(side = "left")
     ttk.Label(header, text = strings.lang.change_language, font = ("Segoe UI Semibold", 17)).pack(side = "left")
 
-    custom_ui.Radiobutton2(window, text = "  " + strings.lang.lang_system_default + "  ", value = "default", variable = language, image = custom_ui.ic_system, compound = "left").pack(anchor = "w", fill = "x", pady = 2)
-    custom_ui.Radiobutton2(window, text = "  " + strings.en_US.language + "  ", value = "en_US", variable = language, image = custom_ui.ic_language, compound = "left").pack(anchor = "w", fill = "x", pady = 2)
-    custom_ui.Radiobutton2(window, text = "  " + strings.ro_RO.language + "  ", value = "ro_RO", variable = language, image = custom_ui.ic_language, compound = "left").pack(anchor = "w", fill = "x", pady = 2)
+    custom_ui.Radiobutton(window, text = strings.lang.lang_system_default + "  ", value = "default", variable = language).pack(anchor = "w")
+    custom_ui.Radiobutton(window, text = strings.en_US.language + "  ", value = "en_US", variable = language).pack(anchor = "w")
+    custom_ui.Radiobutton(window, text = strings.ro_RO.language + "  ", value = "ro_RO", variable = language).pack(anchor = "w")
 
     buttons = ttk.Frame(window)
     buttons.pack(pady = 16, fill = "x")
@@ -40,4 +39,5 @@ def show():
     ttk.Button(buttons, text = strings.lang.cancel, command = window.destroy).grid(row = 0, column = 0, padx = (0, 4), sticky = "ew")
     ttk.Button(buttons, text = strings.lang.ok, default = "active", command = apply_language).grid(row = 0, column = 1, padx = (4, 0), sticky = "ew")
 
+    window.resizable(False, False)
     window.focus_set()
