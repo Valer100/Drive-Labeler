@@ -5,7 +5,7 @@ import winaccent._utils
 from utils import preferences, icon
 
 def update_colors():
-    global light_theme, bg, bg_hover, bg_press, fg, entry_focus, entry_bd, entry_bg, button_bg, button_hover, button_press, button_bd, button_bd_active, tooltip_bg, tooltip_bd, tooltip_fg, accent, accent_link, option_selected, option_bd, entry_select, accent_hover, accent_press
+    global light_theme, bg, bg_hover, bg_press, fg, entry_focus, entry_bd, entry_bg, button_bg, button_hover, button_press, button_bd, button_bd_active, tooltip_bg, tooltip_bd, tooltip_fg, accent, accent_link, option_selected, option_bd, entry_select, accent_hover, accent_press, input_unchecked, input_hover, input_press
     light_theme = winaccent.apps_use_light_theme if preferences.theme == "default" else True if preferences.theme == "light" else False
 
     entry_select = winaccent.accent_normal
@@ -28,6 +28,9 @@ def update_colors():
         tooltip_fg = "#575757"
         option_bd = winaccent._utils.blend_colors(winaccent.accent_dark, bg, 70)
         option_selected = winaccent._utils.blend_colors(winaccent.accent_dark, bg, 20)
+        input_unchecked = "#404040"
+        input_hover = "#2f2f2f"
+        input_press = "#000000"
         accent = winaccent.accent_dark
         accent_hover = winaccent._utils.blend_colors(accent, bg, 90)
         accent_press = winaccent._utils.blend_colors(accent, bg, 80)
@@ -50,6 +53,9 @@ def update_colors():
         tooltip_fg = "#ffffff"
         option_bd = winaccent._utils.blend_colors(winaccent.accent_light, bg, 40)
         option_selected = winaccent._utils.blend_colors(winaccent.accent_light, bg, 10)
+        input_unchecked = "#404040"
+        input_hover = "#4f4f4f"
+        input_press = "#5f5f5f"
         accent = winaccent.accent_light
         accent_hover = winaccent._utils.blend_colors(accent, bg, 80)
         accent_press = winaccent._utils.blend_colors(accent, bg, 60)
@@ -257,7 +263,7 @@ class Checkbutton(tk.Frame):
         self.checkbox.pack_propagate(False)
 
         self.checkbox_glyph = tk.Label(self.checkbox, text = "\ue73d" if variable.get() else "\ue739", font = ("Segoe UI", 10), 
-                                       background = bg, foreground = accent if variable.get() else "#404040", 
+                                       background = bg, foreground = accent if variable.get() else input_unchecked, 
                                        padx = 0, pady = 0)
         self.checkbox_glyph.pack(side = "left")
         self.checkbox_glyph.update()
@@ -266,10 +272,10 @@ class Checkbutton(tk.Frame):
         self.text = ttk.Label(self, text = text)
         self.text.pack(side = "left")
 
-        self.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() else "#5f5f5f"))
-        self.checkbox.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() else "#5f5f5f"))
-        self.checkbox_glyph.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() else "#5f5f5f"))
-        self.text.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() else "#5f5f5f"))
+        self.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() else input_press))
+        self.checkbox.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() else input_press))
+        self.checkbox_glyph.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() else input_press))
+        self.text.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() else input_press))
 
         self.bind("<ButtonRelease-1>", self.invoke)
         self.checkbox.bind("<ButtonRelease-1>", self.invoke)
@@ -278,11 +284,11 @@ class Checkbutton(tk.Frame):
 
         def on_enter(event): 
             self.touching = True
-            self.checkbox_glyph.configure(foreground = accent_hover if self.variable.get() else "#4f4f4f")
+            self.checkbox_glyph.configure(foreground = accent_hover if self.variable.get() else input_hover)
 
         def on_leave(event): 
             self.touching = False
-            self.checkbox_glyph.configure(foreground = accent if self.variable.get() else "#404040")
+            self.checkbox_glyph.configure(foreground = accent if self.variable.get() else input_unchecked)
 
         self.bind("<Enter>", on_enter)
         self.checkbox.bind("<Enter>", on_enter)
@@ -316,17 +322,17 @@ class Checkbutton(tk.Frame):
             self.variable.set(not self.variable.get())
 
         self.checkbox_glyph.configure(text = "\ue73d" if self.variable.get() else "\ue739", 
-                                      foreground = accent if self.variable.get() else "#404040")
+                                      foreground = accent if self.variable.get() else input_unchecked)
 
         if self.command != None: self.command()
 
     def on_value_change(self, var = None, index = None, mode = None):
         self.checkbox_glyph.configure(text = "\ue73d" if self.variable.get() else "\ue739", 
-                                      foreground = accent if self.variable.get() == self.value else "#404040")
+                                      foreground = accent if self.variable.get() else input_unchecked)
 
     def update_colors(self):
         self.configure(background = bg, highlightbackground = bg, highlightcolor = fg)
-        self.checkbox_glyph.configure(background = bg, foreground = accent if self.variable.get() else "#404040")
+        self.checkbox_glyph.configure(background = bg, foreground = accent if self.variable.get() else input_unchecked)
 
 
 class Radiobutton(tk.Frame):
@@ -344,7 +350,7 @@ class Radiobutton(tk.Frame):
         self.checkbox.pack_propagate(False)
 
         self.checkbox_glyph = tk.Label(self.checkbox, text = "\ueccb" if variable.get() == self.value else "\uecca", font = ("Segoe UI", 10), 
-                                       background = bg, foreground = accent if variable.get() == self.value else "#404040", 
+                                       background = bg, foreground = accent if variable.get() == self.value else input_unchecked, 
                                        padx = 0, pady = 0)
         self.checkbox_glyph.pack(side = "left")
         self.checkbox_glyph.update()
@@ -353,10 +359,10 @@ class Radiobutton(tk.Frame):
         self.text = ttk.Label(self, text = text)
         self.text.pack(side = "left")
 
-        self.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() == self.value else "#5f5f5f"))
-        self.checkbox.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() == self.value else "#5f5f5f"))
-        self.checkbox_glyph.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() == self.value else "#5f5f5f"))
-        self.text.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() == self.value else "#5f5f5f"))
+        self.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() == self.value else input_press))
+        self.checkbox.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() == self.value else input_press))
+        self.checkbox_glyph.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() == self.value else input_press))
+        self.text.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() == self.value else input_press))
 
         self.bind("<ButtonRelease-1>", self.invoke)
         self.checkbox.bind("<ButtonRelease-1>", self.invoke)
@@ -365,11 +371,11 @@ class Radiobutton(tk.Frame):
 
         def on_enter(event): 
             self.touching = True
-            self.checkbox_glyph.configure(foreground = accent_hover if self.variable.get() == self.value else "#4f4f4f")
+            self.checkbox_glyph.configure(foreground = accent_hover if self.variable.get() == self.value else input_hover)
 
         def on_leave(event): 
             self.touching = False
-            self.checkbox_glyph.configure(foreground = accent if self.variable.get() == self.value else "#404040")
+            self.checkbox_glyph.configure(foreground = accent if self.variable.get() == self.value else input_unchecked)
 
         self.bind("<Enter>", on_enter)
         self.checkbox.bind("<Enter>", on_enter)
@@ -403,17 +409,17 @@ class Radiobutton(tk.Frame):
             self.variable.set(self.value)
 
         self.checkbox_glyph.configure(text = "\ueccb" if self.variable.get() == self.value else "\uecca", 
-                                      foreground = accent if self.variable.get() == self.value else "#404040")
+                                      foreground = accent if self.variable.get() == self.value else input_unchecked)
 
         if self.command != None: self.command()
 
     def on_value_change(self, var = None, index = None, mode = None):
         self.checkbox_glyph.configure(text = "\ueccb" if self.variable.get() == self.value else "\uecca", 
-                                      foreground = accent if self.variable.get() == self.value else "#404040")
+                                      foreground = accent if self.variable.get() == self.value else input_unchecked)
 
     def update_colors(self):
         self.configure(background = bg, highlightbackground = bg, highlightcolor = fg)
-        self.checkbox_glyph.configure(background = bg, foreground = accent if self.variable.get() == self.value else "#404040")
+        self.checkbox_glyph.configure(background = bg, foreground = accent if self.variable.get() == self.value else input_unchecked)
 
 
 class Radiobutton2(tk.Frame):
