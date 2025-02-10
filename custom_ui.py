@@ -29,8 +29,8 @@ def update_colors():
         option_bd = winaccent._utils.blend_colors(winaccent.accent_dark, bg, 70)
         option_selected = winaccent._utils.blend_colors(winaccent.accent_dark, bg, 20)
         input_unchecked = "#404040"
-        input_hover = "#2f2f2f"
-        input_press = "#000000"
+        input_hover = "#808080"
+        input_press = "#afafaf"
         accent = winaccent.accent_dark
         accent_hover = winaccent._utils.blend_colors(accent, bg, 90)
         accent_press = winaccent._utils.blend_colors(accent, bg, 80)
