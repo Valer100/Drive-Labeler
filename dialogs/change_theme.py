@@ -19,7 +19,7 @@ def show():
     header.pack(anchor = "w", pady = (4, 8))
 
     ttk.Label(header, text = "\ue771 ", font = ("Segoe UI", 17), padding = (0, 5, 0, 0)).pack(side = "left")
-    ttk.Label(header, text = strings.lang.change_theme, font = ("Segoe UI Semibold", 17)).pack(side = "left")
+    ttk.Label(header, text = strings.lang.change_theme + " ", font = ("Segoe UI Semibold", 17)).pack(side = "left")
 
     custom_ui.Radiobutton(window, text = strings.lang.lang_system_default + "  ", value = "default", variable = theme).pack(anchor = "w")
     custom_ui.Radiobutton(window, text = strings.lang.light_theme + "  ", value = "light", variable = theme).pack(anchor = "w")
