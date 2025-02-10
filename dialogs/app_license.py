@@ -6,7 +6,6 @@ from utils import preferences
 def show():
     window = custom_ui.Toplevel()
     window.title(strings.lang.license)
-    window.resizable(False, False)
     window.configure(padx = 16, pady = 0)
 
     header = ttk.Frame(window)
@@ -29,4 +28,5 @@ def show():
 
     ttk.Button(buttons, text = strings.lang.ok, default = "active", command = window.destroy).pack(side = "right")
 
+    window.resizable(False, False)
     window.focus_set()

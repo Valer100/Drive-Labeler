@@ -13,7 +13,6 @@ def show():
 
     window = custom_ui.Toplevel()
     window.title(strings.lang.about_title)
-    window.resizable(False, False)
     window.configure(padx = 16, pady = 0)
 
     icon = tk.PhotoImage(file = f"{preferences.internal}icons\\icon.png")
@@ -72,5 +71,6 @@ def show():
     licenses.insert("1.0", open(preferences.internal + "OPEN_SOURCE_LICENSES.txt", "r", encoding = "utf8").read())
     licenses.configure(state = "disabled")
 
+    window.resizable(False, False)
     window.focus_set()
     window.mainloop()

@@ -5,7 +5,6 @@ from tkinter.scrolledtext import ScrolledText
 def show(error: str):
     window = custom_ui.Toplevel()
     window.title(strings.lang.error)
-    window.resizable(False, False)
     window.configure(padx = 16, pady = 0)
 
     header = ttk.Frame(window)
@@ -33,4 +32,5 @@ def show(error: str):
     ttk.Button(buttons, text = strings.lang.ok, default = "active", command = window.destroy).pack(side = "right", padx = (8, 0))
     ttk.Button(buttons, text = strings.lang.copy_traceback, command = copy_traceback).pack(side = "right")
 
+    window.resizable(False, False)
     window.focus_set()
