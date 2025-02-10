@@ -65,24 +65,16 @@ update_colors()
 
 
 def update_icons():
-    global ic_volume, ic_icon, ic_image, ic_arrow_down, ic_arrow_up, ic_system, ic_light_mode, ic_dark_mode, ic_language
+    global ic_volume, ic_icon, ic_image, ic_arrow_down, ic_arrow_up
     theme = "light" if light_theme else "dark"
 
     icon.tint_image(preferences.internal + "icons\\volume.png", preferences.internal + "icons\\volume_tinted.png", accent)
     icon.tint_image(preferences.internal + "icons\\icon_custom.png", preferences.internal + "icons\\icon_custom_tinted.png", accent)
     icon.tint_image(preferences.internal + "icons\\image.png", preferences.internal + "icons\\image_tinted.png", accent)
-    icon.tint_image(preferences.internal + "icons\\system.png", preferences.internal + "icons\\system_tinted.png", accent)
-    icon.tint_image(preferences.internal + "icons\\light_mode.png", preferences.internal + "icons\\light_mode_tinted.png", accent)
-    icon.tint_image(preferences.internal + "icons\\dark_mode.png", preferences.internal + "icons\\dark_mode_tinted.png", accent)
-    icon.tint_image(preferences.internal + "icons\\language.png", preferences.internal + "icons\\language_tinted.png", accent)
 
     ic_volume = tk.PhotoImage(file = preferences.internal + "icons\\volume_tinted.png")
     ic_icon = tk.PhotoImage(file = preferences.internal + "icons\\icon_custom_tinted.png")
     ic_image = tk.PhotoImage(file = preferences.internal + "icons\\image_tinted.png")
-    ic_system = tk.PhotoImage(file = preferences.internal + "icons\\system_tinted.png")
-    ic_light_mode = tk.PhotoImage(file = preferences.internal + "icons\\light_mode_tinted.png")
-    ic_dark_mode = tk.PhotoImage(file = preferences.internal + "icons\\dark_mode_tinted.png")
-    ic_language = tk.PhotoImage(file = preferences.internal + "icons\\language_tinted.png")
     ic_arrow_down = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_{theme}.png")
     ic_arrow_up = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_up_{theme}.png")
 
