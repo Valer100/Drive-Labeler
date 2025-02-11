@@ -29,12 +29,12 @@ def extract_icon(path: str, index: str) -> None:
 
     closest_size = min(
         img.info["sizes"],
-        key = lambda size: (size[0] - 32) ** 2 + (size[1] - 32) ** 2
+        key = lambda size: (size[0] - preferences.icon_size) ** 2 + (size[1] - preferences.icon_size) ** 2
     )
 
     img.size = closest_size
     img.load()
-    img = img.resize((32, 32), Image.Resampling.LANCZOS)
+    img = img.resize((preferences.icon_size, preferences.icon_size), Image.Resampling.LANCZOS)
     img.save(preferences.roaming + "\\preview.png")
     img.close()
 
@@ -52,7 +52,7 @@ def convert_image_to_icon(path: str) -> None:
     img.close()
 
     new_img.save(fp = preferences.roaming + "\\icon.ico", format = "ICO", sizes = [(16, 16), (20, 20), (24, 24), (30, 30), (32, 32), (48, 48), (64, 64), (72, 72), (96, 96), (128, 128), (144, 144), (196, 196), (256, 256)])
-    new_img = new_img.resize((32, 32), Image.Resampling.LANCZOS)
+    new_img = new_img.resize((preferences.icon_size, preferences.icon_size), Image.Resampling.LANCZOS)
     new_img.save(preferences.roaming + "\\preview.png")
     new_img.close()
 
