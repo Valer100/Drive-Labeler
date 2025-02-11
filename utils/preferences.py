@@ -28,4 +28,3 @@ monitor_handle = ctypes.windll.user32.MonitorFromPoint(0, 0, 2)
 ctypes.windll.shcore.GetDpiForMonitor(monitor_handle, 0, ctypes.byref(dpi), ctypes.byref(dpi))
 
 scale_factor = dpi.value / 96
-icon_size = int(32 * scale_factor)

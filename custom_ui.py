@@ -66,15 +66,17 @@ def update_icons():
     global ic_volume, ic_icon, ic_image, ic_arrow_down, ic_arrow_up
     theme = "light" if light_theme else "dark"
 
-    icon.extract_and_tint_icon(preferences.internal + "icons\\volume.ico", preferences.internal + "icons\\volume_tinted.png", accent)
-    icon.extract_and_tint_icon(preferences.internal + "icons\\icon_custom.ico", preferences.internal + "icons\\icon_custom_tinted.png", accent)
-    icon.extract_and_tint_icon(preferences.internal + "icons\\image.ico", preferences.internal + "icons\\image_tinted.png", accent)
+    icon.extract_and_tint_icon(preferences.internal + "icons\\volume.ico", preferences.internal + "icons\\volume_tinted.png", accent, 32)
+    icon.extract_and_tint_icon(preferences.internal + "icons\\icon_custom.ico", preferences.internal + "icons\\icon_custom_tinted.png", accent, 32)
+    icon.extract_and_tint_icon(preferences.internal + "icons\\image.ico", preferences.internal + "icons\\image_tinted.png", accent, 32)
+    icon.extract_and_tint_icon(preferences.internal + "icons\\arrow_up.ico", preferences.internal + "icons\\arrow_up_tinted.png", fg, 9)
+    icon.extract_and_tint_icon(preferences.internal + "icons\\arrow_down.ico", preferences.internal + "icons\\arrow_down_tinted.png", fg, 9)
     
     ic_volume = tk.PhotoImage(file = preferences.internal + "icons\\volume_tinted.png")
     ic_icon = tk.PhotoImage(file = preferences.internal + "icons\\icon_custom_tinted.png")
     ic_image = tk.PhotoImage(file = preferences.internal + "icons\\image_tinted.png")
-    ic_arrow_down = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_{theme}.png")
-    ic_arrow_up = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_up_{theme}.png")
+    ic_arrow_up = tk.PhotoImage(file = f"{preferences.internal}icons\\arrow_up_tinted.png")
+    ic_arrow_down = tk.PhotoImage(file = f"{preferences.internal}icons\\arrow_down_tinted.png")
 
 
 class CommandLink(tk.Frame):
@@ -154,7 +156,7 @@ class CommandLink(tk.Frame):
 
 class Toolbutton(tk.Button):
     def __init__(self, master, text: str = "", command: callable = None, link: bool = False, icononly: bool = False, *args, **kwargs):
-        super().__init__(master, text = text, command = command, padx = 2 if icononly else 4, pady = 2, background = bg, 
+        super().__init__(master, text = text, command = command, padx = int(2 * preferences.scale_factor + 0.5) if icononly else 4, pady = 2, background = bg, 
                          foreground = accent_link if link else fg, border = 0, relief = "solid", 
                          activebackground = bg_press, activeforeground = accent if link else fg,
                          cursor = "hand2" if link else "", highlightbackground = option_bd, 
@@ -221,7 +223,7 @@ class OptionMenu(tk.OptionMenu):
         self.configure(background = button_bg, foreground = fg, activebackground = button_hover, 
                        activeforeground = fg, highlightbackground = button_bd, highlightcolor = fg, 
                        image = ic_arrow_down, compound = "right", indicatoron = False, border = 0, relief = "solid", 
-                       highlightthickness = 1, pady = 5, padx = 7, takefocus = True)
+                       highlightthickness = 1, pady = 5, padx = int(7 * preferences.scale_factor + 0.5), takefocus = True)
 
         self["menu"].configure(activebackground = winaccent.accent_normal)
 

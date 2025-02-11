@@ -29,12 +29,12 @@ def extract_icon(path: str, index: str) -> None:
 
     closest_size = min(
         img.info["sizes"],
-        key = lambda size: (size[0] - preferences.icon_size) ** 2 + (size[1] - preferences.icon_size) ** 2
+        key = lambda size: (size[0] - int(32 * preferences.scale_factor)) ** 2 + (size[1] - int(32 * preferences.scale_factor)) ** 2
     )
 
     img.size = closest_size
     img.load()
-    img = img.resize((preferences.icon_size, preferences.icon_size), Image.Resampling.LANCZOS)
+    img = img.resize((int(32 * preferences.scale_factor), int(32 * preferences.scale_factor)), Image.Resampling.LANCZOS)
     img.save(preferences.roaming + "\\preview.png")
     img.close()
 
@@ -52,12 +52,12 @@ def convert_image_to_icon(path: str) -> None:
     img.close()
 
     new_img.save(fp = preferences.roaming + "\\icon.ico", format = "ICO", sizes = [(16, 16), (20, 20), (24, 24), (30, 30), (32, 32), (48, 48), (64, 64), (72, 72), (96, 96), (128, 128), (144, 144), (196, 196), (256, 256)])
-    new_img = new_img.resize((preferences.icon_size, preferences.icon_size), Image.Resampling.LANCZOS)
+    new_img = new_img.resize((int(32 * preferences.scale_factor), int(32 * preferences.scale_factor)), Image.Resampling.LANCZOS)
     new_img.save(preferences.roaming + "\\preview.png")
     new_img.close()
 
 
-def extract_and_tint_icon(image_path, output_path, color):
+def extract_and_tint_icon(image_path, output_path, color, width):
     color = color.lstrip("#")
     rgb_color = tuple(int(color[i:i+2], 16) for i in (0, 2, 4))
 
@@ -65,11 +65,11 @@ def extract_and_tint_icon(image_path, output_path, color):
 
     closest_size = min(
         img.info["sizes"],
-        key = lambda size: (size[0] - preferences.icon_size) ** 2 + (size[1] - preferences.icon_size) ** 2
+        key = lambda size: (size[0] - int(width * preferences.scale_factor)) ** 2 + (size[1] - int(width * preferences.scale_factor) )** 2
     )
 
     img.size = closest_size
-    img = img.resize((preferences.icon_size, preferences.icon_size), Image.Resampling.LANCZOS)
+    img = img.resize((int(width * preferences.scale_factor), int(width * preferences.scale_factor)), Image.Resampling.LANCZOS)
     img = img.convert("RGBA")
     pixels = img.load()
 

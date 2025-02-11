@@ -24,10 +24,7 @@ def show():
         if show_os_licenses: licenses.pack(pady = 16)
         else: licenses.forget()
 
-        if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown{'_up' if show_os_licenses else ''}_light.png")
-        else: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown{'_up' if show_os_licenses else ''}_dark.png")
-
-        show_licenses.configure(image = arrow)
+        show_licenses.configure(image = custom_ui.ic_arrow_up if show_os_licenses else custom_ui.ic_arrow_down)
 
     app_info = ttk.Frame(window)
     app_info.pack(fill = "x")
@@ -42,9 +39,6 @@ def show():
     ttk.Label(app_name_and_version, text = "Volume Labeler", width = 20, font = ("Segoe UI Semibold", 17)).pack(anchor = "w", pady = (8, 0))
     ttk.Label(app_name_and_version, text = strings.lang.version.replace("%v", "1.0.0 alpha")).pack(anchor = "w")
 
-    if custom_ui.light_theme: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_light.png")
-    else: arrow = tk.PhotoImage(file = f"{preferences.internal}icons/dropdown_dark.png")
-
     links = ttk.Frame(window)
     links.pack(fill = "x", pady = (16, 0))
 
@@ -56,9 +50,9 @@ def show():
     buttons = ttk.Frame(window)
     buttons.pack(fill = "x", pady = (16, 16))
 
-    show_licenses = custom_ui.Button(buttons, text = strings.lang.open_source_licenses, command = show_hide_licenses, compound = "left", image = arrow)
+    show_licenses = custom_ui.Button(buttons, text = strings.lang.open_source_licenses, command = show_hide_licenses, compound = "left", image = custom_ui.ic_arrow_down)
     show_licenses.pack(anchor = "w", side = "left")
-    show_licenses.configure(width = 0, padx = 5)
+    show_licenses.configure(width = 0, padx = (5 * preferences.scale_factor + 0.5))
 
     ttk.Button(buttons, text = strings.lang.ok, command = window.destroy, default = "active").pack(side = "right")
 

@@ -271,8 +271,9 @@ def draw_ui():
     refresh_volumes_frame = ttk.Frame(volume_section)
     refresh_volumes_frame.pack(side = "right", padx = (8, 0), fill = "both")
 
-    refresh_volumes = custom_ui.Button(refresh_volumes_frame, width = 3, command = refresh_volumes_list, text = "\ue72c", font = ("Segoe MDL2 Assets", 8))
+    refresh_volumes = custom_ui.Button(refresh_volumes_frame, command = refresh_volumes_list, text = "\ue72c", font = ("Segoe MDL2 Assets", 8))
     refresh_volumes.pack(fill = "both", expand = True)
+    refresh_volumes.configure(padx = int(7 * preferences.scale_factor + 0.5), width = 0)
 
     tktooltip.ToolTip(refresh_volumes, strings.lang.refresh_volumes_list, follow = False, delay = 1)
     
