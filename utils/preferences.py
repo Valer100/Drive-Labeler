@@ -1,4 +1,4 @@
-import os, getpass, strings
+import os, getpass, strings, ctypes
 
 user_preferences = f"C:\\Users\\{getpass.getuser()}\\AppData\\Local\\Volume Labeler"
 roaming = f"C:\\Users\\{getpass.getuser()}\\AppData\\Roaming\\Volume Labeler"
@@ -20,3 +20,14 @@ def limit_string(string: str) -> str:
         return "..." + string[-21:]
     
     return string
+
+def get_scale_factor():
+    ctypes.windll.shcore.SetProcessDpiAwareness(2)
+
+    dpi = ctypes.c_uint()
+    monitor_handle = ctypes.windll.user32.MonitorFromPoint(0, 0, 2)
+    ctypes.windll.shcore.GetDpiForMonitor(monitor_handle, 0, ctypes.byref(dpi), ctypes.byref(dpi))
+
+    return dpi.value / 96
+
+icon_size = int(32 * get_scale_factor())
