@@ -337,46 +337,46 @@ class Radiobutton(tk.Frame):
         self.value = value
         self.command = command
 
-        self.checkbox = ttk.Frame(self)
-        self.checkbox.pack(side = "left", padx = (0, 2), pady = (2, 0))
-        self.checkbox.pack_propagate(False)
+        self.radiobutton = ttk.Frame(self)
+        self.radiobutton.pack(side = "left", padx = (0, 2), pady = (2, 0))
+        self.radiobutton.pack_propagate(False)
 
-        self.checkbox_glyph = tk.Label(self.checkbox, text = "\ueccb" if variable.get() == self.value else "\uecca", font = ("Segoe UI", 10), 
+        self.radiobutton_glyph = tk.Label(self.radiobutton, text = "\ueccb" if variable.get() == self.value else "\uecca", font = ("Segoe UI", 10), 
                                        background = bg, foreground = accent if variable.get() == self.value else input_unchecked, 
                                        padx = 0, pady = 0)
-        self.checkbox_glyph.pack(side = "left")
-        self.checkbox_glyph.update()
-        self.checkbox.configure(width = self.checkbox_glyph.winfo_reqwidth(), height = self.checkbox_glyph.winfo_reqwidth())
+        self.radiobutton_glyph.pack(side = "left")
+        self.radiobutton_glyph.update()
+        self.radiobutton.configure(width = self.radiobutton_glyph.winfo_reqwidth(), height = self.radiobutton_glyph.winfo_reqwidth())
 
         self.text = ttk.Label(self, text = text)
         self.text.pack(side = "left")
 
-        self.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() == self.value else input_press))
-        self.checkbox.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() == self.value else input_press))
-        self.checkbox_glyph.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() == self.value else input_press))
-        self.text.bind("<Button-1>", lambda event: self.checkbox_glyph.configure(foreground = accent_press if self.variable.get() == self.value else input_press))
+        self.bind("<Button-1>", lambda event: self.radiobutton_glyph.configure(foreground = accent_press if self.variable.get() == self.value else input_press))
+        self.radiobutton.bind("<Button-1>", lambda event: self.radiobutton_glyph.configure(foreground = accent_press if self.variable.get() == self.value else input_press))
+        self.radiobutton_glyph.bind("<Button-1>", lambda event: self.radiobutton_glyph.configure(foreground = accent_press if self.variable.get() == self.value else input_press))
+        self.text.bind("<Button-1>", lambda event: self.radiobutton_glyph.configure(foreground = accent_press if self.variable.get() == self.value else input_press))
 
         self.bind("<ButtonRelease-1>", self.invoke)
-        self.checkbox.bind("<ButtonRelease-1>", self.invoke)
-        self.checkbox_glyph.bind("<ButtonRelease-1>", self.invoke)
+        self.radiobutton.bind("<ButtonRelease-1>", self.invoke)
+        self.radiobutton_glyph.bind("<ButtonRelease-1>", self.invoke)
         self.text.bind("<ButtonRelease-1>", self.invoke)
 
         def on_enter(event): 
             self.touching = True
-            self.checkbox_glyph.configure(foreground = accent_hover if self.variable.get() == self.value else input_hover)
+            self.radiobutton_glyph.configure(foreground = accent_hover if self.variable.get() == self.value else input_hover)
 
         def on_leave(event): 
             self.touching = False
-            self.checkbox_glyph.configure(foreground = accent if self.variable.get() == self.value else input_unchecked)
+            self.radiobutton_glyph.configure(foreground = accent if self.variable.get() == self.value else input_unchecked)
 
         self.bind("<Enter>", on_enter)
-        self.checkbox.bind("<Enter>", on_enter)
-        self.checkbox_glyph.bind("<Enter>", on_enter)
+        self.radiobutton.bind("<Enter>", on_enter)
+        self.radiobutton_glyph.bind("<Enter>", on_enter)
         self.text.bind("<Enter>", on_enter)
 
         self.bind("<Leave>", on_leave)
-        self.checkbox.bind("<Leave>", on_leave)
-        self.checkbox_glyph.bind("<Leave>", on_leave)
+        self.radiobutton.bind("<Leave>", on_leave)
+        self.radiobutton_glyph.bind("<Leave>", on_leave)
         self.text.bind("<Leave>", on_leave)
 
         def invoke_with_keyboard(event):
@@ -400,18 +400,18 @@ class Radiobutton(tk.Frame):
         if (event != None and self.touching) or event == None:
             self.variable.set(self.value)
 
-        self.checkbox_glyph.configure(text = "\ueccb" if self.variable.get() == self.value else "\uecca", 
+        self.radiobutton_glyph.configure(text = "\ueccb" if self.variable.get() == self.value else "\uecca", 
                                       foreground = accent if self.variable.get() == self.value else input_unchecked)
 
         if self.command != None: self.command()
 
     def on_value_change(self, var = None, index = None, mode = None):
-        self.checkbox_glyph.configure(text = "\ueccb" if self.variable.get() == self.value else "\uecca", 
+        self.radiobutton_glyph.configure(text = "\ueccb" if self.variable.get() == self.value else "\uecca", 
                                       foreground = accent if self.variable.get() == self.value else input_unchecked)
 
     def update_colors(self):
         self.configure(background = bg, highlightbackground = bg, highlightcolor = fg)
-        self.checkbox_glyph.configure(background = bg, foreground = accent if self.variable.get() == self.value else input_unchecked)
+        self.radiobutton_glyph.configure(background = bg, foreground = accent if self.variable.get() == self.value else input_unchecked)
 
 
 class Radiobutton2(tk.Frame):
