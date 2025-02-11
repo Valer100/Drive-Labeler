@@ -1,7 +1,5 @@
-import tkinter as tk, pywinstyles, winaccent, sys, hPyT, threading
+import tkinter as tk, pywinstyles, winaccent, winaccent._utils, sys, hPyT, threading
 from tkinter import ttk
-
-import winaccent._utils
 from utils import preferences, icon
 
 def update_colors():
@@ -68,10 +66,10 @@ def update_icons():
     global ic_volume, ic_icon, ic_image, ic_arrow_down, ic_arrow_up
     theme = "light" if light_theme else "dark"
 
-    icon.tint_image(preferences.internal + "icons\\volume.png", preferences.internal + "icons\\volume_tinted.png", accent)
-    icon.tint_image(preferences.internal + "icons\\icon_custom.png", preferences.internal + "icons\\icon_custom_tinted.png", accent)
-    icon.tint_image(preferences.internal + "icons\\image.png", preferences.internal + "icons\\image_tinted.png", accent)
-
+    icon.extract_and_tint_icon(preferences.internal + "icons\\volume.ico", preferences.internal + "icons\\volume_tinted.png", accent)
+    icon.extract_and_tint_icon(preferences.internal + "icons\\icon_custom.ico", preferences.internal + "icons\\icon_custom_tinted.png", accent)
+    icon.extract_and_tint_icon(preferences.internal + "icons\\image.ico", preferences.internal + "icons\\image_tinted.png", accent)
+    
     ic_volume = tk.PhotoImage(file = preferences.internal + "icons\\volume_tinted.png")
     ic_icon = tk.PhotoImage(file = preferences.internal + "icons\\icon_custom_tinted.png")
     ic_image = tk.PhotoImage(file = preferences.internal + "icons\\image_tinted.png")
@@ -223,7 +221,7 @@ class OptionMenu(tk.OptionMenu):
         self.configure(background = button_bg, foreground = fg, activebackground = button_hover, 
                        activeforeground = fg, highlightbackground = button_bd, highlightcolor = fg, 
                        image = ic_arrow_down, compound = "right", indicatoron = False, border = 0, relief = "solid", 
-                       highlightthickness = 1, pady = 4, padx = 7, takefocus = True)
+                       highlightthickness = 1, pady = 5, padx = 7, takefocus = True)
 
         self["menu"].configure(activebackground = winaccent.accent_normal)
 

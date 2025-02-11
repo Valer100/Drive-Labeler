@@ -21,13 +21,11 @@ def limit_string(string: str) -> str:
     
     return string
 
-def get_scale_factor():
-    ctypes.windll.shcore.SetProcessDpiAwareness(2)
+ctypes.windll.shcore.SetProcessDpiAwareness(2)
 
-    dpi = ctypes.c_uint()
-    monitor_handle = ctypes.windll.user32.MonitorFromPoint(0, 0, 2)
-    ctypes.windll.shcore.GetDpiForMonitor(monitor_handle, 0, ctypes.byref(dpi), ctypes.byref(dpi))
+dpi = ctypes.c_uint()
+monitor_handle = ctypes.windll.user32.MonitorFromPoint(0, 0, 2)
+ctypes.windll.shcore.GetDpiForMonitor(monitor_handle, 0, ctypes.byref(dpi), ctypes.byref(dpi))
 
-    return dpi.value / 96
-
-icon_size = int(32 * get_scale_factor())
+scale_factor = dpi.value / 96
+icon_size = int(32 * scale_factor)
