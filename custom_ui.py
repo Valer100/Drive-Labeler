@@ -64,19 +64,12 @@ update_colors()
 
 def update_icons():
     global ic_volume, ic_icon, ic_image, ic_arrow_down, ic_arrow_up
-    theme = "light" if light_theme else "dark"
 
-    icon.extract_and_tint_icon(preferences.internal + "icons\\volume.ico", preferences.internal + "icons\\volume_tinted.png", accent, 32)
-    icon.extract_and_tint_icon(preferences.internal + "icons\\icon_custom.ico", preferences.internal + "icons\\icon_custom_tinted.png", accent, 32)
-    icon.extract_and_tint_icon(preferences.internal + "icons\\image.ico", preferences.internal + "icons\\image_tinted.png", accent, 32)
-    icon.extract_and_tint_icon(preferences.internal + "icons\\arrow_up.ico", preferences.internal + "icons\\arrow_up_tinted.png", fg, 9)
-    icon.extract_and_tint_icon(preferences.internal + "icons\\arrow_down.ico", preferences.internal + "icons\\arrow_down_tinted.png", fg, 9)
-    
-    ic_volume = tk.PhotoImage(file = preferences.internal + "icons\\volume_tinted.png")
-    ic_icon = tk.PhotoImage(file = preferences.internal + "icons\\icon_custom_tinted.png")
-    ic_image = tk.PhotoImage(file = preferences.internal + "icons\\image_tinted.png")
-    ic_arrow_up = tk.PhotoImage(file = f"{preferences.internal}icons\\arrow_up_tinted.png")
-    ic_arrow_down = tk.PhotoImage(file = f"{preferences.internal}icons\\arrow_down_tinted.png")
+    ic_volume = icon.extract_and_tint_icon(preferences.internal + "icons\\volume.ico", accent, 32)
+    ic_icon = icon.extract_and_tint_icon(preferences.internal + "icons\\icon_custom.ico", accent, 32)
+    ic_image = icon.extract_and_tint_icon(preferences.internal + "icons\\image.ico", accent, 32)
+    ic_arrow_up = icon.extract_and_tint_icon(preferences.internal + "icons\\arrow_up.ico", fg, 9)
+    ic_arrow_down = icon.extract_and_tint_icon(preferences.internal + "icons\\arrow_down.ico", fg, 9)
 
 
 class CommandLink(tk.Frame):

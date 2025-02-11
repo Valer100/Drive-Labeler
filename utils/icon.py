@@ -1,5 +1,5 @@
 import ctypes, shutil
-from PIL import Image, IcoImagePlugin
+from PIL import Image, IcoImagePlugin, ImageTk
 from icoextract import IconExtractor
 from utils import preferences
 
@@ -57,7 +57,7 @@ def convert_image_to_icon(path: str) -> None:
     new_img.close()
 
 
-def extract_and_tint_icon(image_path, output_path, color, width):
+def extract_and_tint_icon(image_path, color, width):
     color = color.lstrip("#")
     rgb_color = tuple(int(color[i:i+2], 16) for i in (0, 2, 4))
 
@@ -79,4 +79,4 @@ def extract_and_tint_icon(image_path, output_path, color, width):
             if alpha > 0:
                 pixels[x, y] = rgb_color + (alpha,)
     
-    img.save(output_path)
+    return ImageTk.PhotoImage(img)
