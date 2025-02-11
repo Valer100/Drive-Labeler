@@ -468,7 +468,7 @@ class App(tk.Tk):
         super().__init__(*args, **kwargs)
         self.withdraw()
 
-        self.iconbitmap(default = preferences.internal + "icon.ico")
+        self.iconbitmap(default = preferences.internal + "icons\\icon.ico")
         self.update()
         self.set_theme()
         update_icons()

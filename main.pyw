@@ -7,7 +7,7 @@ from ctypes import windll
 windll.shcore.SetProcessDpiAwareness(2)
 
 os.chdir(os.path.dirname(__file__))
-if os.path.exists("icon.ico"): preferences.internal = ""
+if os.path.exists("icons\\icon.ico"): preferences.internal = ""
 else: preferences.internal = "_internal\\"
 
 parser = argparse.ArgumentParser()
@@ -417,7 +417,7 @@ def update_icons():
 
 def enable_new_icon_pack(event):
     global icon_pack
-    icon_pack = os.path.abspath("icons.icl")
+    icon_pack = os.path.abspath("icons\\storages.icl")
 
     window.unbind("<Shift_L>")
     window.bind("<KeyRelease-Shift_L>", disable_new_icon_pack)
