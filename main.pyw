@@ -4,7 +4,7 @@ from utils import volume, icon, preferences, context_menu_entry
 from dialogs import change_language, change_theme, about, error
 from ctypes import windll
 
-windll.shcore.SetProcessDpiAwareness(2)
+windll.shcore.SetProcessDpiAwareness(1)
 
 os.chdir(os.path.dirname(__file__))
 if os.path.exists("icons\\icon.ico"): preferences.internal = ""

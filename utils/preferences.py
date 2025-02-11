@@ -21,7 +21,7 @@ def limit_string(string: str) -> str:
     
     return string
 
-ctypes.windll.shcore.SetProcessDpiAwareness(2)
+ctypes.windll.shcore.SetProcessDpiAwareness(1)
 
 dpi = ctypes.c_uint()
 monitor_handle = ctypes.windll.user32.MonitorFromPoint(0, 0, 2)

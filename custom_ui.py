@@ -249,7 +249,7 @@ class Checkbutton(tk.Frame):
         self.command = command
 
         self.checkbox = ttk.Frame(self)
-        self.checkbox.pack(side = "left", padx = (0, 2), pady = (2, 0))
+        self.checkbox.pack(side = "left", padx = (0, int(2 * preferences.scale_factor + 0.5)), pady = (int(2 * preferences.scale_factor + 0.5), 0))
         self.checkbox.pack_propagate(False)
 
         self.checkbox_glyph = tk.Label(self.checkbox, text = "\ue73d" if variable.get() else "\ue739", font = ("Segoe UI", 10), 
@@ -336,7 +336,7 @@ class Radiobutton(tk.Frame):
         self.command = command
 
         self.radiobutton = ttk.Frame(self)
-        self.radiobutton.pack(side = "left", padx = (0, 2), pady = (2, 0))
+        self.radiobutton.pack(side = "left", padx = (0, int(2 * preferences.scale_factor + 0.5)), pady = (int(2 * preferences.scale_factor + 0.5), 0))
         self.radiobutton.pack_propagate(False)
 
         self.radiobutton_glyph = tk.Label(self.radiobutton, text = "\ueccb" if variable.get() == self.value else "\uecca", font = ("Segoe UI", 10), 
