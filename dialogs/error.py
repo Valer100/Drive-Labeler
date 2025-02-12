@@ -1,14 +1,15 @@
 import tkinter as tk, strings, custom_ui
 from tkinter import ttk, messagebox
 from tkinter.scrolledtext import ScrolledText
+from utils import preferences
 
 def show(error: str):
     window = custom_ui.Toplevel()
     window.title(strings.lang.error)
-    window.configure(padx = 16, pady = 0)
+    window.configure(padx = preferences.get_scaled_value(16), pady = 0)
 
     header = ttk.Frame(window)
-    header.pack(anchor = "w", pady = (8, 16))
+    header.pack(anchor = "w", pady = (preferences.get_scaled_value(8), preferences.get_scaled_value(16)))
 
     ttk.Label(header, text = "\ue7ba ", font = ("Segoe UI", 17), padding = (0, 5, 0, 0)).pack(side = "left")
     ttk.Label(header, width = 25, text = strings.lang.error, font = ("Segoe UI Semibold", 17)).pack(side = "left")
@@ -27,9 +28,9 @@ def show(error: str):
         messagebox.showinfo(parent = window, title = strings.lang.copy_traceback, message = strings.lang.copy_traceback_success)
 
     buttons = ttk.Frame(window)
-    buttons.pack(pady = 16, anchor = "e")
+    buttons.pack(pady = preferences.get_scaled_value(16), anchor = "e")
 
-    ttk.Button(buttons, text = strings.lang.ok, default = "active", command = window.destroy).pack(side = "right", padx = (8, 0))
+    ttk.Button(buttons, text = strings.lang.ok, default = "active", command = window.destroy).pack(side = "right", padx = (preferences.get_scaled_value(8), 0))
     ttk.Button(buttons, text = strings.lang.copy_traceback, command = copy_traceback).pack(side = "right")
 
     window.resizable(False, False)

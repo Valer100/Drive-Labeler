@@ -17,7 +17,7 @@ arguments = parser.parse_args()
 window = custom_ui.App()
 window.title("Volume Labeler")
 window.resizable(False, False)
-window.configure(padx = 14, pady = 8)
+window.configure(padx = preferences.get_scaled_value(14), pady = preferences.get_scaled_value(8))
 
 icon_pack = "C:\\Windows\\System32\\shell32.dll"
 show_additional_options = False
@@ -264,23 +264,23 @@ def draw_ui():
     ttk.Label(window, text = "Volume Labeler", font = ("Segoe UI Semibold", 17)).pack(anchor = "w")
 
     volume_section = ttk.Frame(window)
-    volume_section.pack(fill = "x", anchor = "w", pady = (16, 8))
+    volume_section.pack(fill = "x", anchor = "w", pady = (preferences.get_scaled_value(16), preferences.get_scaled_value(8)))
 
     ttk.Label(volume_section, text = strings.lang.volume).pack(side = "left")
 
     refresh_volumes_frame = ttk.Frame(volume_section)
-    refresh_volumes_frame.pack(side = "right", padx = (8, 0), fill = "both")
+    refresh_volumes_frame.pack(side = "right", padx = (preferences.get_scaled_value(8), 0), fill = "both")
 
     refresh_volumes = custom_ui.Button(refresh_volumes_frame, command = refresh_volumes_list, text = "\ue72c", font = ("Segoe MDL2 Assets", 8))
     refresh_volumes.pack(fill = "both", expand = True)
-    refresh_volumes.configure(padx = int(7 * preferences.scale_factor + 0.5), width = 0)
+    refresh_volumes.configure(padx = preferences.get_scaled_value(7), width = 0)
 
     tktooltip.ToolTip(refresh_volumes, strings.lang.refresh_volumes_list, follow = False, delay = 1)
     
     volume_dropdown = custom_ui.OptionMenu(volume_section, selected_volume, *volumes)
     volume_dropdown.pack(side = "right")
 
-    ttk.Label(window, text = strings.lang.label).pack(pady = 10, anchor = "w")
+    ttk.Label(window, text = strings.lang.label).pack(pady = preferences.get_scaled_value(10), anchor = "w")
 
     def on_label_change():
         enable_undo_button()
@@ -297,20 +297,20 @@ def draw_ui():
                     selectforeground = "#FFFFFF", validate = "key", validatecommand = on_label_change)
     label.pack(fill = "x")
 
-    ttk.Label(window, text = strings.lang.icon).pack(pady = (16, 8), anchor = "w")
+    ttk.Label(window, text = strings.lang.icon).pack(pady = (preferences.get_scaled_value(16), preferences.get_scaled_value(8)), anchor = "w")
 
     default_icon = custom_ui.Radiobutton2(window, text = "  " + strings.lang.default_icon, variable = icon_type, value = "default", command = choose_icon_, image = custom_ui.ic_volume, compound = "left")
-    default_icon.pack(anchor = "w", fill = "x", pady = 2)
+    default_icon.pack(anchor = "w", fill = "x", pady = preferences.get_scaled_value(2))
 
     choose_icon = custom_ui.Radiobutton2(window, text = "  " + strings.lang.choose_icon, variable = icon_type, value = "icon", command = choose_icon_, image = custom_ui.ic_icon, compound = "left")
-    choose_icon.pack(anchor = "w", fill = "x", pady = 2)
+    choose_icon.pack(anchor = "w", fill = "x", pady = preferences.get_scaled_value(2))
 
     icon_from_image = custom_ui.Radiobutton2(window, text = "  " + strings.lang.create_icon_from_image, variable = icon_type, value = "image", image = custom_ui.ic_image, command = choose_icon_, compound = "left")
-    icon_from_image.pack(anchor = "w", fill = "x", pady = 2)
+    icon_from_image.pack(anchor = "w", fill = "x", pady = preferences.get_scaled_value(2))
 
     additional_options = custom_ui.Toolbutton(window, text = " " + strings.lang.additional_options, command = lambda: show_hide_additional_options(), anchor = "w", compound = "left", image = custom_ui.ic_arrow_down)
-    additional_options.pack(pady = (14, 0), anchor = "w")
-    additional_options.configure(padx = 2)
+    additional_options.pack(pady = (preferences.get_scaled_value(14), 0), anchor = "w")
+    additional_options.configure(padx = preferences.get_scaled_value(2))
 
     additional_options_frame = ttk.Frame(window)
     additional_options_frame.pack(anchor = "w")
@@ -322,7 +322,7 @@ def draw_ui():
         for widget in additional_options_frame.winfo_children():
             if show_additional_options: 
                 if widget["text"] == strings.lang.hide_autorun:
-                    widget.pack(pady = (6, 0), anchor = "w")
+                    widget.pack(pady = (preferences.get_scaled_value(6), 0), anchor = "w")
                 else:
                     widget.pack(anchor = "w")
             else: widget.forget()
@@ -341,15 +341,15 @@ def draw_ui():
     custom_ui.Checkbutton(additional_options_frame, text = strings.lang.backup_existing_autorun, command = save_additional_preferences, variable = backup_existing_autorun)
 
     buttons = ttk.Frame(window)
-    buttons.pack(fill = "x", pady = (16, 0))
+    buttons.pack(fill = "x", pady = (preferences.get_scaled_value(16), 0))
     buttons.columnconfigure([0, 1], weight = 1)
 
     apply_changes = custom_ui.Button(buttons, width = -1, text = strings.lang.apply_changes, command = modify_volume_info, default = "active")
-    apply_changes.grid(row = 0, column = 0, padx = (0, 4), sticky = "ew")
+    apply_changes.grid(row = 0, column = 0, padx = (0, preferences.get_scaled_value(4)), sticky = "ew")
     apply_changes.update()
 
     reset_changes = custom_ui.Button(buttons, width = -1, text = strings.lang.reset_changes)
-    reset_changes.grid(row = 0, column = 1, padx = (4, 0), sticky = "ew")
+    reset_changes.grid(row = 0, column = 1, padx = (preferences.get_scaled_value(4), 0), sticky = "ew")
     reset_changes.update()
     pywinstyles.set_opacity(reset_changes, 0.5)
     
@@ -357,23 +357,23 @@ def draw_ui():
     buttons.columnconfigure([0, 1], minsize = button_width)
 
     remove_customizations = custom_ui.Button(window, text = strings.lang.remove_customizations, command = remove_volume_customizations)
-    remove_customizations.pack(pady = (8, 0), fill = "x")
+    remove_customizations.pack(pady = (preferences.get_scaled_value(8), 0), fill = "x")
 
     settings = ttk.Frame(window)
-    settings.pack(anchor = "w", pady = (20, 2), fill = "x")
+    settings.pack(anchor = "w", pady = (20, preferences.get_scaled_value(2)), fill = "x")
     settings.pack_propagate(False)
     
     language = custom_ui.Toolbutton(settings, text = "\ue774", link = True, icononly = True, anchor = "n", command = change_app_language, font = ("Segoe UI", 12))
     language.pack(anchor = "nw", side = "left")
 
     theme = custom_ui.Toolbutton(settings, text = "\ue771", link = True, icononly = True, anchor = "n", command = change_app_theme, font = ("Segoe UI", 12))
-    theme.pack(anchor = "nw", side = "left", padx = (4, 0))
+    theme.pack(anchor = "nw", side = "left", padx = (preferences.get_scaled_value(4), 0))
 
     context_menu_integration = custom_ui.Toolbutton(settings, text = "\ue71d", link = True, icononly = True, anchor = "n", command = add_remove_context_menu_entry, font = ("Segoe UI", 12))
-    context_menu_integration.pack(anchor = "nw", side = "left", padx = (4, 0))
+    context_menu_integration.pack(anchor = "nw", side = "left", padx = (preferences.get_scaled_value(4), 0))
 
     about_app = custom_ui.Toolbutton(settings, text = "\ue946", link = True, icononly = True, anchor = "n", command = about.show, font = ("Segoe UI", 13))
-    about_app.pack(anchor = "nw", side = "left", padx = (4, 0))
+    about_app.pack(anchor = "nw", side = "left", padx = (preferences.get_scaled_value(4), 0))
     
     language.update()
     settings.configure(height = language.winfo_reqwidth())

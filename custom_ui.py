@@ -216,7 +216,7 @@ class OptionMenu(tk.OptionMenu):
         self.configure(background = button_bg, foreground = fg, activebackground = button_hover, 
                        activeforeground = fg, highlightbackground = button_bd, highlightcolor = fg, 
                        image = ic_arrow_down, compound = "right", indicatoron = False, border = 0, relief = "solid", 
-                       highlightthickness = 1, pady = 5, padx = int(7 * preferences.scale_factor + 0.5), takefocus = True)
+                       highlightthickness = 1, pady = preferences.get_scaled_value(5), padx = preferences.get_scaled_value(7), takefocus = True)
 
         self["menu"].configure(activebackground = winaccent.accent_normal)
 

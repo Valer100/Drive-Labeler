@@ -6,10 +6,10 @@ from utils import preferences
 def show():
     window = custom_ui.Toplevel()
     window.title(strings.lang.license)
-    window.configure(padx = 16, pady = 0)
+    window.configure(padx = preferences.get_scaled_value(16), pady = 0)
 
     header = ttk.Frame(window)
-    header.pack(anchor = "w", pady = (8, 16))
+    header.pack(anchor = "w", pady = (preferences.get_scaled_value(8), preferences.get_scaled_value(16)))
 
     ttk.Label(header, text = "\ue8a5 ", font = ("Segoe UI", 17), padding = (0, 5, 0, 0)).pack(side = "left")
     ttk.Label(header, width = 25, text = strings.lang.license, font = ("Segoe UI Semibold", 17)).pack(side = "left")
@@ -24,7 +24,7 @@ def show():
     license_text.configure(state = "disabled")
 
     buttons = ttk.Frame(window)
-    buttons.pack(pady = 16, anchor = "e")
+    buttons.pack(pady = preferences.get_scaled_value(16), anchor = "e")
 
     ttk.Button(buttons, text = strings.lang.ok, default = "active", command = window.destroy).pack(side = "right")
 

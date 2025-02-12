@@ -13,7 +13,7 @@ def show():
 
     window = custom_ui.Toplevel()
     window.title(strings.lang.about_title)
-    window.configure(padx = 16, pady = 0)
+    window.configure(padx = preferences.get_scaled_value(16), pady = 0)
 
     icon = tk.PhotoImage(file = f"{preferences.internal}icons\\icon.png")
 
@@ -21,7 +21,7 @@ def show():
         global arrow, show_os_licenses
         show_os_licenses = not show_os_licenses
 
-        if show_os_licenses: licenses.pack(pady = 16)
+        if show_os_licenses: licenses.pack(pady = preferences.get_scaled_value(16))
         else: licenses.forget()
 
         show_licenses.configure(image = custom_ui.ic_arrow_up if show_os_licenses else custom_ui.ic_arrow_down)
@@ -30,29 +30,29 @@ def show():
     app_info.pack(fill = "x")
 
     app_icon = tk.Canvas(app_info, width = 63, height = 40, highlightthickness = 0, background = custom_ui.bg)
-    app_icon.pack(side = "left", padx = (0, 16), pady = (16, 0))
+    app_icon.pack(side = "left", padx = (0, preferences.get_scaled_value(16)), pady = (preferences.get_scaled_value(16), 0))
     app_icon.create_image(0, 0, image = icon, anchor = "nw")
 
     app_name_and_version = ttk.Frame(app_info)
     app_name_and_version.pack(side = "left")
 
-    ttk.Label(app_name_and_version, text = "Volume Labeler", width = 20, font = ("Segoe UI Semibold", 17)).pack(anchor = "w", pady = (8, 0))
+    ttk.Label(app_name_and_version, text = "Volume Labeler", width = 20, font = ("Segoe UI Semibold", 17)).pack(anchor = "w", pady = (preferences.get_scaled_value(8), 0))
     ttk.Label(app_name_and_version, text = strings.lang.version.replace("%v", "1.0.0 alpha")).pack(anchor = "w")
 
     links = ttk.Frame(window)
-    links.pack(fill = "x", pady = (16, 0))
+    links.pack(fill = "x", pady = (preferences.get_scaled_value(16), 0))
 
     custom_ui.Toolbutton(links, text = "GitHub", link = True, command = lambda: webbrowser.open("https:\\\\github.com\\Valer100\\Volume-Labeler")).pack(side = "left")
     custom_ui.Toolbutton(links, text = strings.lang.issues, link = True, command = lambda: webbrowser.open("https:\\\\github.com\\Valer100\\Volume-Labeler\\issues")).pack(side = "left", padx = (4, 0))
     custom_ui.Toolbutton(links, text = strings.lang.latest_version, link = True, command = lambda: webbrowser.open("https:\\\\github.com\\Valer100\\Volume-Labeler\\releases\\latest")).pack(side = "left", padx = (4, 0))
-    custom_ui.Toolbutton(links, text = strings.lang.license, link = True, command = app_license.show).pack(side = "left", padx = (4, 0))
+    custom_ui.Toolbutton(links, text = strings.lang.license, link = True, command = app_license.show).pack(side = "left", padx = (preferences.get_scaled_value(4), 0))
 
     buttons = ttk.Frame(window)
-    buttons.pack(fill = "x", pady = (16, 16))
+    buttons.pack(fill = "x", pady = preferences.get_scaled_value(16))
 
     show_licenses = custom_ui.Button(buttons, text = strings.lang.open_source_licenses, command = show_hide_licenses, compound = "left", image = custom_ui.ic_arrow_down)
     show_licenses.pack(anchor = "w", side = "left")
-    show_licenses.configure(width = 0, padx = (5 * preferences.scale_factor + 0.5))
+    show_licenses.configure(width = 0, padx = preferences.get_scaled_value(5))
 
     ttk.Button(buttons, text = strings.lang.ok, command = window.destroy, default = "active").pack(side = "right")
 
