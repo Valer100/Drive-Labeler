@@ -65,3 +65,10 @@ Root: HKCU; Subkey: "Software\Classes\Drive\shell\Volume Labeler\command"; Value
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
+[Code]
+procedure InitializeWizard();
+begin
+  WizardForm.WelcomeLabel1.Font.Name := 'Segoe UI Bold';
+  WizardForm.WelcomeLabel1.Font.Size := 15;
+  WizardForm.WelcomeLabel2.Top := WizardForm.WelcomeLabel2.Top + 20;
+end;
