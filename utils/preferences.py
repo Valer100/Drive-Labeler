@@ -1,10 +1,18 @@
 import os, getpass, strings, ctypes
 
-user_preferences = f"C:\\Users\\{getpass.getuser()}\\AppData\\Local\\Volume Labeler"
+os.chdir(os.path.dirname(os.path.dirname(__file__)))
+if os.path.exists("icons\\icon.ico"): internal = ""
+else: internal = "_internal\\"
+
+if os.path.exists("preferences") and os.path.isdir("preferences"):
+    user_preferences = "preferences"
+else:
+    user_preferences = f"C:\\Users\\{getpass.getuser()}\\AppData\\Local\\Volume Labeler"
+
 roaming = f"C:\\Users\\{getpass.getuser()}\\AppData\\Roaming\\Volume Labeler"
 
-if not os.path.exists(user_preferences): os.mkdir(user_preferences)
 if not os.path.exists(roaming): os.mkdir(roaming)
+if not os.path.exists(user_preferences): os.mkdir(user_preferences)
 if not os.path.exists(user_preferences + "\\language"): open(user_preferences + "\\language", "w").write("default")
 if not os.path.exists(user_preferences + "\\theme"): open(user_preferences + "\\theme", "w").write("default")
 if not os.path.exists(user_preferences + "\\additional_prefs"): open(user_preferences + "\\additional_prefs", "w").write("111")
