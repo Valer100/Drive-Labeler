@@ -1,9 +1,11 @@
 import os, getpass, strings, ctypes
 
 if os.path.exists("preferences") and os.path.isdir("preferences"):
-    user_preferences = "preferences"
+    user_preferences = os.path.abspath("preferences")
+    is_portable = True
 else:
     user_preferences = f"C:\\Users\\{getpass.getuser()}\\AppData\\Local\\Volume Labeler"
+    is_portable = False
 
 roaming = f"C:\\Users\\{getpass.getuser()}\\AppData\\Roaming\\Volume Labeler"
 
