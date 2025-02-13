@@ -1,9 +1,5 @@
 import os, getpass, strings, ctypes
 
-os.chdir(os.path.dirname(os.path.dirname(__file__)))
-if os.path.exists("icons\\icon.ico"): internal = ""
-else: internal = "_internal\\"
-
 if os.path.exists("preferences") and os.path.isdir("preferences"):
     user_preferences = "preferences"
 else:

@@ -6,6 +6,10 @@ from ctypes import windll
 
 windll.shcore.SetProcessDpiAwareness(1)
 
+os.chdir(os.path.dirname(__file__))
+if os.path.exists("icons\\icon.ico"): preferences.internal = ""
+else: preferences.internal = "_internal\\"
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--volume", default = None, help = "The letter of the volume you want to customize", required = False)
 arguments = parser.parse_args()
