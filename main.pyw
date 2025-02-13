@@ -368,6 +368,11 @@ def draw_ui():
     context_menu_integration = custom_ui.Toolbutton(settings, text = "\ue71d", link = True, icononly = True, anchor = "n", command = add_remove_context_menu_entry, font = ("Segoe UI", 12))
     context_menu_integration.pack(anchor = "nw", side = "left", padx = (preferences.get_scaled_value(4), 0))
 
+    if preferences.user_preferences == "preferences": 
+        context_menu_integration.configure(state = "disabled", cursor = "")
+        context_menu_integration.unbind("<Enter>")
+        context_menu_integration.unbind("<Leave>")
+
     about_app = custom_ui.Toolbutton(settings, text = "\ue946", link = True, icononly = True, anchor = "n", command = about.show, font = ("Segoe UI", 13))
     about_app.pack(anchor = "nw", side = "left", padx = (preferences.get_scaled_value(4), 0))
     
@@ -379,14 +384,17 @@ def draw_ui():
     tktooltip.ToolTip(theme, strings.lang.change_theme, follow = False, delay = 1)
     tktooltip.ToolTip(about_app, strings.lang.about_this_app, follow = False, delay = 1)
 
-    context_menu_entry.update_context_menu_entry_string()
-
-    if context_menu_entry.is_context_menu_entry_added():
-        context_menu_integration.configure(default = "active")
-        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = False, delay = 1)
+    if not preferences.user_preferences == "preferences":
+        context_menu_entry.update_context_menu_entry_string()
+    
+        if context_menu_entry.is_context_menu_entry_added():
+            context_menu_integration.configure(default = "active")
+            context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_enabled, follow = False, delay = 1)
+        else:
+            context_menu_integration.configure(default = "normal")
+            context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = False, delay = 1)
     else:
-        context_menu_integration.configure(default = "normal")
-        context_menu_integration_tooltip = tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_disabled, follow = False, delay = 1)
+        tktooltip.ToolTip(context_menu_integration, strings.lang.context_menu_integration_not_available_portable, follow = False, delay = 1)
 
     window.update()
 

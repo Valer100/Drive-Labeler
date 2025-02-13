@@ -23,6 +23,7 @@ hide_vl_icon = "Hide vl_icon folder"
 backup_existing_autorun = "Backup autorun.inf file (if it already exists)"
 context_menu_integration_disabled = "Context menu integration: Disabled"
 context_menu_integration_enabled = "Context menu integration: Enabled"
+context_menu_integration_not_available_portable = "Context menu integration: Not available in portable version"
 refresh_volumes_list = "Refresh volumes list"
 reset_changes = "Reset changes"
 
