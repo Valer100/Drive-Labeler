@@ -13,7 +13,8 @@ def show():
     window.title(strings.lang.change_language)
     window.configure(padx = preferences.get_scaled_value(16), pady = 0)
 
-    language = tk.StringVar(value = preferences.language)
+    languages = ["default", "en_US", "ro_RO"]
+    language = tk.StringVar(value = preferences.language if preferences.language in languages else "default")
 
     header = ttk.Frame(window)
     header.pack(anchor = "w", pady = (preferences.get_scaled_value(4), preferences.get_scaled_value(8)))

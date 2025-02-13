@@ -13,7 +13,8 @@ def show():
     window.title(strings.lang.change_theme)
     window.configure(padx = preferences.get_scaled_value(16), pady = 0)
 
-    theme = tk.StringVar(value = preferences.theme)
+    themes = ["default", "light", "dark"]
+    theme = tk.StringVar(value = preferences.theme if preferences.theme in themes else "default")
 
     header = ttk.Frame(window)
     header.pack(anchor = "w", pady = (preferences.get_scaled_value(4), preferences.get_scaled_value(8)))
