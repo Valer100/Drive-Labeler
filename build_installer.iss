@@ -71,4 +71,8 @@ begin
   WizardForm.WelcomeLabel1.Font.Name := 'Segoe UI Bold';
   WizardForm.WelcomeLabel1.Font.Size := 15;
   WizardForm.WelcomeLabel2.Top := WizardForm.WelcomeLabel2.Top + 20;
+  
+  WizardForm.FinishedHeadingLabel.Font.Name := 'Segoe UI Bold';
+  WizardForm.FinishedHeadingLabel.Font.Size := 15;
+  WizardForm.FinishedLabel.Top := WizardForm.FinishedLabel.Top + 20;
 end;
