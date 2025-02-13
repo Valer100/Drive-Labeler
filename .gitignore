@@ -172,3 +172,6 @@ cython_debug/
 
 # Tinted icons at runtime
 icons/*_tinted.png
+
+# Preferences folder
+preferences
