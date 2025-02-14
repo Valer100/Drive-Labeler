@@ -515,7 +515,7 @@ def sync_colors(window, callback):
     elif isinstance(window, Toplevel): window.set_titlebar_theme()
 
     for widget in window.winfo_children():
-        if isinstance(widget, (CommandLink, Toolbutton, Button, OptionMenu, Checkbutton, Radiobutton2)):
+        if isinstance(widget, (CommandLink, Toolbutton, Button, OptionMenu, Checkbutton, Radiobutton, Radiobutton2)):
             widget.update_colors()
         elif isinstance(widget, tk.Entry):
             widget.configure(background = entry_bg, foreground = fg, highlightcolor = entry_bg, highlightbackground = entry_bg, insertbackground = fg, selectbackground = entry_select)
