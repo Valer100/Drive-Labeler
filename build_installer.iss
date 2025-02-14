@@ -54,8 +54,8 @@ Source: "build\volume_labeler\*"; DestDir: "{app}"; Flags: ignoreversion recurse
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Icons]
-Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Comment: "Edit the label and the icon of a volume."; Tasks: desktopicon
+Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Comment: "Change the label and the icon of a volume easily."
+Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Comment: "Change the label and the icon of a volume easily."; Tasks: desktopicon
 
 [Registry]
 Root: HKCU; Subkey: "Software\Classes\Drive\shell\Volume Labeler"; ValueType: string; ValueName: ""; ValueData: "Customize with Volume Labeler"; Flags: uninsdeletekey; Tasks: contextmenuintegration
