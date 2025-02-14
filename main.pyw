@@ -42,10 +42,9 @@ def select_first_accessible_volume():
 
 
 def refresh_volumes_list():
-    global volumes, app_started
+    global volumes
 
     volumes = volume.get_available_drives()
-    selected_volume.set(volumes[0])
 
     menu = volume_dropdown["menu"]
     menu.delete(0, "end")
@@ -55,18 +54,6 @@ def refresh_volumes_list():
         except: volume_label = volume.get_volume_label(string)
 
         menu.add_checkbutton(label = f"{volume_label} ({string})", command = lambda value = string: update_volume_info(value), variable = selected_volume, onvalue = string)
-
-    if not app_started and arguments.volume != None:
-        if os.path.exists(arguments.volume.upper()):
-            update_volume_info(arguments.volume.upper())
-        else:
-            messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
-            window.destroy()
-            sys.exit(1)
-    else:
-        select_first_accessible_volume()
-
-    app_started = True
 
 
 def update_volume_info(vol):
@@ -219,6 +206,7 @@ def change_app_language():
     if old_language != preferences.language: 
         draw_ui()
         refresh_volumes_list()
+        select_first_accessible_volume()
 
 
 def change_app_theme():
@@ -442,6 +430,19 @@ def disable_new_icon_pack(event):
 
 draw_ui()
 refresh_volumes_list()
+
+if not app_started and arguments.volume != None:
+    if os.path.exists(arguments.volume.upper()):
+        update_volume_info(arguments.volume.upper())
+    else:
+        messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
+        window.destroy()
+        sys.exit(1)
+else:
+    select_first_accessible_volume()
+
+app_started = True
+
 custom_ui.sync_colors_with_system(window, update_icons)
 
 window.bind("<Shift_L>", enable_new_icon_pack)
