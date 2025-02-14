@@ -23,7 +23,7 @@ hide_vl_icon = "Ascunde folderul vl_icon"
 backup_existing_autorun = "Fă backup fișierului autorun.inf (dacă există deja)"
 context_menu_integration_disabled = "Integrare în meniul contextual: Dezactivată"
 context_menu_integration_enabled = "Integrare în meniul contextual: Activată"
-context_menu_integration_not_available_portable = "Integrare în meniul contextual: Indisponibilă în versiunea portabilă"
+context_menu_integration_not_available_portable = "Integrare în meniul contextual: Indisponibilă în modul portabil"
 refresh_volumes_list = "Reîmprospătează lista volumelor"
 reset_changes = "Resetează modificările"
 
