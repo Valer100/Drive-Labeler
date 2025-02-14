@@ -46,7 +46,7 @@ copy_traceback_success = "The traceback was successfully copied to clipboard."
 readme = "READ ME!"
 autorun_backup = """This folder includes backups of the `autorun.inf` file before Volume Labeler
 made changes to it. If something went wrong or you want to restore the settings before 
-the modification, you can do that by deleting the `autorun.inf` file in the root of this
+the modification, you can do so by deleting the `autorun.inf` file in the root of this
 volume (you may need to enable the "Show hidden files" option to see it). After that, 
 go back to this folder, copy one of the autorun files (they are of the form `autorun_{date and time}.inf`) 
 to the root of this volume and then rename it to autorun.inf."""
