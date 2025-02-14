@@ -51,7 +51,7 @@ volume (you may need to enable the "Show hidden files" option to see it). After 
 go back to this folder, copy one of the autorun files (`autorun_{date and time}.inf`) to the root
 of this volume and then rename it to autorun.inf."""
 icon_folder = """This folder contains the icon that's displayed to your volume.
-Do not delete this folder or the icon file inside it."""
+Do not delete/move/rename this folder or the icon file inside it."""
 
 # Other
 open_source_licenses = "Open source licenses"
@@ -70,3 +70,4 @@ issues = "Issues"
 latest_version = "Latest version"
 copy_traceback = "Copy traceback"
 license = "License"
+translation_made_by = "Translation made by %a"

@@ -52,7 +52,7 @@ sau vrei să restaurezi valorile dinainte de modificare, poți face asta șterg�
 dintre fișierele autorun prezente (`autorun_{data și ora}.inf`) în rădăcina acestui volum 
 și apoi redenumește-l în autorun.inf."""
 icon_folder = """Acest folder conține pictograma care este afișată la acest volum.
-Nu șterge acest folder sau fișierul pictogramei din el."""
+Nu șterge/muta/redenumi acest folder sau fișierul pictogramei din el."""
 
 # Other
 open_source_licenses = "Licențe open source"
@@ -71,3 +71,4 @@ issues = "Probleme"
 latest_version = "Cea mai recentă versiune"
 copy_traceback = "Copiază traceback-ul"
 license = "Licență"
+translation_made_by = "Traducere făcută de %a"

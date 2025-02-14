@@ -1,6 +1,8 @@
 import tkinter as tk, strings, custom_ui, webbrowser
 from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
+import strings.en_US
+import strings.ro_RO
 from utils import preferences
 from dialogs import app_license
 
@@ -38,6 +40,9 @@ def show():
 
     ttk.Label(app_name_and_version, text = "Volume Labeler", width = 20, font = ("Segoe UI Semibold", 17)).pack(anchor = "w", pady = (preferences.get_scaled_value(8), 0))
     ttk.Label(app_name_and_version, text = strings.lang.version.replace("%v", "1.0.0 alpha")).pack(anchor = "w")
+    
+    if not strings.lang in [strings.en_US, strings.ro_RO]:
+        ttk.Label(app_name_and_version, text = strings.lang.translation_made_by.replace("%a", strings.lang.author)).pack(anchor = "w")
 
     links = ttk.Frame(window)
     links.pack(fill = "x", pady = (preferences.get_scaled_value(16), 0))
