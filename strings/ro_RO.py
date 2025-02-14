@@ -46,11 +46,11 @@ copy_traceback_success = "Traceback-ul a fost copiat cu succes în clipboard."
 readme = "CITEȘTE-MĂ!"
 autorun_backup = """Acest folder include copii de rezervă ale fișierului `autorun.inf` 
 înainte ca Volume Labeler să facă modificări acestuia. Dacă ceva nu a mers cum trebuie
-sau vrei să restaurezi valorile dinainte de modificare, poți face asta ștergând fișierul 
+sau vrei să restaurezi setările dinainte de modificare, poți face asta ștergând fișierul 
 `autorun.inf` din rădăcina volumului (s-ar putea să fie nevoie să activezi opțiunea
 "Arată fișierele ascunse" ca să-l vezi). După aceea, revino în acest folder, copiază unul
-dintre fișierele autorun prezente (`autorun_{data și ora}.inf`) în rădăcina acestui volum 
-și apoi redenumește-l în autorun.inf."""
+dintre fișierele autorun prezente (sunt de forma `autorun_{data și ora}.inf`) în rădăcina 
+acestui volum și apoi redenumește-l în autorun.inf."""
 icon_folder = """Acest folder conține pictograma care este afișată la acest volum.
 Nu șterge/muta/redenumi acest folder sau fișierul pictogramei din el."""
 
