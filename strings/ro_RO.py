@@ -41,6 +41,9 @@ context_menu_integration = "Integrare în meniul contextual"
 context_menu_entry_added = "Intrarea în meniul contextual a fost adăugată cu succes.\n\nNotă: Intrarea în meniul contextual va apărea numai în meniul contextual clasic complet pe Windows 11."
 context_menu_entry_removed = "Intrarea în meniul contextual a fost eliminată cu succes."
 copy_traceback_success = "Traceback-ul a fost copiat cu succes în clipboard."
+ui_reload_required = "Reîncărcare UI necesară"
+ui_reload_confirmation = "Această setare necesită o reîncărcare a UI-ului pentru a avea efect. Ai dori să reîncarci UI-ul acum? Toate modificările nesalvate vor fi pierdute."
+reset_changes_confirmation = "Ești sigur(ă)? Această acțiune va reseta toate modificările neaplicate pe care le-ai făcut."
 
 # Files
 readme = "CITEȘTE-MĂ!"

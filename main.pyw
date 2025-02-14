@@ -97,19 +97,22 @@ def disable_undo_button():
 def enable_undo_button():
     global undo_button_enabled
 
-    reset_changes.configure(command = undo_changes_)
+    reset_changes.configure(command = reset_changes_)
     reset_changes.bind("<Enter>", lambda event: reset_changes.configure(background = custom_ui.button_hover))
     reset_changes.bind("<Leave>", lambda event: reset_changes.configure(background = custom_ui.button_bg))
     reset_changes.configure(background = custom_ui.button_bg, activebackground = custom_ui.button_press)
     pywinstyles.set_opacity(reset_changes, 1)
 
 
-def undo_changes_():
-    if os.path.exists(selected_volume.get()):
-        update_volume_info(selected_volume.get())
-        disable_undo_button()
-    else:
-        messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
+def reset_changes_():
+    confirmation = messagebox.askyesno(strings.lang.reset_changes, strings.lang.reset_changes_confirmation, icon = "warning", default = "no")
+
+    if confirmation:
+        if os.path.exists(selected_volume.get()):
+            update_volume_info(selected_volume.get())
+            disable_undo_button()
+        else:
+            messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
 
 
 def modify_volume_info():
@@ -204,9 +207,12 @@ def change_app_language():
     window.wait_window(change_language.window)
 
     if old_language != preferences.language: 
-        draw_ui()
-        refresh_volumes_list()
-        select_first_accessible_volume()
+        confirmation = messagebox.askyesno(strings.lang.ui_reload_required, strings.lang.ui_reload_confirmation, icon = "warning", default = "no")
+        
+        if confirmation:
+            draw_ui()
+            refresh_volumes_list()
+            select_first_accessible_volume()
 
 
 def change_app_theme():

@@ -41,6 +41,9 @@ context_menu_integration = "Context menu integration"
 context_menu_entry_added = "The context menu entry was successfully added.\n\nNote: The context menu entry will only appear in the classic full context menu on Windows 11."
 context_menu_entry_removed = "The context menu entry was successfully removed."
 copy_traceback_success = "The traceback was successfully copied to clipboard."
+ui_reload_required = "UI reload required"
+ui_reload_confirmation = "This setting requires a UI reload to take effect. Would you like to reload the UI now? All unsaved changes will be lost."
+reset_changes_confirmation = "Are you sure? This action will reset all your unapplied changes that you made."
 
 # Files
 readme = "READ ME!"
