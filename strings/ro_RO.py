@@ -49,8 +49,8 @@ autorun_backup = """Acest folder include copii de rezervă ale fișierului `auto
 sau vrei să restaurezi valorile dinainte de modificare, poți face asta ștergând fișierul 
 `autorun.inf` din rădăcina volumului (s-ar putea să fie nevoie să activezi opțiunea
 "Arată fișierele ascunse" ca să-l vezi). După aceea, revino în acest folder, copiază unul
-dintre fișierele `autorun_{data și ora}.inf` în rădăcina acestui volum și apoi redenumește-l
-în autorun.inf."""
+dintre fișierele autorun prezente (`autorun_{data și ora}.inf`) în rădăcina acestui volum 
+și apoi redenumește-l în autorun.inf."""
 icon_folder = """Acest folder conține pictograma care este afișată la acest volum.
 Nu șterge acest folder sau fișierul pictogramei din el."""
 
