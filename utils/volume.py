@@ -80,7 +80,7 @@ def modify_volume_info(
                     entry = entry_and_param[0].strip().lower()
 
                     if entry == "icon": 
-                        if not default_icon == "default":
+                        if not default_icon:
                             autorun_new += f"\nicon=vl_icon\\icon{id}.ico,0"
                             icon_changed = True
                     elif entry == "label": 
