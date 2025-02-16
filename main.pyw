@@ -420,7 +420,7 @@ def update_icons():
 
 def enable_new_icon_pack(event):
     global icon_pack
-    icon_pack = os.path.abspath("icons\\storages.icl")
+    icon_pack = os.path.abspath("icons\\storage_types.icl")
 
     window.unbind("<Shift_L>")
     window.bind("<KeyRelease-Shift_L>", disable_new_icon_pack)
