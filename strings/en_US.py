@@ -44,6 +44,7 @@ copy_traceback_success = "The traceback was successfully copied to clipboard."
 ui_reload_required = "UI reload required"
 ui_reload_confirmation = "This setting requires a UI reload to take effect. Would you like to reload the UI now? All unsaved changes will be lost."
 reset_changes_confirmation = "Are you sure? This action will reset all your unapplied changes that you made."
+apply_changes_exit = "Would you like to apply the changes before exiting?"
 
 # Files
 readme = "READ ME!"

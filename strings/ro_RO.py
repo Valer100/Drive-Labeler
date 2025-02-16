@@ -44,6 +44,7 @@ copy_traceback_success = "Traceback-ul a fost copiat cu succes în clipboard."
 ui_reload_required = "Reîncărcare UI necesară"
 ui_reload_confirmation = "Această setare necesită o reîncărcare a UI-ului pentru a avea efect. Ai dori să reîncarci UI-ul acum? Toate modificările nesalvate vor fi pierdute."
 reset_changes_confirmation = "Ești sigur(ă)? Această acțiune va reseta toate modificările neaplicate pe care le-ai făcut."
+apply_changes_exit = "Ai vrea să aplici modificările înainte de a ieși?"
 
 # Files
 readme = "CITEȘTE-MĂ!"

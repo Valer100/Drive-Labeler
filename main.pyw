@@ -26,7 +26,7 @@ selected_volume_old = ""
 volumes = [""]
 autorun = ""
 app_started = False
-undo_button_enabled = False
+reset_button_enabled = False
 selected_volume = tk.StringVar(value = "")
 hide_autorun = tk.BooleanVar(value = int(preferences.additional_prefs[0]))
 hide_vl_icon = tk.BooleanVar(value = int(preferences.additional_prefs[1]))
@@ -85,7 +85,8 @@ def update_volume_info(vol):
 
 
 def disable_undo_button():
-    global undo_button_enabled
+    global reset_button_enabled
+    reset_button_enabled = False
 
     reset_changes.unbind("<Enter>")
     reset_changes.configure(command = lambda: None)
@@ -95,7 +96,8 @@ def disable_undo_button():
 
 
 def enable_undo_button():
-    global undo_button_enabled
+    global reset_button_enabled
+    reset_button_enabled = True
 
     reset_changes.configure(command = reset_changes_)
     reset_changes.bind("<Enter>", lambda event: reset_changes.configure(background = custom_ui.button_hover))
@@ -434,6 +436,19 @@ def disable_new_icon_pack(event):
     window.bind("<Shift_L>", enable_new_icon_pack)
 
 
+def on_app_close():
+    if reset_button_enabled:
+        confirmation = messagebox.askyesnocancel("Volume Labeler", strings.lang.apply_changes_exit, icon = "warning", default = "yes")
+        
+        if confirmation: 
+            modify_volume_info()
+            if not reset_button_enabled: window.destroy()
+        elif confirmation == False:
+            window.destroy()
+    else:
+        window.destroy()
+
+
 draw_ui()
 refresh_volumes_list()
 
@@ -452,4 +467,5 @@ app_started = True
 custom_ui.sync_colors_with_system(window, update_icons)
 
 window.bind("<Shift_L>", enable_new_icon_pack)
+window.protocol("WM_DELETE_WINDOW", on_app_close)
 window.mainloop()
