@@ -52,10 +52,7 @@ def convert_image_to_icon(path: str) -> None:
     max_side = max(img.size)
     new_img = Image.new("RGBA", (max_side, max_side), (0, 0, 0, 0))
 
-    x_offset = (max_side - img.width) // 2
-    y_offset = (max_side - img.height) // 2
-
-    new_img.paste(img, (x_offset, y_offset), img)
+    new_img.paste(img, ((max_side - img.width) // 2, (max_side - img.height) // 2), img)
     img.close()
 
     new_img.save(fp = preferences.roaming + "\\icon.ico", format = "ICO", sizes = [(16, 16), (20, 20), (24, 24), (30, 30), (32, 32), (48, 48), (64, 64), (72, 72), (96, 96), (128, 128), (144, 144), (196, 196), (256, 256)])
