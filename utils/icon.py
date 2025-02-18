@@ -32,8 +32,15 @@ def extract_icon(path: str, index: str) -> None:
         key = lambda size: (size[0] - int(32 * preferences.scale_factor)) ** 2 + (size[1] - int(32 * preferences.scale_factor)) ** 2
     )
 
-    img.size = closest_size
-    img.load()
+    frames = []
+
+    for index, header in enumerate(img.ico.entry):
+        if header.width == closest_size[0] and header.height == closest_size[1]:
+            frames.append((index, header, img.ico.frame(index)))
+
+    frames.sort(key = lambda frame_info: frame_info[1].bpp, reverse = True)
+    img = frames[0][2]
+
     img = img.resize((int(32 * preferences.scale_factor), int(32 * preferences.scale_factor)), Image.Resampling.LANCZOS)
     img.save(preferences.roaming + "\\preview.png")
     img.close()
