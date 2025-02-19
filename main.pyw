@@ -287,7 +287,7 @@ def draw_ui():
     label_frame.pack(anchor = "w", fill = "x")
 
     label = tk.Entry(label_frame, width = 40, background = custom_ui.entry_bg, 
-                    foreground = custom_ui.fg, border = 0, highlightthickness = 2, 
+                    foreground = custom_ui.fg, border = 0, highlightthickness = preferences.get_scaled_value(2), 
                     highlightcolor = custom_ui.entry_bg, highlightbackground = custom_ui.entry_bg, 
                     insertbackground = custom_ui.fg, insertwidth = 1, selectbackground = custom_ui.entry_select,
                     selectforeground = "#FFFFFF", validate = "key", validatecommand = on_label_change)
