@@ -170,8 +170,5 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# Tinted icons at runtime
-icons/*_tinted.png
-
-# Preferences folder
+# Other folders
 preferences
