@@ -18,14 +18,14 @@ def extract_icon(path: str, index: str) -> None:
     if not path.endswith(".ico"):
         try:
             extractor = IconExtractor(path)
-            extractor.export_icon(preferences.roaming + "\\icon.ico", index)
+            extractor.export_icon(preferences.temp + "\\icon.ico", index)
         except:
             extractor = IconExtractor(path.replace("System32", "SystemResources") + ".mun")
-            extractor.export_icon(preferences.roaming + "\\icon.ico", index)
+            extractor.export_icon(preferences.temp + "\\icon.ico", index)
     else:
-        shutil.copyfile(path, preferences.roaming + "\\icon.ico")
+        shutil.copyfile(path, preferences.temp + "\\icon.ico")
 
-    img = IcoImagePlugin.IcoImageFile(preferences.roaming + "\\icon.ico")
+    img = IcoImagePlugin.IcoImageFile(preferences.temp + "\\icon.ico")
 
     closest_size = min(
         img.info["sizes"],
@@ -42,7 +42,7 @@ def extract_icon(path: str, index: str) -> None:
     img = frames[0][2]
 
     img = img.resize((int(32 * preferences.scale_factor), int(32 * preferences.scale_factor)), Image.Resampling.LANCZOS)
-    img.save(preferences.roaming + "\\preview.png")
+    img.save(preferences.temp + "\\preview.png")
     img.close()
 
 
@@ -55,9 +55,9 @@ def convert_image_to_icon(path: str) -> None:
     new_img.paste(img, ((max_side - img.width) // 2, (max_side - img.height) // 2), img)
     img.close()
 
-    new_img.save(fp = preferences.roaming + "\\icon.ico", format = "ICO", sizes = [(16, 16), (20, 20), (24, 24), (30, 30), (32, 32), (48, 48), (64, 64), (72, 72), (96, 96), (128, 128), (144, 144), (196, 196), (256, 256)])
+    new_img.save(fp = preferences.temp + "\\icon.ico", format = "ICO", sizes = [(16, 16), (20, 20), (24, 24), (30, 30), (32, 32), (48, 48), (64, 64), (72, 72), (96, 96), (128, 128), (144, 144), (196, 196), (256, 256)])
     new_img = new_img.resize((int(32 * preferences.scale_factor), int(32 * preferences.scale_factor)), Image.Resampling.LANCZOS)
-    new_img.save(preferences.roaming + "\\preview.png")
+    new_img.save(preferences.temp + "\\preview.png")
     new_img.close()
 
 

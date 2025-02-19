@@ -123,7 +123,7 @@ def modify_volume_info():
             volume = selected_volume.get(), 
             label = label.get(), 
             default_icon = icon_type.get() == "default",
-            icon_path = preferences.roaming + "\\icon.ico",
+            icon_path = preferences.temp + "\\icon.ico",
             hide_autorun = hide_autorun.get(),
             hide_vl_icon = hide_vl_icon.get(),
             backup_existing_autorun = backup_existing_autorun.get()
@@ -161,7 +161,7 @@ def process_icon(path, index):
     global icon_from_image, choose_icon, preview
 
     icon.extract_icon(path, index)
-    preview = tk.PhotoImage(file = preferences.roaming + "\\preview.png")
+    preview = tk.PhotoImage(file = preferences.temp + "\\preview.png")
 
     choose_icon.configure(image = preview, text = f"  {preferences.limit_string(os.path.basename(path))}, {index}")
     icon_from_image.configure(text = "  " + strings.lang.create_icon_from_image, image = custom_ui.ic_image)
@@ -191,7 +191,7 @@ def choose_icon_():
 
             if not image is None:
                 icon.convert_image_to_icon(image.name)
-                preview = tk.PhotoImage(file = preferences.roaming + "\\preview.png")
+                preview = tk.PhotoImage(file = preferences.temp + "\\preview.png")
                 
                 icon_from_image.configure(image = preview, text = "  " + preferences.limit_string(os.path.basename(image.name)))
                 choose_icon.configure(text = "  " + strings.lang.choose_icon, image = custom_ui.ic_icon, width = 0)

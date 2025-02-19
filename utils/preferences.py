@@ -1,16 +1,16 @@
-import os, getpass, strings, ctypes
+import os, appdirs, strings, ctypes
 
 if os.path.exists("preferences") and os.path.isdir("preferences"):
     user_preferences = os.path.abspath("preferences")
     is_portable = True
 else:
-    user_preferences = f"C:\\Users\\{getpass.getuser()}\\AppData\\Local\\Volume Labeler"
+    user_preferences = appdirs.user_config_dir(appname = "Volume Labeler", appauthor = False, roaming = True)
     is_portable = False
 
-roaming = f"C:\\Users\\{getpass.getuser()}\\AppData\\Roaming\\Volume Labeler"
+temp = user_preferences + "\\temp"
 
-if not os.path.exists(roaming): os.mkdir(roaming)
 if not os.path.exists(user_preferences): os.mkdir(user_preferences)
+if not os.path.exists(temp): os.mkdir(temp)
 if not os.path.exists(user_preferences + "\\language"): open(user_preferences + "\\language", "w").write("default")
 if not os.path.exists(user_preferences + "\\theme"): open(user_preferences + "\\theme", "w").write("default")
 if not os.path.exists(user_preferences + "\\additional_prefs"): open(user_preferences + "\\additional_prefs", "w").write("111")

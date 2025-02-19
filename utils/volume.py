@@ -28,7 +28,7 @@ def read_autorun_file(volume: str) -> str:
 
 def modify_volume_info(
     volume: str, label: str, default_icon: bool = False, 
-    icon_path: str = preferences.roaming + "\\icon.ico", 
+    icon_path: str = preferences.temp + "\\icon.ico", 
     hide_autorun: bool = True, hide_vl_icon: bool = True, 
     backup_existing_autorun: bool = True
 ) -> None:
