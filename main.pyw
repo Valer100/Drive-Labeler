@@ -24,7 +24,6 @@ show_additional_options = False
 icon_old = "default"
 selected_volume_old = ""
 volumes = [""]
-autorun = ""
 app_started = False
 reset_button_enabled = False
 selected_volume = tk.StringVar(value = "")
@@ -255,7 +254,7 @@ def draw_ui():
     show_additional_options = False
     
     for widget in window.winfo_children(): widget.destroy()
-    strings.load_language(open(preferences.user_preferences + "\\language", "r").read())
+    strings.load_language(preferences.language)
 
     ttk.Label(window, text = "Volume Labeler", font = ("Segoe UI Semibold", 17)).pack(anchor = "w")
 
@@ -330,7 +329,9 @@ def draw_ui():
             additional_options_frame.configure(height = 1)
             additional_options.configure(image = custom_ui.ic_arrow_down)
 
-    def save_additional_preferences(): open(preferences.user_preferences + "\\additional_prefs", "w").write(f"{int(hide_autorun.get())}{int(hide_vl_icon.get())}{int(backup_existing_autorun.get())}")
+    def save_additional_preferences(): 
+        preferences.additional_prefs = f"{int(hide_autorun.get())}{int(hide_vl_icon.get())}{int(backup_existing_autorun.get())}"
+        preferences.save_settings()
 
     custom_ui.Checkbutton(additional_options_frame, text = strings.lang.hide_autorun, command = save_additional_preferences, variable = hide_autorun)
     custom_ui.Checkbutton(additional_options_frame, text = strings.lang.hide_vl_icon, command = save_additional_preferences, variable = hide_vl_icon)

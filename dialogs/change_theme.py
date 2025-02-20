@@ -3,12 +3,10 @@ import tkinter as tk, strings, custom_ui
 from tkinter import ttk
 from utils import preferences
 
-strings.load_language(open(preferences.user_preferences + "\\language", "r").read())
 window = None
 
 def show():
     global window
-
     window = custom_ui.Toplevel()
     window.title(strings.lang.change_theme)
     window.configure(padx = preferences.get_scaled_value(16), pady = 0)
@@ -30,8 +28,8 @@ def show():
     buttons.pack(pady = preferences.get_scaled_value(16), fill = "x")
 
     def apply_theme():
-        open(preferences.user_preferences + "\\theme", "w").write(theme.get())
         preferences.theme = theme.get()
+        preferences.save_settings()
         window.destroy()
 
     buttons.grid_columnconfigure(index = [0, 1], weight = 1)

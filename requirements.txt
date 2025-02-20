@@ -6,3 +6,4 @@ icoextract
 tkinter-tooltip
 pywin32
 appdirs
+pyyaml

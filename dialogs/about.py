@@ -1,16 +1,11 @@
 import tkinter as tk, strings, custom_ui, webbrowser
 from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
-import strings.en_US
-import strings.ro_RO
 from utils import preferences
 from dialogs import app_license
 
-strings.load_language(open(preferences.user_preferences + "\\language", "r").read())
-
 def show():
-    global arrow, show_os_licenses, show_licenses
-
+    global show_os_licenses, show_licenses
     show_os_licenses = False
 
     window = custom_ui.Toplevel()
