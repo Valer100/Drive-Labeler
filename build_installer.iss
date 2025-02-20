@@ -62,6 +62,9 @@ Root: HKCU; Subkey: "Software\Classes\Drive\shell\Volume Labeler"; ValueType: st
 Root: HKCU; Subkey: "Software\Classes\Drive\shell\Volume Labeler"; ValueType: string; ValueName: "Icon"; ValueData: "{app}\volume_labeler.exe,0"; Flags: uninsdeletekey; Tasks: contextmenuintegration
 Root: HKCU; Subkey: "Software\Classes\Drive\shell\Volume Labeler\command"; ValueType: string; ValueName: ""; ValueData: """{app}\volume_labeler.exe"" --volume %1"; Flags: uninsdeletekey; Tasks: contextmenuintegration
 
+[UninstallDelete]
+Type: filesandordirs; Name: "{userappdata}\Volume Labeler"
+
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
