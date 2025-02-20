@@ -8,7 +8,7 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install Python 3.11.9
@@ -40,9 +40,11 @@ jobs:
         with:
           name: volume_labeler_portable_x64
           path: build/volume_labeler
+          compression-level: 9
 
       - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
           name: volume_labeler_installer_x64
           path: build/volume_labeler_installer_x64.exe
+          compression-level: 9
