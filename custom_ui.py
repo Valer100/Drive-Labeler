@@ -1,4 +1,4 @@
-import tkinter as tk, pywinstyles, winaccent, winaccent._utils, sys, hPyT, threading
+import tkinter as tk, pywinstyles, winaccent, winaccent._utils, sys, hPyT, threading, strings
 from tkinter import ttk
 from utils import preferences, icon
 
@@ -527,3 +527,37 @@ def sync_colors(window, callback):
 
 def sync_colors_with_system(window, callback = None): 
     threading.Thread(target = lambda: winaccent.on_appearance_changed(lambda: sync_colors(window, callback)), daemon = True).start()
+
+def show_entry_context_menu(entry: tk.Entry):
+    entry.focus_set()
+
+    def cut(): entry.event_generate("<<Cut>>")
+    def copy(): entry.event_generate("<<Copy>>")
+    def paste(): entry.event_generate("<<Paste>>")
+    def delete(): entry.delete("sel.first", "sel.last")
+    def select_all(): entry.select_range(0, tk.END)
+
+    try: entry.selection_get(); some_text_selected = "active"
+    except: some_text_selected = "disabled"
+
+    if entry.get() == "": 
+        enable_select_all = "disabled"
+    else:
+        try:
+            entry.get("sel.first", "sel.last") == entry.get("1.0", tk.END)
+            enable_select_all = "disabled"
+        except:
+            enable_select_all = "active"
+
+    try: entry.clipboard_get(); enable_paste = "active"
+    except: enable_paste = "disabled"
+
+    entry_menu = tk.Menu(tearoff = 0, activebackground = winaccent.accent_normal)
+    entry_menu.add_command(label = strings.lang.cut, command = cut, state = some_text_selected)
+    entry_menu.add_command(label = strings.lang.copy, command = copy, state = some_text_selected)
+    entry_menu.add_command(label = strings.lang.paste, command = paste, state = enable_paste)
+    entry_menu.add_command(label = strings.lang.delete, command = delete, state = some_text_selected)
+    entry_menu.add_separator()
+    entry_menu.add_command(label = strings.lang.select_all, command = select_all, state = enable_select_all)
+
+    entry_menu.tk_popup(entry.winfo_pointerx(), entry.winfo_pointery())

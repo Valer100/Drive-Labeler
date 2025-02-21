@@ -291,6 +291,7 @@ def draw_ui():
                     insertbackground = custom_ui.fg, insertwidth = 1, selectbackground = custom_ui.entry_select,
                     selectforeground = "#FFFFFF", validate = "key", validatecommand = on_label_change)
     label.pack(fill = "x")
+    label.bind("<Button-3>", lambda event: custom_ui.show_entry_context_menu(label))
 
     ttk.Label(window, text = strings.lang.icon).pack(pady = (preferences.get_scaled_value(16), preferences.get_scaled_value(8)), anchor = "w")
 

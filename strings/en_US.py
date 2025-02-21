@@ -75,3 +75,10 @@ latest_version = "Latest version"
 copy_traceback = "Copy traceback"
 license = "License"
 translation_made_by = "Translation made by %a"
+
+# Entry context menu
+cut = "Cut"
+copy = "Copy"
+paste = "Paste"
+delete = "Delete"
+select_all = "Select all"

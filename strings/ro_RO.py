@@ -76,3 +76,10 @@ latest_version = "Cea mai recentă versiune"
 copy_traceback = "Copiază traceback-ul"
 license = "Licență"
 translation_made_by = "Traducere făcută de %a"
+
+# Entry context menu
+cut = "Decupează"
+copy = "Copiază"
+paste = "Lipește"
+delete = "Șterge"
+select_all = "Selectează tot"
