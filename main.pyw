@@ -57,6 +57,16 @@ def refresh_volumes_list():
 
 def update_volume_info(vol):
     global icon_old, selected_volume_old
+    selected_volume.set(selected_volume_old)
+
+    if reset_button_enabled:
+        confirmation = messagebox.askyesnocancel("Volume Labeler", strings.lang.apply_changes_change_volume, icon = "warning", default = "yes")
+        
+        if confirmation: 
+            modify_volume_info()
+            if reset_button_enabled: return
+        elif confirmation == None:
+            return
 
     if os.path.exists(vol):
         selected_volume.set(vol)
