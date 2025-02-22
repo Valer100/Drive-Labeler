@@ -55,11 +55,11 @@ def refresh_volumes_list():
         menu.add_checkbutton(label = f"{volume_label} ({string})", command = lambda value = string: update_volume_info(value), variable = selected_volume, onvalue = string)
 
 
-def update_volume_info(vol):
+def update_volume_info(vol, forced = False):
     global icon_old, selected_volume_old
     selected_volume.set(selected_volume_old)
 
-    if reset_button_enabled:
+    if reset_button_enabled and not forced:
         confirmation = messagebox.askyesnocancel("Volume Labeler", strings.lang.apply_changes_change_volume, icon = "warning", default = "yes")
         
         if confirmation: 
@@ -120,7 +120,7 @@ def reset_changes_():
 
     if confirmation:
         if os.path.exists(selected_volume.get()):
-            update_volume_info(selected_volume.get())
+            update_volume_info(selected_volume.get(), True)
             disable_undo_button()
         else:
             messagebox.showerror(strings.lang.volume_not_accessible, strings.lang.volume_not_accessible_message)
