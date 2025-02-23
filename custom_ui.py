@@ -502,7 +502,7 @@ class Toplevel(tk.Toplevel):
         self.focus_set()
         self.transient(self.master)
 
-        self.geometry(f"+{self.master.winfo_x() + 50}+{self.master.winfo_y()+ 50}")
+        self.geometry(f"+{self.master.winfo_x() + preferences.get_scaled_value(50)}+{self.master.winfo_y()+ preferences.get_scaled_value(50)}")
 
         def disable_parent_window():
             time.sleep(0.1)
