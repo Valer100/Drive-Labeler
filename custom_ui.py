@@ -63,8 +63,9 @@ update_colors()
 
 
 def update_icons():
-    global ic_volume, ic_icon, ic_image, ic_arrow_down, ic_arrow_up
+    global ic_volume, ic_icon, ic_image, ic_arrow_down, ic_arrow_up, ic_app_about
 
+    ic_app_about = icon.extract_and_tint_icon(preferences.internal + "icons\\icon_about.ico", None, 32)
     ic_volume = icon.extract_and_tint_icon(preferences.internal + "icons\\volume.ico", accent, 32)
     ic_icon = icon.extract_and_tint_icon(preferences.internal + "icons\\icon_custom.ico", accent, 32)
     ic_image = icon.extract_and_tint_icon(preferences.internal + "icons\\image.ico", accent, 32)

@@ -12,8 +12,6 @@ def show():
     window.title(strings.lang.about_title)
     window.configure(padx = preferences.get_scaled_value(16), pady = 0)
 
-    icon = tk.PhotoImage(file = f"{preferences.internal}icons\\icon.png")
-
     def show_hide_licenses():
         global arrow, show_os_licenses
         show_os_licenses = not show_os_licenses
@@ -28,7 +26,7 @@ def show():
 
     app_icon = tk.Canvas(app_info, width = 63, height = 40, highlightthickness = 0, background = custom_ui.bg)
     app_icon.pack(side = "left", padx = (0, preferences.get_scaled_value(16)), pady = (preferences.get_scaled_value(16), 0))
-    app_icon.create_image(0, 0, image = icon, anchor = "nw")
+    app_icon.create_image(0, 0, image = custom_ui.ic_app_about, anchor = "nw")
 
     app_name_and_version = ttk.Frame(app_info)
     app_name_and_version.pack(side = "left")
@@ -67,4 +65,3 @@ def show():
 
     window.resizable(False, False)
     window.focus_set()
-    window.mainloop()

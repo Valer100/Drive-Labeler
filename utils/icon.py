@@ -62,9 +62,6 @@ def convert_image_to_icon(path: str) -> None:
 
 
 def extract_and_tint_icon(image_path, color, width):
-    color = color.lstrip("#")
-    rgb_color = tuple(int(color[i:i+2], 16) for i in (0, 2, 4))
-
     img = IcoImagePlugin.IcoImageFile(image_path)
 
     closest_size = min(
@@ -78,6 +75,9 @@ def extract_and_tint_icon(image_path, color, width):
     pixels = img.load()
 
     if not color == None:
+        color = color.lstrip("#")
+        rgb_color = tuple(int(color[i:i+2], 16) for i in (0, 2, 4))
+
         for y in range(img.height):
             for x in range(img.width):
                 _, _, _, alpha = pixels[x, y]
