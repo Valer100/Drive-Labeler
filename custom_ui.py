@@ -451,7 +451,10 @@ class Radiobutton2(tk.Frame):
 class App(tk.Tk):
     def set_theme(self):
         pywinstyles.apply_style(self, "light" if light_theme else "dark")
-        pywinstyles.change_header_color(self, winaccent.titlebar_active if winaccent.is_titlebar_colored else bg)
+        pywinstyles.change_header_color(self, winaccent.titlebar_active if winaccent.is_titlebar_colored and self.focus_get() else bg)
+
+        self.bind("<FocusIn>", lambda event: pywinstyles.change_header_color(self, winaccent.titlebar_active if winaccent.is_titlebar_colored else bg))
+        self.bind("<FocusOut>", lambda event: pywinstyles.change_header_color(self, bg))
 
         style = ttk.Style()
         style.configure(".", background = bg, foreground = fg)
@@ -483,7 +486,10 @@ class Toplevel(tk.Toplevel):
         self.configure(background = bg)
 
         pywinstyles.apply_style(self, "light" if light_theme else "dark")
-        pywinstyles.change_header_color(self, winaccent.titlebar_active if winaccent.is_titlebar_colored else bg)
+        pywinstyles.change_header_color(self, winaccent.titlebar_active if winaccent.is_titlebar_colored and self.focus_get() else bg)
+
+        self.bind("<FocusIn>", lambda event: pywinstyles.change_header_color(self, winaccent.titlebar_active if winaccent.is_titlebar_colored else bg))
+        self.bind("<FocusOut>", lambda event: pywinstyles.change_header_color(self, bg))
 
         hPyT.maximize_minimize_button.hide(self)
 

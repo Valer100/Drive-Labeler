@@ -187,10 +187,13 @@ def choose_icon_():
             enable_undo_button()
         case "icon":
             try:
-                icon_path, icon_index = icon.pick_icon(icon_pack)
+                pywinstyles.change_header_color(window, custom_ui.bg)
+                icon_path, icon_index = icon.pick_icon(window, icon_pack)
+                window.set_theme()
                 process_icon(icon_path, icon_index)
                 enable_undo_button()
             except:
+                window.set_theme()
                 icon_type.set(icon_old)
 
             icon_pack = "C:\\Windows\\System32\\shell32.dll"

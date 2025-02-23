@@ -4,13 +4,13 @@ from icoextract import IconExtractor
 from utils import preferences
 
 
-def pick_icon(initial_icon_file_path: str = "C:\\Windows\\System32\\shell32.dll") -> tuple[str, int]:
+def pick_icon(window, initial_icon_file_path: str = "C:\\Windows\\System32\\shell32.dll") -> tuple[str, int]:
     icon_file_buffer = ctypes.create_unicode_buffer(260)
     icon_index = ctypes.c_int(0)
 
     ctypes.windll.kernel32.lstrcpyW(icon_file_buffer, initial_icon_file_path)
 
-    result = ctypes.windll.shell32.PickIconDlg(None, icon_file_buffer, ctypes.sizeof(icon_file_buffer), ctypes.byref(icon_index))
+    result = ctypes.windll.shell32.PickIconDlg(ctypes.windll.user32.GetParent(window.winfo_id()), icon_file_buffer, ctypes.sizeof(icon_file_buffer), ctypes.byref(icon_index))
     if result: return (icon_file_buffer.value, icon_index.value)
 
 
