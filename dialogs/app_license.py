@@ -3,8 +3,8 @@ from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
 from utils import preferences
 
-def show():
-    window = custom_ui.Toplevel()
+def show(window):
+    window = custom_ui.Toplevel(master = window)
     window.title(strings.lang.license)
     window.configure(padx = preferences.get_scaled_value(16), pady = 0)
 

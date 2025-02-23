@@ -1,4 +1,4 @@
-import tkinter as tk, pywinstyles, winaccent, winaccent._utils, sys, hPyT, threading, strings
+import tkinter as tk, pywinstyles, winaccent, winaccent._utils, sys, hPyT, threading, strings, time
 from tkinter import ttk
 from utils import preferences, icon
 
@@ -499,6 +499,16 @@ class Toplevel(tk.Toplevel):
 
         self.grab_set()
         self.focus_set()
+        self.transient(self.master)
+
+        self.geometry(f"+{self.master.winfo_x() + 50}+{self.master.winfo_y()+ 50}")
+
+        def disable_parent_window():
+            time.sleep(0.1)
+            self.master.wm_attributes("-disabled", True)
+
+        threading.Thread(target = disable_parent_window, daemon = True).start()
+
         self.bind("<Escape>", lambda event: self.destroy())
         self.set_titlebar_theme()
 
@@ -509,6 +519,10 @@ class Toplevel(tk.Toplevel):
 
         return value
     
+    def destroy(self):
+        self.master.wm_attributes("-disabled", False)
+        super().destroy()
+
 
 def sync_colors(window, callback):
     update_colors()
@@ -533,6 +547,7 @@ def sync_colors(window, callback):
 
 def sync_colors_with_system(window, callback = None): 
     threading.Thread(target = lambda: winaccent.on_appearance_changed(lambda: sync_colors(window, callback)), daemon = True).start()
+
 
 def show_entry_context_menu(entry: tk.Entry):
     entry.focus_set()
