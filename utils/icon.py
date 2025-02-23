@@ -69,7 +69,7 @@ def extract_and_tint_icon(image_path, color, width):
 
     closest_size = min(
         img.info["sizes"],
-        key = lambda size: (size[0] - int(width * preferences.scale_factor)) ** 2 + (size[1] - int(width * preferences.scale_factor) )** 2
+        key = lambda size: (size[0] - int(width * preferences.scale_factor)) ** 2 + (size[1] - int(width * preferences.scale_factor)) ** 2
     )
 
     img.size = closest_size
@@ -77,10 +77,11 @@ def extract_and_tint_icon(image_path, color, width):
     img = img.convert("RGBA")
     pixels = img.load()
 
-    for y in range(img.height):
-        for x in range(img.width):
-            _, _, _, alpha = pixels[x, y]
-            if alpha > 0:
-                pixels[x, y] = rgb_color + (alpha,)
+    if not color == None:
+        for y in range(img.height):
+            for x in range(img.width):
+                _, _, _, alpha = pixels[x, y]
+                if alpha > 0:
+                    pixels[x, y] = rgb_color + (alpha,)
     
     return ImageTk.PhotoImage(img)
