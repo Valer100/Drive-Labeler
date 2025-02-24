@@ -1,4 +1,4 @@
-import tkinter as tk, pywinstyles, winaccent, winaccent._utils, sys, hPyT, threading, strings, time
+import tkinter as tk, pywinstyles, winaccent, winaccent._utils, sys, hPyT, threading, strings
 from tkinter import ttk
 from utils import preferences, icon
 
@@ -498,17 +498,10 @@ class Toplevel(tk.Toplevel):
         super().__init__(*args, **kwargs)
         self.withdraw()
 
-        self.grab_set()
         self.focus_set()
         self.transient(self.master)
-
         self.geometry(f"+{self.master.winfo_x() + preferences.get_scaled_value(50)}+{self.master.winfo_y()+ preferences.get_scaled_value(50)}")
-
-        def disable_parent_window():
-            time.sleep(0.1)
-            self.master.wm_attributes("-disabled", True)
-
-        threading.Thread(target = disable_parent_window, daemon = True).start()
+        self.after(100, lambda: self.master.wm_attributes("-disabled", True))
 
         self.bind("<Escape>", lambda event: self.destroy())
         self.set_titlebar_theme()
