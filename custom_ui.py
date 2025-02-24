@@ -497,11 +497,14 @@ class Toplevel(tk.Toplevel):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.withdraw()
+        self.master.unbind("<FocusIn>")
 
-        self.focus_set()
         self.transient(self.master)
+        self.focus_set()
         self.geometry(f"+{self.master.winfo_x() + preferences.get_scaled_value(50)}+{self.master.winfo_y()+ preferences.get_scaled_value(50)}")
+        
         self.after(100, lambda: self.master.wm_attributes("-disabled", True))
+        self.after(100, lambda: self.master.bind("<FocusIn>", lambda event: pywinstyles.change_header_color(self.master, winaccent.titlebar_active if winaccent.is_titlebar_colored else bg)))
 
         self.bind("<Escape>", lambda event: self.destroy())
         self.set_titlebar_theme()
