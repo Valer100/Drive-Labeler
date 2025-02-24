@@ -36,7 +36,7 @@ icon_type = tk.StringVar(value = "default")
 def select_first_accessible_volume():
     for volume in volumes:
         if os.path.exists(volume):
-            update_volume_info(volume)
+            update_volume_info(volume, True)
             break
 
 
