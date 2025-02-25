@@ -32,7 +32,7 @@ def show():
     app_name_and_version.pack(side = "left")
 
     ttk.Label(app_name_and_version, text = "Volume Labeler", width = 20, font = ("Segoe UI Semibold", 17)).pack(anchor = "w", pady = (preferences.get_scaled_value(8), 0))
-    ttk.Label(app_name_and_version, text = strings.lang.version.replace("%v", "1.0.0 alpha")).pack(anchor = "w")
+    ttk.Label(app_name_and_version, text = strings.lang.version + " " + strings.lang.last_commit).pack(anchor = "w")
     
     if not strings.lang in [strings.en_US, strings.ro_RO]:
         ttk.Label(app_name_and_version, text = strings.lang.translation_made_by.replace("%a", strings.lang.author)).pack(anchor = "w")

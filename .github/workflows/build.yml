@@ -21,6 +21,11 @@ jobs:
             Invoke-WebRequest -Uri "https://jrsoftware.org/download.php/is.exe" -OutFile "is.exe"
             Start-Process -FilePath "is.exe" -ArgumentList "/VERYSILENT", "/SUPPRESSMSGBOXES", "/NORESTART" -NoNewWindow -Wait
   
+      - name: Replace placeholders with information
+        run: |
+          $COMMIT_HASH = "${{ github.sha }}".Substring(0,7)
+          (Get-Content strings/_info.py) -replace "%commit_hash", $COMMIT_HASH | Set-Content strings/_info.py
+
       - name: Build application
         run: |
             $env:PATH = "C:\hostedtoolcache\windows\python\3.11.9\x64\Scripts;C:\hostedtoolcache\windows\python\3.11.9\x64;$env:PATH"

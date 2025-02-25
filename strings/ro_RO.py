@@ -1,3 +1,5 @@
+from . import _info
+
 # Language info
 language = "Română"
 language_en = "Romanian"
@@ -70,7 +72,8 @@ ok = "OK"
 cancel = "Anulare"
 about_this_app = "Despre această aplicație"
 about_title = "Despre Volume Labeler"
-version = "Versiunea %v"
+version = f"Versiunea {_info.version}"
+last_commit = f"(ultimul commit: {_info.last_commit})"
 customize_with_volume_labeler = "Personalizează cu Volume Labeler"
 issues = "Probleme"
 latest_version = "Cea mai recentă versiune"

@@ -1,3 +1,5 @@
+from . import _info
+
 # Language info
 language = "English"
 language_en = "English"
@@ -69,7 +71,8 @@ ok = "OK"
 cancel = "Cancel"
 about_this_app = "About this app"
 about_title = "About Volume Labeler"
-version = "Version %v"
+version = f"Version {_info.version}"
+last_commit = f"(last commit: {_info.last_commit})"
 customize_with_volume_labeler = "Customize with Volume Labeler"
 issues = "Issues"
 latest_version = "Latest version"
